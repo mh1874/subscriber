@@ -1,51 +1,75 @@
 <template>
-  <view class="index-page">
-    <Hello />
-    <UnoCss />
-    <text class="h2"> 查看其它页面示例↓ </text>
-    <view>
-      <navigator v-for="(v, idx) in pages" :key="idx" :url="v.url">{{
-        v.title
-      }}</navigator>
+  <view>
+    <u-tabs
+      :list="tabList"
+      :is-scroll="false"
+      active-color="#59c272"
+      v-model="currentTab"
+      @change="changeTab"
+    ></u-tabs>
+    <view class="message-list">
+      <message-item
+        v-for="item in data.tableData"
+        :key="item.mes_id"
+        :item="item"
+      ></message-item>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import Hello from '@/components/hello/index.vue'
-import UnoCss from '@/components/unocss/index.vue'
+import { ref, reactive, onMounted } from 'vue'
+// import { homeApi } from '@/api'
+import { messageList } from './mock'
+import MessageItem from '@/components/MessageItem'
 
-const pages = reactive([
+const currentTab = ref(0)
+
+const tabList = reactive([
   {
-    title: 'Pinia Demo',
-    url: '/pages/pinia/index'
+    name: '未读'
   },
   {
-    title: 'Axios Demo',
-    url: '/pages/axios/index'
+    name: '已读'
   },
   {
-    title: 'uView Demo',
-    url: '/pages/uview/index'
-  },
-  {
-    title: 'UnoCSS Demo',
-    url: '/pages/unocss/index'
+    name: '全部'
   }
 ])
+
+const data = reactive({ tableData: [] })
+
+const queryMessageList = () => {
+  data.tableData = messageList.map((it) => {
+    return { ...it, needExpand: it.message.length > 300 }
+  })
+  // 请求backend获取数据
+  // homeApi
+  //   .getSubscribedList(0)
+  //   .then((v) => {
+  //     // 处理返回数据
+  //     data.tableData = v.data
+  //   })
+  //   .catch((err) => {
+  //     console.log(err)
+  //   })
+}
+
+const changeTab = (index: number) => {
+  const statusVal = index
+  console.log(statusVal)
+  // 切换tab时 根据状态请求backend
+  // this.queryMessageList()
+}
+
+onMounted(() => {
+  queryMessageList()
+})
 </script>
 
-<style scoped>
-.index-page {
-  font-style: normal;
-  text-align: center;
-}
-.h2 {
-  color: green;
-  font-size: 50rpx;
-}
-navigator {
-  color: #1e80ff;
+<style scoped lang="scss">
+.message-list {
+  background-color: #f0f0f0; /* 整体背景色 */
+  padding: 16px; /* 整体内边距 */
 }
 </style>
