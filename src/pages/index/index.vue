@@ -69,7 +69,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .message-list {
-  background-color: #f0f0f0; /* 整体背景色 */
-  padding: 16px; /* 整体内边距 */
+  background-color: #f0f0f0;
+  padding: 10px 0;
 }
 </style>

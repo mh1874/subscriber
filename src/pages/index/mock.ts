@@ -3,115 +3,119 @@ import { IBigv, IMessage } from '@/types/message'
 // 大v列表
 export const bigvs: IBigv[] = [
   {
-    nick: 'nick371',
+    nick: 'St的乐趣',
+    avatar:
+      'https://xavatar.imedao.com/community/20217/1628133957166-1628133957457.jpg!240x240.jpg',
     modified_time: '2023-12-29T10:06:19.136813+08:00',
     source_platform: 'xq',
     fans_num: 99961,
-    avatar: 'avatar371',
-    intro: 'intro371',
+    subscript_num: 1000, // need
+    intro: '捡瓶子家的后花园',
     bigv_id: 371,
     source_id: '371',
     created_time: '2023-12-29T10:06:19.136805+08:00'
   },
   {
-    nick: 'nick638',
+    nick: 'St的乐趣2号',
+    avatar:
+      'https://xavatar.imedao.com/community/20217/1628133957166-1628133957457.jpg!240x240.jpg',
     modified_time: '2023-12-29T10:06:19.583144+08:00',
     source_platform: 'xq',
     fans_num: 99524,
-    avatar: 'avatar638',
-    intro: 'intro638',
+    subscript_num: 1000, // need
+    intro: '捡瓶子家的后花园',
     bigv_id: 638,
     source_id: '638',
     created_time: '2023-12-29T10:06:19.583127+08:00'
-  },
-  {
-    nick: 'nick176',
-    modified_time: '2023-12-29T10:06:18.796504+08:00',
-    source_platform: 'xq',
-    fans_num: 99472,
-    avatar: 'avatar176',
-    intro: 'intro176',
-    bigv_id: 176,
-    source_id: '176',
-    created_time: '2023-12-29T10:06:18.796495+08:00'
-  },
-  {
-    nick: 'nick918',
-    modified_time: '2023-12-29T10:06:20.067626+08:00',
-    source_platform: 'xq',
-    fans_num: 99295,
-    avatar: 'avatar918',
-    intro: 'intro918',
-    bigv_id: 918,
-    source_id: '918',
-    created_time: '2023-12-29T10:06:20.067610+08:00'
-  },
-  {
-    nick: 'nick300',
-    modified_time: '2023-12-29T10:06:19.007376+08:00',
-    source_platform: 'xq',
-    fans_num: 99251,
-    avatar: 'avatar300',
-    intro: 'intro300',
-    bigv_id: 300,
-    source_id: '300',
-    created_time: '2023-12-29T10:06:19.007362+08:00'
-  },
-  {
-    nick: 'nick234',
-    modified_time: '2023-12-29T10:06:18.895276+08:00',
-    source_platform: 'xq',
-    fans_num: 99123,
-    avatar: 'avatar234',
-    intro: 'intro234',
-    bigv_id: 234,
-    source_id: '234',
-    created_time: '2023-12-29T10:06:18.895266+08:00'
-  },
-  {
-    nick: 'nick796',
-    modified_time: '2023-12-29T10:06:19.864336+08:00',
-    source_platform: 'xq',
-    fans_num: 98873,
-    avatar: 'avatar796',
-    intro: 'intro796',
-    bigv_id: 796,
-    source_id: '796',
-    created_time: '2023-12-29T10:06:19.864323+08:00'
-  },
-  {
-    nick: 'nick198',
-    modified_time: '2023-12-29T10:06:18.833816+08:00',
-    source_platform: 'xq',
-    fans_num: 98525,
-    avatar: 'avatar198',
-    intro: 'intro198',
-    bigv_id: 198,
-    source_id: '198',
-    created_time: '2023-12-29T10:06:18.833802+08:00'
-  },
-  {
-    nick: 'nick232',
-    modified_time: '2023-12-29T10:06:18.891067+08:00',
-    source_platform: 'xq',
-    fans_num: 98446,
-    avatar: 'avatar232',
-    intro: 'intro232',
-    bigv_id: 232,
-    source_id: '232',
-    created_time: '2023-12-29T10:06:18.891049+08:00'
-  },
-  {
-    nick: 'nick251',
-    modified_time: '2023-12-29T10:06:18.925546+08:00',
-    source_platform: 'xq',
-    fans_num: 98355,
-    avatar: 'avatar251',
-    intro: 'intro251',
-    bigv_id: 251,
-    source_id: '251',
-    created_time: '2023-12-29T10:06:18.925536+08:00'
   }
+  //   {
+  //     nick: 'nick176',
+  //     modified_time: '2023-12-29T10:06:18.796504+08:00',
+  //     source_platform: 'xq',
+  //     fans_num: 99472,
+  //     avatar: 'avatar176',
+  //     intro: 'intro176',
+  //     bigv_id: 176,
+  //     source_id: '176',
+  //     created_time: '2023-12-29T10:06:18.796495+08:00'
+  //   },
+  //   {
+  //     nick: 'nick918',
+  //     modified_time: '2023-12-29T10:06:20.067626+08:00',
+  //     source_platform: 'xq',
+  //     fans_num: 99295,
+  //     avatar: 'avatar918',
+  //     intro: 'intro918',
+  //     bigv_id: 918,
+  //     source_id: '918',
+  //     created_time: '2023-12-29T10:06:20.067610+08:00'
+  //   },
+  //   {
+  //     nick: 'nick300',
+  //     modified_time: '2023-12-29T10:06:19.007376+08:00',
+  //     source_platform: 'xq',
+  //     fans_num: 99251,
+  //     avatar: 'avatar300',
+  //     intro: 'intro300',
+  //     bigv_id: 300,
+  //     source_id: '300',
+  //     created_time: '2023-12-29T10:06:19.007362+08:00'
+  //   },
+  //   {
+  //     nick: 'nick234',
+  //     modified_time: '2023-12-29T10:06:18.895276+08:00',
+  //     source_platform: 'xq',
+  //     fans_num: 99123,
+  //     avatar: 'avatar234',
+  //     intro: 'intro234',
+  //     bigv_id: 234,
+  //     source_id: '234',
+  //     created_time: '2023-12-29T10:06:18.895266+08:00'
+  //   },
+  //   {
+  //     nick: 'nick796',
+  //     modified_time: '2023-12-29T10:06:19.864336+08:00',
+  //     source_platform: 'xq',
+  //     fans_num: 98873,
+  //     avatar: 'avatar796',
+  //     intro: 'intro796',
+  //     bigv_id: 796,
+  //     source_id: '796',
+  //     created_time: '2023-12-29T10:06:19.864323+08:00'
+  //   },
+  //   {
+  //     nick: 'nick198',
+  //     modified_time: '2023-12-29T10:06:18.833816+08:00',
+  //     source_platform: 'xq',
+  //     fans_num: 98525,
+  //     avatar: 'avatar198',
+  //     intro: 'intro198',
+  //     bigv_id: 198,
+  //     source_id: '198',
+  //     created_time: '2023-12-29T10:06:18.833802+08:00'
+  //   },
+  //   {
+  //     nick: 'nick232',
+  //     modified_time: '2023-12-29T10:06:18.891067+08:00',
+  //     source_platform: 'xq',
+  //     fans_num: 98446,
+  //     avatar: 'avatar232',
+  //     intro: 'intro232',
+  //     bigv_id: 232,
+  //     source_id: '232',
+  //     created_time: '2023-12-29T10:06:18.891049+08:00'
+  //   },
+  //   {
+  //     nick: 'nick251',
+  //     modified_time: '2023-12-29T10:06:18.925546+08:00',
+  //     source_platform: 'xq',
+  //     fans_num: 98355,
+  //     avatar: 'avatar251',
+  //     intro: 'intro251',
+  //     bigv_id: 251,
+  //     source_id: '251',
+  //     created_time: '2023-12-29T10:06:18.925536+08:00'
+  //   }
 ]
 
 // 消息列表
@@ -125,6 +129,7 @@ export const messageList: IMessage[] = [
     message:
       '今天居然成交了1400万。这么颠的车，好不容易坚持下来，一个板就跑？后面还有股权转让，业绩预告等多个预期。下车的在告等多个预期。下想啥呢？今天居然成交了1400万。这么颠的车，好不容易坚持下来，一个板就跑？后面还有股权转让，业绩预告等多个预期。下车的在想啥呢？今天居然成交了1400万。这么颠的车，好不容易坚持下来，一个板就跑？后面还有股权转让，业绩预告等多个预期。下车的在想啥呢？今天居然成交了1400万。这么颠的车，好不容易坚持下来，一个板就跑？后面还有股权转让，业绩预告等多个预期。下车的在想啥呢？今天居然成交了1400万。这么颠的车，好不容易坚持下来，一个板就跑？后面还有股权转让，业绩预告等多个预期。下车的在想啥呢？',
     source_platform: 'xq',
+    original_link: 'https://xueqiu.com/S/SH600000', // need
     mes_id: 6908,
     source_id: '423',
     created_time: '2023-12-29T10:11:13.272633+08:00'
@@ -137,6 +142,7 @@ export const messageList: IMessage[] = [
     modified_time: '2023-12-29T10:11:13.058055+08:00',
     message: 'messagemessagemessagemessagemessage17649',
     source_platform: 'xq',
+    original_link: 'https://xueqiu.com/S/SH600000', // need
     mes_id: 6827,
     source_id: '423',
     created_time: '2023-12-29T10:11:13.058041+08:00'

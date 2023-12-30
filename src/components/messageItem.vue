@@ -1,26 +1,19 @@
 <template>
   <view class="message-item">
     <view class="user-info">
-      <!-- 添加消息来源平台的图标 -->
       <image
         class="platform-icon"
         :src="getLogo(props.item.source_platform)"
       ></image>
       <image class="avatar" :src="props.item.avatar" mode="aspectFill"></image>
       <view class="info-text">
-        <view class="nick">{{ props.item.nick }}</view>
+        <view class="font-bold">{{ props.item.nick }}</view>
         <view class="time">{{ formatTime(props.item.modified_time) }}</view>
       </view>
     </view>
-    <view class="message-content">
+    <view class="message-content" @click="toMessageDetail">
       <text class="message-text">{{ props.item.message }}</text>
-      <view
-        v-if="props.item.needExpand"
-        class="expand-button"
-        @click="toMessageDetail"
-      >
-        全文
-      </view>
+      <view v-if="props.item.needExpand" class="text-right"> 全文 </view>
     </view>
   </view>
 </template>
@@ -57,18 +50,32 @@ const getLogo = (platform) => {
 const formatTime = (time: string) => {
   return proxy.$dayjs(time).fromNow()
 }
+
+// // 判断是否为消息详情页面
+// const isMessagePage = () => {
+//   // 替换成实际的消息详情页面路径
+//   return __uniConfig.currentPage.path.includes('/pages/index/index')
+// }
+
+const currentPage = getCurrentPages()
+const messageWhiteList = ['pages/index/index']
+
+// 跳转消息详情
 const toMessageDetail = () => {
-  // 跳转消息详情页
+  // 消息列表可以跳转消息详情
+  if (!messageWhiteList.includes(currentPage[0]?.route)) return
+  uni.navigateTo({
+    url: `/pages/messageDetail/index?id=${props.item.mes_id}`
+  })
 }
 </script>
 
 <style lang="scss" scoped>
 .message-item {
-  background-color: #fff; /* 卡片背景色 */
-  border: 1px solid #ddd;
+  background-color: #fff;
   border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .user-info {
@@ -85,16 +92,12 @@ const toMessageDetail = () => {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .info-text {
   margin-left: 10px;
   font-size: 14px;
-}
-
-.nick {
-  font-weight: bold;
 }
 
 .time {
@@ -111,11 +114,5 @@ const toMessageDetail = () => {
     -webkit-line-clamp: 7;
     text-overflow: ellipsis;
   }
-}
-
-.expand-button {
-  color: #3498db;
-  cursor: pointer;
-  text-align: right;
 }
 </style>
