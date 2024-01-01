@@ -1,9 +1,13 @@
 <template>
   <view class="message-detail">
     <view class="user-info">
-      <image class="avatar" :src="data.item.avatar" mode="aspectFill"></image>
+      <image
+        class="avatar"
+        :src="data.item.bigv.avatar"
+        mode="aspectFill"
+      ></image>
       <view class="info-text">
-        <view class="font-bold">{{ data.item.nick }}</view>
+        <view class="font-bold">{{ data.item.bigv.nick }}</view>
         <view class="time">{{ formatTime(data.item.modified_time) }}</view>
       </view>
       <u-button type="success" plain size="mini">分享信息</u-button>
@@ -14,7 +18,7 @@
     </view>
     <view class="original-link">
       <view>本文版权属于原作者或组织</view>
-      <view>原文地址：{{ data.item.original_link }}</view>
+      <view>原文地址：{{ data.item.bigv.source_url }}</view>
     </view>
   </view>
 </template>
@@ -22,26 +26,24 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, reactive, getCurrentInstance } from 'vue'
-// import { homeApi } from '@/api'
-import { messageList } from '../index/mock'
+import { messageApi } from '@/api'
+// import { messageList } from '../index/mock'
 
 const { proxy } = getCurrentInstance()
 
 const messageId: number = ref(0)
-const data = reactive({ item: [] })
+const data = reactive({ item: {} })
 
 const queryMessageDetail = () => {
-  data.item = messageList.find((it) => it.mes_id === messageId.value)
-  // 请求backend获取数据
-  // homeApi
-  //   .getSubscribedList(0)
-  //   .then((v) => {
-  //     // 处理返回数据
-  //     data.tableData = v.data
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //   })
+  messageApi
+    .getMessageDetail(messageId.value)
+    .then((v) => {
+      // 处理返回数据
+      data.item = v.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
 // 格式化时间的函数

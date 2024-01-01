@@ -23,7 +23,6 @@ function useMescroll(onPageScroll, onReachBottom, onPullDownRefresh) {
 
   // 下拉刷新的回调 (mixin默认resetUpScroll)
   const downCallback = () => {
-    console.log('111 ==>', 111)
     if (mescroll.optUp.use) {
       mescroll.resetUpScroll()
     } else {

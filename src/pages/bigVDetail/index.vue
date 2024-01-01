@@ -24,10 +24,7 @@ import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { messageApi } from '@/api'
 import MessageItem from '@/components/MessageItem'
 
-const { mescrollInit, downCallback, getMescroll } = useMescroll(
-  onPageScroll,
-  onReachBottom
-)
+const { mescrollInit, downCallback } = useMescroll(onPageScroll, onReachBottom)
 
 const bigVId: number = ref(0)
 const data = reactive({ tableData: [], totalSize: 0 })

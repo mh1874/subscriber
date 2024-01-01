@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { ref, reactive } from 'vue'
 import { onPageScroll, onReachBottom, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 
@@ -64,8 +64,14 @@ const upCallback = (mescroll) => {
       })
   }, 300)
 }
+const canReset = ref(false)
+
 onShow(() => {
-  getMescroll().resetUpScroll()
+  if (canReset.value) {
+    getMescroll().resetUpScroll() // 重置列表数据为第一页
+    getMescroll().scrollTo(0, 0)
+  }
+  canReset.value = true
 })
 </script>
 

@@ -1,13 +1,17 @@
 <template>
   <view class="message-item">
-    <view class="user-info">
+    <view class="user-info" @click="toBigVDetail">
       <image
         class="platform-icon"
         :src="getLogo(props.item.source_platform)"
       ></image>
-      <image class="avatar" :src="props.item.avatar" mode="aspectFill"></image>
+      <image
+        class="avatar"
+        :src="props.item.bigv.avatar"
+        mode="aspectFill"
+      ></image>
       <view class="info-text">
-        <view class="font-bold">{{ props.item.nick }}</view>
+        <view class="font-bold">{{ props.item.bigv.nick }}</view>
         <view class="time">{{ formatTime(props.item.modified_time) }}</view>
       </view>
     </view>
@@ -57,13 +61,23 @@ const formatTime = (time: string) => {
 //   return __uniConfig.currentPage.path.includes('/pages/index/index')
 // }
 
-const currentPage = getCurrentPages()
+const pageList = getCurrentPages()
+const currentPage = pageList[pageList.length - 1]?.route
 const messageWhiteList = ['pages/index/index']
+
+// 跳转大V动态
+const toBigVDetail = () => {
+  // 消息列表可以跳转大V动态
+  if (!messageWhiteList.includes(currentPage)) return
+  uni.navigateTo({
+    url: `/pages/bigVDetail/index?id=${props.item.bigv.bigv_id}`
+  })
+}
 
 // 跳转消息详情
 const toMessageDetail = () => {
   // 消息列表可以跳转消息详情
-  if (!messageWhiteList.includes(currentPage[0]?.route)) return
+  if (!messageWhiteList.includes(currentPage)) return
   uni.navigateTo({
     url: `/pages/messageDetail/index?id=${props.item.mes_id}`
   })

@@ -40,9 +40,14 @@ const formatFansNum = (fansNum: number) => {
   return `${fansNum}万`
 }
 
+const pageList = getCurrentPages()
+const currentPage = pageList[pageList.length - 1]?.route
+const bigVWhiteList = ['pages/search/index']
+
 // 跳转消息详情
 const toBigVDetail = () => {
-  // 消息列表可以跳转消息详情
+  // 大V列表可以跳转消息详情
+  if (!bigVWhiteList.includes(currentPage)) return
   uni.navigateTo({
     url: `/pages/bigVDetail/index?id=${props.item.bigv_id}`
   })
@@ -55,7 +60,7 @@ const toBigVDetail = () => {
   border-radius: 8px;
   padding: 10px;
   padding-right: 20px;
-  margin-bottom: 10px;
+  border: 1px solid #eee;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -64,7 +69,6 @@ const toBigVDetail = () => {
 .user-info {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .avatar {

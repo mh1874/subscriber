@@ -18,7 +18,7 @@ interface IBigVMessage extends IPager {
  * @param user_id 用户id
  */
 function getMessageListFromUser(params: IUserMessage): Promise<{ res: any }> {
-  return http.get('/message/from_user', {
+  return http.get('/message/from_user/', {
     params: {
       ...params
     }
@@ -30,14 +30,27 @@ function getMessageListFromUser(params: IUserMessage): Promise<{ res: any }> {
  * @param bigv_id 大Vid
  */
 function getMessageListFromBigV(params: IBigVMessage): Promise<{ res: any }> {
-  return http.get('/message/from_bigv', {
+  return http.get('/message/from_bigv/', {
     params: {
       ...params
     }
   })
 }
 
+/**
+ * 获取消息详情
+ * @param mes_id 消息id
+ */
+function getMessageDetail(mes_id: number): Promise<{ res: any }> {
+  return http.get('/message/', {
+    params: {
+      mes_id
+    }
+  })
+}
+
 export default {
   getMessageListFromUser,
-  getMessageListFromBigV
+  getMessageListFromBigV,
+  getMessageDetail
 }

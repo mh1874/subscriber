@@ -18,6 +18,23 @@ function getBigVList(user_id: number, params: IBigV): Promise<{ res: any }> {
   })
 }
 
+/**
+ * 获取大V列表-我的关注
+ * @param user_id 用户id
+ * @param params 分页信息
+ */
+function getFollowedBigVList(
+  user_id: number,
+  params: IBigV
+): Promise<{ res: any }> {
+  return http.get(`/bigv/follow/${user_id}`, {
+    params: {
+      ...params
+    }
+  })
+}
+
 export default {
-  getBigVList
+  getBigVList,
+  getFollowedBigVList
 }

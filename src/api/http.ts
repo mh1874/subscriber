@@ -14,8 +14,6 @@ const instance = axios.create({
   baseURL: 'http://120.46.183.82:8888/api',
   // #endif
   adapter(config) {
-    console.log('request adapter ↓↓')
-    console.log(config)
     const { url, method, data, params, headers, baseURL, paramsSerializer } =
       config
     return new Promise((resolve, reject) => {
@@ -27,8 +25,6 @@ const instance = axios.create({
         dataType: 'json',
         responseType: config.responseType,
         success: (res: any) => {
-          console.log('request success ↓↓')
-          console.log(res)
           resolve(res)
         },
         fail: (err: any) => {

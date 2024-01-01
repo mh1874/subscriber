@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, nextTick } from 'vue'
 import { onPageScroll, onReachBottom, onShow } from '@dcloudio/uni-app'
 import { searchApi } from '@/api'
 // import { bigvs } from '../index/mock'
@@ -63,32 +63,32 @@ const tabList = reactive([
   }
 ])
 
-// const queryBigVList = () => {
-//   data.tableData = bigvs
-//   // 请求backend获取数据
-//   searchApi
-//     .getBigVList()
-//     .then((v) => {
-//       console.log('v ==>', v)
-//       // 处理返回数据
-//       data.tableData = v.bigvs
-//     })
-//     .catch((err) => {
-//       console.log(err)
-//     })
-// }
-
 const changeTab = () => {
   getMescroll().resetUpScroll()
 }
+
+const platformEnum = {
+  1: 'xq',
+  2: 'wb',
+  3: 'dc'
+}
+
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
-const upCallback = (mescroll) => {
+const upCallback = async (mescroll) => {
+  await nextTick()
+  const apiFunc =
+    currentTab.value === 0
+      ? searchApi.getFollowedBigVList
+      : searchApi.getBigVList
+  const params = {
+    count: mescroll.size,
+    offset: (mescroll.num - 1) * 10
+  }
+  if (currentTab.value !== 0) {
+    params.platform = platformEnum[currentTab.value]
+  }
   setTimeout(() => {
-    searchApi
-      .getBigVList(1, {
-        count: mescroll.size,
-        offset: (mescroll.num - 1) * 10
-      })
+    apiFunc(1, params)
       .then((res) => {
         if (res.status !== 1) return
         const curPageData = res.data || [] // 当前页数据
@@ -105,14 +105,20 @@ const upCallback = (mescroll) => {
       })
   }, 300)
 }
+
+const canReset = ref(false)
+
 onShow(() => {
-  getMescroll().resetUpScroll()
+  if (canReset.value) {
+    getMescroll().resetUpScroll() // 重置列表数据为第一页
+    getMescroll().scrollTo(0, 0)
+  }
+  canReset.value = true
 })
 </script>
 
 <style scoped lang="scss">
 .big-v-list {
   background-color: #f0f0f0;
-  padding: 10px 0;
 }
 </style>
