@@ -6,7 +6,7 @@
     :up="scrollOptions.up"
     :down="scrollOptions.down"
   >
-    <view class="message-list">
+    <view class="bigV-list">
       <message-item
         v-for="item in data.tableData"
         :key="item.mes_id"
@@ -17,8 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { onPageScroll, onReachBottom, onShow } from '@dcloudio/uni-app'
+import { ref, reactive } from 'vue'
+import { onPageScroll, onReachBottom, onLoad } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 
 import { messageApi } from '@/api'
@@ -29,6 +29,7 @@ const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onReachBottom
 )
 
+const bigVId: number = ref(0)
 const data = reactive({ tableData: [], totalSize: 0 })
 
 const scrollOptions = reactive({
@@ -40,8 +41,8 @@ const scrollOptions = reactive({
 const upCallback = (mescroll) => {
   setTimeout(() => {
     messageApi
-      .getMessageListFromUser({
-        user_id: 1,
+      .getMessageListFromBigV({
+        bigv_id: bigVId.value,
         count: mescroll.size,
         offset: (mescroll.num - 1) * 10
       })
@@ -64,13 +65,17 @@ const upCallback = (mescroll) => {
       })
   }, 300)
 }
-onShow(() => {
-  getMescroll().resetUpScroll()
+onLoad((option) => {
+  bigVId.value = option.id && Number(option.id)
 })
+
+// onShow(() => {
+//   getMescroll().resetUpScroll()
+// })
 </script>
 
 <style scoped lang="scss">
-.message-list {
+.bigV-list {
   background-color: #f0f0f0;
   padding: 10px 0;
 }

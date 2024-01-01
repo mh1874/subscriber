@@ -11,7 +11,7 @@ const instance = axios.create({
   // #endif
   // #ifndef H5
   // @ts-ignore
-  baseURL: 'https://service-rbji0bev-1256505457.cd.apigw.tencentcs.com/release',
+  baseURL: 'http://120.46.183.82:8888/api',
   // #endif
   adapter(config) {
     console.log('request adapter ↓↓')

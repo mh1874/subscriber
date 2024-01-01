@@ -1,18 +1,27 @@
 <template>
   <view class="big-v-item">
-    <view class="user-info">
+    <view class="user-info" @click="toBigVDetail">
       <image class="avatar" :src="props.item.avatar" mode="aspectFill"></image>
       <view class="info-text">
-        <view class="font-bold">{{ props.item.nick }}</view>
+        <view class="font-bold text-xl mb-1">{{ props.item.nick }}</view>
         <view class="fans">
-          <text class="mr-5">
+          <text class="mr-5 text-xs">
             粉丝：{{ formatFansNum(props.item.fans_num) }}
           </text>
-          <text>订阅：{{ props.item.subscript_num }}</text>
+          <text class="text-xs">订阅：{{ props.item.subscript_num }}</text>
         </view>
-        <view class="intro">{{ props.item.intro }}</view>
+        <view class="intro text-xs">{{ props.item.intro }}</view>
       </view>
     </view>
+    <u-button
+      shape="circle"
+      type="success"
+      plain
+      size="mini"
+      :disabled="props.item.is_follow"
+    >
+      订阅
+    </u-button>
   </view>
 </template>
 
@@ -28,9 +37,15 @@ const props = defineProps({
 
 // 格式化粉丝数的函数
 const formatFansNum = (fansNum: number) => {
-  return fansNum > 10000
-    ? `${Math.floor(fansNum / 10000)}万粉丝`
-    : `${fansNum}粉丝`
+  return `${fansNum}万`
+}
+
+// 跳转消息详情
+const toBigVDetail = () => {
+  // 消息列表可以跳转消息详情
+  uni.navigateTo({
+    url: `/pages/bigVDetail/index?id=${props.item.bigv_id}`
+  })
 }
 </script>
 
@@ -39,7 +54,11 @@ const formatFansNum = (fansNum: number) => {
   background-color: #fff;
   border-radius: 8px;
   padding: 10px;
+  padding-right: 20px;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .user-info {
