@@ -3,11 +3,9 @@
     <view class="user-info" @click="toBigVDetail">
       <image class="avatar" :src="props.item.avatar" mode="aspectFill"></image>
       <view class="info-text">
-        <view class="font-bold text-xl mb-1">{{ props.item.nick }}</view>
+        <view class="font-bold text-sm mb-1">{{ props.item.nick }}</view>
         <view class="fans">
-          <text class="mr-5 text-xs">
-            粉丝：{{ formatFansNum(props.item.fans_num) }}
-          </text>
+          <text class="mr-5 text-xs"> 粉丝：{{ props.item.fans_num }} </text>
           <text class="text-xs">订阅：{{ props.item.subscript_num }}</text>
         </view>
         <view class="intro text-xs">{{ props.item.intro }}</view>
@@ -34,11 +32,6 @@ const props = defineProps({
     required: true
   }
 })
-
-// 格式化粉丝数的函数
-const formatFansNum = (fansNum: number) => {
-  return `${fansNum}万`
-}
 
 const pageList = getCurrentPages()
 const currentPage = pageList[pageList.length - 1]?.route
@@ -90,6 +83,10 @@ const toBigVDetail = () => {
 .intro {
   color: #666;
   margin-bottom: 5px;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .time {

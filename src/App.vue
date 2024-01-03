@@ -2,7 +2,12 @@
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 
 onLaunch(() => {
-  console.log('App Launch')
+  uni.login({
+    provider: 'weixin',
+    success(loginRes) {
+      console.log(loginRes)
+    }
+  })
 })
 onShow(() => {
   console.log('App Show')

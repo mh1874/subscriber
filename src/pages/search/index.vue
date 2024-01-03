@@ -68,9 +68,9 @@ const changeTab = () => {
 }
 
 const platformEnum = {
-  1: 'xq',
-  2: 'wb',
-  3: 'dc'
+  1: 'xueqiu',
+  2: 'weibo',
+  3: 'dongcai'
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10

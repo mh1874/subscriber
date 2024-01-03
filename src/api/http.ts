@@ -11,7 +11,8 @@ const instance = axios.create({
   // #endif
   // #ifndef H5
   // @ts-ignore
-  baseURL: 'http://120.46.183.82:8888/api',
+  baseURL: 'https://www.lovecf.cn/api',
+  // baseURL: 'http://123.57.166.107:8877/api',
   // #endif
   adapter(config) {
     const { url, method, data, params, headers, baseURL, paramsSerializer } =
