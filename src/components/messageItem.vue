@@ -16,8 +16,13 @@
       </view>
     </view>
     <view class="message-content" @click="toMessageDetail">
-      <text class="message-text">{{ props.item.message }}</text>
-      <view v-if="props.item.needExpand" class="text-right"> 全文 </view>
+      <mp-html :copy-link="false" :content="props.item.message" />
+      <mp-html
+        :copy-link="false"
+        v-if="props.item.retweeted_message"
+        :content="props.item.retweeted_message"
+      />
+      <view v-if="props.item.needExpand" class="text-right"> 阅读全文 </view>
     </view>
   </view>
 </template>
@@ -40,11 +45,11 @@ const props = defineProps({
 // 计算属性，根据 source_platform 返回对应的 logo
 const getLogo = (platform) => {
   switch (platform) {
-    case 'xq':
+    case 'xueqiu':
       return xueqiuLogo
-    case 'wb':
+    case 'weibo':
       return weiboLogo
-    case 'dc':
+    case 'dongcai':
       return dongcaiLogo
     default:
       return null // 如果没有匹配到，可以返回默认的 logo 或 null
@@ -54,12 +59,6 @@ const getLogo = (platform) => {
 const formatTime = (time: string) => {
   return proxy.$dayjs(time).fromNow()
 }
-
-// // 判断是否为消息详情页面
-// const isMessagePage = () => {
-//   // 替换成实际的消息详情页面路径
-//   return __uniConfig.currentPage.path.includes('/pages/index/index')
-// }
 
 const pageList = getCurrentPages()
 const currentPage = pageList[pageList.length - 1]?.route
@@ -98,13 +97,13 @@ const toMessageDetail = () => {
 }
 
 .platform-icon {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   margin-right: 5px;
 }
 .avatar {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   margin-right: 5px;
 }
@@ -120,13 +119,5 @@ const toMessageDetail = () => {
 
 .message-content {
   margin-top: 10px;
-  .message-text {
-    overflow: hidden;
-    word-break: break-all;
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    -webkit-line-clamp: 7;
-    text-overflow: ellipsis;
-  }
 }
 </style>

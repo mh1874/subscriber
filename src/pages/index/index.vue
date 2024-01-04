@@ -49,7 +49,10 @@ const upCallback = (mescroll) => {
         if (res.status !== 1) return
         const curPageData =
           res.data.map((it) => {
-            return { ...it, needExpand: it.message.length > 300 }
+            return {
+              ...it,
+              needExpand: it.message.length > 250
+            }
           }) || [] // 当前页数据
         if (mescroll.num === 1) data.tableData = [] // 第一页需手动置空列表
         data.tableData = data.tableData.concat(curPageData) // 追加新数据

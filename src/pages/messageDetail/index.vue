@@ -1,24 +1,25 @@
 <template>
   <view class="message-detail">
     <view class="user-info">
-      <image
-        class="avatar"
-        :src="data.item.bigv.avatar"
-        mode="aspectFill"
-      ></image>
+      <image class="avatar" :src="data.item.avatar" mode="aspectFill"></image>
       <view class="info-text">
-        <view class="font-bold">{{ data.item.bigv.nick }}</view>
+        <view class="font-bold">{{ data.item.nick }}</view>
         <view class="time">{{ formatTime(data.item.modified_time) }}</view>
       </view>
       <u-button type="success" plain size="mini">分享信息</u-button>
     </view>
     <view class="divider"></view>
     <view class="message-content">
-      <text class="message-text">{{ data.item.message }}</text>
+      <mp-html :copy-link="false" :content="data.item.message" />
+      <mp-html
+        :copy-link="false"
+        v-if="data.item.retweeted_message"
+        :content="data.item.retweeted_message"
+      />
     </view>
     <view class="original-link">
       <view>本文版权属于原作者或组织</view>
-      <view>原文地址：{{ data.item.bigv.source_url }}</view>
+      <view>原文地址：{{ data.item.source_url }}</view>
     </view>
   </view>
 </template>
@@ -39,7 +40,7 @@ const queryMessageDetail = () => {
     .getMessageDetail(messageId.value)
     .then((v) => {
       // 处理返回数据
-      data.item = v.data
+      data.item = { ...v.data, ...v.data.bigv }
     })
     .catch((err) => {
       console.log(err)
