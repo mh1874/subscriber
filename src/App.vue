@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
+import { useAuthStore } from '@/store'
+
+const authStore = useAuthStore()
 
 onLaunch(() => {
-  uni.login({
-    provider: 'weixin',
-    success(loginRes) {
-      console.log(loginRes)
-    }
-  })
+  const token = authStore.getToken()
+  if (!token) {
+    authStore.loginByWechat()
+  }
 })
 onShow(() => {
   console.log('App Show')

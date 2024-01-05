@@ -1,6 +1,8 @@
 import axios from 'axios'
-
 import { getFullURL } from '@/utils/http'
+import { useAuthStore } from '@/store'
+
+const authStore = useAuthStore()
 
 const instance = axios.create({
   // Web 侧可以通过 vite.config.js 中的 proxy 配置，指定代理
@@ -69,7 +71,8 @@ instance.interceptors.request.use((config) => {
  */
 instance.interceptors.response.use((v) => {
   if (v.data?.code === 401) {
-    uni.removeStorageSync('token')
+    authStore.removeToken()
+    authStore.loginByWechat()
     // alert('即将跳转登录页。。。', '登录过期')
     // setTimeout(redirectHome, 1500)
     return v.data

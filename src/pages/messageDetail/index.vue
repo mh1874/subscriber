@@ -28,7 +28,6 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, reactive, getCurrentInstance } from 'vue'
 import { messageApi } from '@/api'
-// import { messageList } from '../index/mock'
 
 const { proxy } = getCurrentInstance()
 
