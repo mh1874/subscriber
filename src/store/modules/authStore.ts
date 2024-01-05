@@ -1,15 +1,17 @@
 import { defineStore } from 'pinia'
-import { userApi } from '@/api' // 假设你有一个名为 userApi 的 API 模块
+import { userApi } from '@/api'
 
 interface IWxInfo {
   code: string
 }
 
-const useAuthStore = defineStore({
-  id: 'auth',
+const useAuthStore = defineStore('auth', {
   state: () => ({
     token: ''
   }),
+  getters: {
+    token: (state) => state.token
+  },
   actions: {
     async loginByWechat() {
       try {

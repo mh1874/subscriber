@@ -2,8 +2,6 @@ import axios from 'axios'
 import { getFullURL } from '@/utils/http'
 import { useAuthStore } from '@/store'
 
-const authStore = useAuthStore()
-
 const instance = axios.create({
   // Web 侧可以通过 vite.config.js 中的 proxy 配置，指定代理
   // 小程序APP里需写完整路径，如 https://service-rbji0bev-1256505457.cd.apigw.tencentcs.com/release
@@ -69,10 +67,11 @@ instance.interceptors.request.use((config) => {
 /**
  * 响应拦截
  */
-instance.interceptors.response.use((v) => {
+instance.interceptors.response.use(async (v) => {
   if (v.data?.code === 401) {
+    const authStore = useAuthStore()
     authStore.removeToken()
-    authStore.loginByWechat()
+    await authStore.loginByWechat()
     // alert('即将跳转登录页。。。', '登录过期')
     // setTimeout(redirectHome, 1500)
     return v.data

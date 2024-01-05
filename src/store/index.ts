@@ -1,1 +1,1 @@
-export { default as useAuthStore } from './modules/auth'
+export { default as useAuthStore } from './modules/authStore'
