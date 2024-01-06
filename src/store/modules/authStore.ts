@@ -7,17 +7,34 @@ interface IWxInfo {
 
 const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: ''
+    token: '',
+    userId: ''
   }),
   getters: {
-    token: (state) => state.token
+    tokenVal: (state) => state.token,
+    userIdVal: (state) => state.userId
   },
   actions: {
+    isLogin() {
+      return new Promise((resolve, reject) => {
+        uni.checkSession({
+          success: () => {
+            resolve(true)
+          },
+          fail: () => {
+            reject(false)
+          }
+        })
+      })
+    },
     async loginByWechat() {
       try {
         const wxInfo = await this.getWxCode() // 调用获取微信 code 的函数
-        const res = await userApi.loginByWechat(wxInfo.code)
-        this.setToken(res.token)
+        const { status, data } = await userApi.loginByWechat(wxInfo.code)
+        if (status === 1) {
+          this.setToken(data.token)
+          this.setUserId(data.user_id)
+        }
       } catch (error) {
         console.error('Login failed', error)
       }
@@ -34,6 +51,9 @@ const useAuthStore = defineStore('auth', {
           }
         })
       })
+    },
+    setUserId(user_id: any): void {
+      this.userId = user_id
     },
     getToken(): string {
       return this.token || uni.getStorageSync('token') || ''

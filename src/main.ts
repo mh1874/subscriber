@@ -19,6 +19,9 @@ export function createApp() {
   app.use(Pinia.createPinia())
   app.use(uView)
   app.config.globalProperties.$dayjs = dayjs
+  app.config.globalProperties.$onLaunched = new Promise((resolve) => {
+    app.config.globalProperties.$isResolve = resolve
+  })
   return {
     app,
     // uni-app 官方文档示例 https://zh.uniapp.dcloud.io/tutorial/vue3-pinia.html#%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86-pinia

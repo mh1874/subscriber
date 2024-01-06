@@ -12,7 +12,9 @@
       ></image>
       <view class="info-text">
         <view class="font-bold">{{ props.item.bigv.nick }}</view>
-        <view class="time">{{ formatTime(props.item.modified_time) }}</view>
+        <view class="time">{{
+          formatTime(props.item.source_created_time)
+        }}</view>
       </view>
     </view>
     <view class="message-content" @click="toMessageDetail">
@@ -22,6 +24,13 @@
         v-if="props.item.retweeted_message"
         :content="props.item.retweeted_message"
       />
+      <template v-if="props.item.pic_list.length">
+        <image
+          v-for="(img, index) in props.item.pic_list"
+          :key="index"
+          :src="img"
+        ></image>
+      </template>
       <view v-if="props.item.needExpand" class="text-right"> 阅读全文 </view>
     </view>
   </view>
@@ -62,20 +71,21 @@ const formatTime = (time: string) => {
 
 const pageList = getCurrentPages()
 const currentPage = pageList[pageList.length - 1]?.route
-const messageWhiteList = ['pages/index/index']
+const messageWhiteList = ['pages/index/index', 'pages/bigVDetail/index']
+const bigvWhiteList = ['pages/index/index']
 
 // 跳转大V动态
 const toBigVDetail = () => {
   // 消息列表可以跳转大V动态
-  if (!messageWhiteList.includes(currentPage)) return
+  if (!bigvWhiteList.includes(currentPage)) return
   uni.navigateTo({
-    url: `/pages/bigVDetail/index?id=${props.item.bigv.bigv_id}`
+    url: `/pages/bigVDetail/index?id=${props.item.bigv_id}`
   })
 }
 
 // 跳转消息详情
 const toMessageDetail = () => {
-  // 消息列表可以跳转消息详情
+  // 消息列表、大V动态可以跳转消息详情
   if (!messageWhiteList.includes(currentPage)) return
   uni.navigateTo({
     url: `/pages/messageDetail/index?id=${props.item.mes_id}`

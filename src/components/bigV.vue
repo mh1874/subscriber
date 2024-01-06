@@ -13,18 +13,18 @@
     </view>
     <u-button
       shape="circle"
-      type="success"
+      :type="props.item.is_follow ? 'info' : 'success'"
       plain
       size="mini"
-      :disabled="props.item.is_follow"
+      @click="handleFollow"
     >
-      订阅
+      {{ props.item.is_follow ? '已订阅' : '订阅' }}
     </u-button>
   </view>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
   item: {
@@ -36,6 +36,12 @@ const props = defineProps({
 const pageList = getCurrentPages()
 const currentPage = pageList[pageList.length - 1]?.route
 const bigVWhiteList = ['pages/search/index']
+
+const emits = defineEmits(['follow'])
+
+const handleFollow = () => {
+  emits('follow', props.item)
+}
 
 // 跳转消息详情
 const toBigVDetail = () => {

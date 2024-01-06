@@ -5,7 +5,7 @@ import http from '../http'
  * @param code 登录凭证
  */
 function loginByWechat(code: string): Promise<any> {
-  return http.post('/wechat/login', {
+  return http.post('/user/code', {
     code
   })
 }

@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import { getCurrentInstance } from 'vue'
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { useAuthStore } from '@/store'
 
+const { proxy } = getCurrentInstance()
+
 const authStore = useAuthStore()
 
-onLaunch(() => {
+onLaunch(async () => {
+  const isLogin = await authStore.isLogin()
   const token = authStore.getToken()
-  if (!token) {
-    authStore.loginByWechat()
+  if (!isLogin || !token) {
+    await authStore.loginByWechat()
+    proxy.$isResolve()
   }
 })
 onShow(() => {

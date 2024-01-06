@@ -5,23 +5,17 @@ interface IPager {
   offset: number
 }
 
-interface IUserMessage extends IPager {
-  user_id: number
-}
-
 interface IBigVMessage extends IPager {
   bigv_id: number
 }
 
 /**
  * 获取用户订阅的大V消息列表
- * @param user_id 用户id
+ * @param none
  */
-function getMessageListFromUser(params: IUserMessage): Promise<{ res: any }> {
+function getMessageListFromUser(): Promise<{ res: any }> {
   return http.get('/message/from_user/', {
-    params: {
-      ...params
-    }
+    params: {}
   })
 }
 

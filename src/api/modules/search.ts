@@ -2,7 +2,6 @@ import http from '../http'
 
 interface IBigV {
   platform?: string
-  user_id: number
 }
 
 /**
@@ -10,8 +9,8 @@ interface IBigV {
  * @param user_id 用户id
  * @param params 分页信息
  */
-function getBigVList(user_id: number, params: IBigV): Promise<{ res: any }> {
-  return http.get(`/bigv/${user_id}`, {
+function getBigVList(params: IBigV): Promise<{ res: any }> {
+  return http.get('/bigv/', {
     params: {
       ...params
     }
@@ -23,18 +22,38 @@ function getBigVList(user_id: number, params: IBigV): Promise<{ res: any }> {
  * @param user_id 用户id
  * @param params 分页信息
  */
-function getFollowedBigVList(
-  user_id: number,
-  params: IBigV
-): Promise<{ res: any }> {
-  return http.get(`/bigv/follow/${user_id}`, {
+function getFollowedBigVList(params: IBigV): Promise<{ res: any }> {
+  return http.get('/bigv/follow/', {
     params: {
       ...params
     }
   })
 }
 
+/**
+ * 大V关注
+ * @param bigv_id 大Vid
+ */
+function bigvFollow(bigv_id: number): Promise<{ res: any }> {
+  return http.post('/user/follow/', {
+    bigv_id
+  })
+}
+
+/**
+ * 大V取消关注
+ * @param bigv_id 大Vid
+ * @param params 分页信息
+ */
+function bigvUnFollow(bigv_id: number): Promise<{ res: any }> {
+  return http.post('/user/unfollow/', {
+    bigv_id
+  })
+}
+
 export default {
   getBigVList,
-  getFollowedBigVList
+  getFollowedBigVList,
+  bigvFollow,
+  bigvUnFollow
 }

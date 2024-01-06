@@ -4,7 +4,9 @@
       <image class="avatar" :src="data.item.avatar" mode="aspectFill"></image>
       <view class="info-text">
         <view class="font-bold">{{ data.item.nick }}</view>
-        <view class="time">{{ formatTime(data.item.modified_time) }}</view>
+        <view class="time">{{
+          formatTime(data.item.source_created_time)
+        }}</view>
       </view>
       <u-button type="success" plain size="mini">分享信息</u-button>
     </view>
@@ -16,6 +18,13 @@
         v-if="data.item.retweeted_message"
         :content="data.item.retweeted_message"
       />
+      <template v-if="data.item.pic_list.length">
+        <image
+          v-for="(img, index) in data.item.pic_list"
+          :key="index"
+          :src="img"
+        ></image>
+      </template>
     </view>
     <view class="original-link">
       <view>本文版权属于原作者或组织</view>
@@ -39,7 +48,13 @@ const queryMessageDetail = () => {
     .getMessageDetail(messageId.value)
     .then((v) => {
       // 处理返回数据
-      data.item = { ...v.data, ...v.data.bigv }
+      data.item = {
+        ...v.data,
+        ...v.data.bigv,
+        pic_list:
+          (v.data.pic_list && JSON.parse(v.data.pic_list.replace(/'/g, '"'))) ||
+          []
+      }
     })
     .catch((err) => {
       console.log(err)

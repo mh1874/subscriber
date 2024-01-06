@@ -47,7 +47,13 @@ const upCallback = (mescroll) => {
         if (res.status !== 1) return
         const curPageData =
           res.data.map((it) => {
-            return { ...it, needExpand: it.message.length > 300 }
+            return {
+              ...it,
+              needExpand: it.message.length > 250,
+              pic_list:
+                (it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) ||
+                []
+            }
           }) || [] // 当前页数据
         if (mescroll.num === 1) data.tableData = [] // 第一页需手动置空列表
         data.tableData = data.tableData.concat(curPageData) // 追加新数据
@@ -60,7 +66,7 @@ const upCallback = (mescroll) => {
       .catch(() => {
         mescroll.endErr() // 请求失败, 结束加载
       })
-  }, 300)
+  }, 100)
 }
 onLoad((option) => {
   bigVId.value = option.id && Number(option.id)

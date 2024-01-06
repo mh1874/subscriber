@@ -20,6 +20,7 @@
           v-for="item in data.tableData"
           :key="item.bigv_id"
           :item="item"
+          @follow="followHandler"
         ></big-v>
       </view>
     </mescroll-uni>
@@ -30,7 +31,6 @@
 import { ref, reactive, nextTick } from 'vue'
 import { onPageScroll, onReachBottom, onShow } from '@dcloudio/uni-app'
 import { searchApi } from '@/api'
-// import { bigvs } from '../index/mock'
 import BigV from '@/components/bigV.vue'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 
@@ -88,7 +88,7 @@ const upCallback = async (mescroll) => {
     params.platform = platformEnum[currentTab.value]
   }
   setTimeout(() => {
-    apiFunc(1, params)
+    apiFunc(params)
       .then((res) => {
         if (res.status !== 1) return
         const curPageData = res.data || [] // 当前页数据
@@ -103,7 +103,34 @@ const upCallback = async (mescroll) => {
       .catch(() => {
         mescroll.endErr() // 请求失败, 结束加载
       })
-  }, 300)
+  }, 100)
+}
+
+// 大V订阅or取消订阅
+const followHandler = (item) => {
+  uni.requestSubscribeMessage({
+    tmplIds: ['9tsp0RZWS7Fq-K6tOuE7OTbJbDa9zjSUQtMErs_Tu9Y'],
+    success: () => {
+      const apiFunc = item.is_follow
+        ? searchApi.bigvUnFollow
+        : searchApi.bigvFollow
+      apiFunc(item.bigv_id)
+        .then((res) => {
+          if (res.status !== 1) return
+          uni.showToast({
+            title: res.msg,
+            icon: 'none'
+          })
+          getMescroll().resetUpScroll()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    fail: () => {
+      console.log('requestSubscribeMessage error ==>')
+    }
+  })
 }
 
 const canReset = ref(false)

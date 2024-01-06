@@ -17,12 +17,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, getCurrentInstance } from 'vue'
 import { onPageScroll, onReachBottom, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
-
 import { messageApi } from '@/api'
 import MessageItem from '@/components/MessageItem'
+
+const { proxy } = getCurrentInstance()
 
 const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onPageScroll,
@@ -37,11 +38,11 @@ const scrollOptions = reactive({
 })
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
-const upCallback = (mescroll) => {
+const upCallback = async (mescroll) => {
+  await proxy.$onLaunched
   setTimeout(() => {
     messageApi
       .getMessageListFromUser({
-        user_id: 1,
         count: mescroll.size,
         offset: (mescroll.num - 1) * 10
       })
@@ -51,7 +52,10 @@ const upCallback = (mescroll) => {
           res.data.map((it) => {
             return {
               ...it,
-              needExpand: it.message.length > 250
+              needExpand: it.message.length > 250,
+              pic_list:
+                (it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) ||
+                []
             }
           }) || [] // 当前页数据
         if (mescroll.num === 1) data.tableData = [] // 第一页需手动置空列表
@@ -65,7 +69,7 @@ const upCallback = (mescroll) => {
       .catch(() => {
         mescroll.endErr() // 请求失败, 结束加载
       })
-  }, 300)
+  }, 100)
 }
 const canReset = ref(false)
 
