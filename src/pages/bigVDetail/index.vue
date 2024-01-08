@@ -30,7 +30,7 @@ const bigVId: number = ref(0)
 const data = reactive({ tableData: [], totalSize: 0 })
 
 const scrollOptions = reactive({
-  up: { use: true, textNoMore: '-- 到底了 --' },
+  up: { use: true, offset: 50, textNoMore: '-- 到底了 --' },
   down: { use: true }
 })
 
@@ -49,7 +49,7 @@ const upCallback = (mescroll) => {
           res.data.map((it) => {
             return {
               ...it,
-              needExpand: it.message.length > 250,
+              needExpand: it.message.length > 240,
               pic_list:
                 (it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) ||
                 []

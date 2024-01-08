@@ -1,8 +1,5 @@
 import http from '../http'
-
-interface IBigV {
-  platform?: string
-}
+import { IBigV } from '../types'
 
 /**
  * 获取大V列表

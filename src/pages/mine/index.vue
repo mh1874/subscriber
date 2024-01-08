@@ -25,14 +25,19 @@
 
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue'
+import { storeToRefs } from 'pinia'
 import defaultAvatar from '@/static/logo.png'
+import { useAuthStore } from '@/store'
+
+const authStore = useAuthStore()
+const { userId } = storeToRefs(authStore)
 
 const data = reactive({ userInfo: {} })
 
 onMounted(() => {
   data.userInfo = {
     avatar: defaultAvatar,
-    userId: '123456',
+    userId,
     pushCount: 5
   }
 })

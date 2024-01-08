@@ -117,5 +117,7 @@ onLoad((option) => {
 .original-link {
   margin-top: 80px;
   text-align: left;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
 }
 </style>

@@ -42,7 +42,7 @@ const { mescrollInit, downCallback, getMescroll } = useMescroll(
 const data = reactive({ tableData: [], totalSize: 0 })
 
 const scrollOptions = reactive({
-  up: { use: true, textNoMore: '-- 到底了 --' },
+  up: { use: true, offset: 50, textNoMore: '-- 到底了 --' },
   down: { use: true }
 })
 

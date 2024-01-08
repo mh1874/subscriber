@@ -545,11 +545,6 @@ export default {
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  word-break: break-all;
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  -webkit-line-clamp: 7;
-  text-overflow: ellipsis;
 }
 
 /* 长按复制 */

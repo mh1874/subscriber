@@ -16,16 +16,16 @@ const useAuthStore = defineStore('auth', {
   },
   actions: {
     isLogin() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) =>
         uni.checkSession({
           success: () => {
             resolve(true)
           },
           fail: () => {
-            reject(false)
+            resolve(false)
           }
         })
-      })
+      )
     },
     async loginByWechat() {
       try {

@@ -1,21 +1,15 @@
 import http from '../http'
-
-interface IPager {
-  count: number
-  offset: number
-}
-
-interface IBigVMessage extends IPager {
-  bigv_id: number
-}
+import { IPager, IBigVMessage } from '../types'
 
 /**
  * 获取用户订阅的大V消息列表
  * @param none
  */
-function getMessageListFromUser(): Promise<{ res: any }> {
+function getMessageListFromUser(params: IPager): Promise<{ res: any }> {
   return http.get('/message/from_user/', {
-    params: {}
+    params: {
+      ...params
+    }
   })
 }
 

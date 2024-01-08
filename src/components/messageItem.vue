@@ -31,8 +31,8 @@
           :src="img"
         ></image>
       </template>
-      <view v-if="props.item.needExpand" class="text-right"> 阅读全文 </view>
     </view>
+    <view v-if="props.item.needExpand" class="text-right"> 阅读全文 </view>
   </view>
 </template>
 
@@ -128,6 +128,12 @@ const toMessageDetail = () => {
 }
 
 .message-content {
-  margin-top: 10px;
+  margin-top: 8px;
+  overflow: hidden;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  text-overflow: ellipsis;
 }
 </style>

@@ -13,6 +13,8 @@ onLaunch(async () => {
   if (!isLogin || !token) {
     await authStore.loginByWechat()
     proxy.$isResolve()
+  } else {
+    proxy.$isResolve()
   }
 })
 onShow(() => {
