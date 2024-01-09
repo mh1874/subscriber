@@ -27,10 +27,10 @@
 import { onMounted, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import defaultAvatar from '@/static/logo.png'
-import { useAuthStore } from '@/store'
+import { useUserStore } from '@/store'
 
-const authStore = useAuthStore()
-const { userId } = storeToRefs(authStore)
+const userStore = useUserStore()
+const { userId } = storeToRefs(userStore)
 
 const data = reactive({ userInfo: {} })
 

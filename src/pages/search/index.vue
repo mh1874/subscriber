@@ -29,10 +29,11 @@
 
 <script setup lang="ts">
 import { ref, reactive, nextTick } from 'vue'
-import { onPageScroll, onReachBottom, onShow } from '@dcloudio/uni-app'
+import { onPageScroll, onReachBottom, onLoad } from '@dcloudio/uni-app'
 import { searchApi } from '@/api'
 import BigV from '@/components/bigV.vue'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
+import { isEmpty } from '@/utils/util'
 
 const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onPageScroll,
@@ -74,7 +75,7 @@ const platformEnum = {
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
-const upCallback = async (mescroll) => {
+const upCallback = async (mescroll, offsetVal) => {
   await nextTick()
   const apiFunc =
     currentTab.value === 0
@@ -82,60 +83,85 @@ const upCallback = async (mescroll) => {
       : searchApi.getBigVList
   const params = {
     count: mescroll.size,
-    offset: (mescroll.num - 1) * 10
+    offset: isEmpty(offsetVal) ? (mescroll.num - 1) * 10 : offsetVal
   }
   if (currentTab.value !== 0) {
     params.platform = platformEnum[currentTab.value]
   }
-  setTimeout(() => {
-    apiFunc(params)
-      .then((res) => {
-        if (res.status !== 1) return
-        const curPageData = res.data || [] // 当前页数据
-        if (mescroll.num === 1) data.tableData = [] // 第一页需手动置空列表
-        data.tableData = data.tableData.concat(curPageData) // 追加新数据
-        data.totalSize = res.total_size
+  apiFunc(params)
+    .then((res) => {
+      if (res.status !== 1) return
+      const curPageData = res.data || [] // 当前页数据
+      if (mescroll.num === 1) data.tableData = [] // 第一页需手动置空列表
+      // data.tableData = data.tableData.concat(curPageData) // 追加新数据
+      for (let i = 0; i < curPageData.length; i++) {
+        const newItem = curPageData[i]
+        const existingItemIndex = data.tableData.findIndex(
+          (item) => item.bigv_id === newItem.bigv_id
+        )
+        if (existingItemIndex !== -1) {
+          // 数据已存在，用新的数据替换旧的数据
+          data.tableData[existingItemIndex] = newItem
+        } else {
+          // 数据不存在，追加新数据
+          data.tableData.push(newItem)
+        }
+      }
+      data.totalSize = res.total_size
 
-        mescroll.endBySize(curPageData.length, data.totalSize) // 必传参数(当前页的数据个数, 总数据量)
+      mescroll.endBySize(curPageData.length, data.totalSize) // 必传参数(当前页的数据个数, 总数据量)
+      mescroll.endSuccess(curPageData.length) // 请求成功, 结束加载
+    })
+    .catch(() => {
+      mescroll.endErr() // 请求失败, 结束加载
+    })
+}
 
-        mescroll.endSuccess(curPageData.length) // 请求成功, 结束加载
+const roundToNearestTen = (number) => {
+  const base = 10
+  return Math.floor(number / base) * base
+}
+
+const followAction = (item) => {
+  const apiFunc = item.is_follow ? searchApi.bigvUnFollow : searchApi.bigvFollow
+  apiFunc(item.bigv_id)
+    .then((res) => {
+      if (res.status !== 1) return
+      uni.showToast({
+        title: res.msg,
+        icon: 'none'
       })
-      .catch(() => {
-        mescroll.endErr() // 请求失败, 结束加载
-      })
-  }, 100)
+      const itemIndex = data.tableData.findIndex(
+        (it) => it.bigv_id === item.bigv_id
+      )
+      const offsetVal = roundToNearestTen(itemIndex)
+      upCallback(getMescroll(), offsetVal)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
 // 大V订阅or取消订阅
 const followHandler = (item) => {
-  uni.requestSubscribeMessage({
-    tmplIds: ['9tsp0RZWS7Fq-K6tOuE7OTbJbDa9zjSUQtMErs_Tu9Y'],
-    success: () => {
-      const apiFunc = item.is_follow
-        ? searchApi.bigvUnFollow
-        : searchApi.bigvFollow
-      apiFunc(item.bigv_id)
-        .then((res) => {
-          if (res.status !== 1) return
-          uni.showToast({
-            title: res.msg,
-            icon: 'none'
-          })
-          getMescroll().resetUpScroll()
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-    fail: () => {
-      console.log('requestSubscribeMessage error ==>')
-    }
-  })
+  if (!item.is_follow) {
+    uni.requestSubscribeMessage({
+      tmplIds: ['9tsp0RZWS7Fq-K6tOuE7OTbJbDa9zjSUQtMErs_Tu9Y'],
+      success: () => {
+        followAction(item)
+      },
+      fail: () => {
+        console.log('request Subscribe error ==>')
+      }
+    })
+  } else {
+    followAction(item)
+  }
 }
 
 const canReset = ref(false)
 
-onShow(() => {
+onLoad(() => {
   if (canReset.value) {
     getMescroll().resetUpScroll() // 重置列表数据为第一页
     getMescroll().scrollTo(0, 0)

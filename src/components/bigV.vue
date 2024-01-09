@@ -6,7 +6,7 @@
         <view class="font-bold text-sm mb-1">{{ props.item.nick }}</view>
         <view class="fans">
           <text class="mr-5 text-xs"> 粉丝：{{ props.item.fans_num }} </text>
-          <text class="text-xs">订阅：{{ props.item.subscript_num }}</text>
+          <text class="text-xs">订阅：{{ props.item.wx_fans_num }}</text>
         </view>
         <view class="intro text-xs">{{ props.item.intro }}</view>
       </view>

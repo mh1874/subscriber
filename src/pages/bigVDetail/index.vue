@@ -36,45 +36,38 @@ const scrollOptions = reactive({
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
 const upCallback = (mescroll) => {
-  setTimeout(() => {
-    messageApi
-      .getMessageListFromBigV({
-        bigv_id: bigVId.value,
-        count: mescroll.size,
-        offset: (mescroll.num - 1) * 10
-      })
-      .then((res) => {
-        if (res.status !== 1) return
-        const curPageData =
-          res.data.map((it) => {
-            return {
-              ...it,
-              needExpand: it.message.length > 240,
-              pic_list:
-                (it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) ||
-                []
-            }
-          }) || [] // 当前页数据
-        if (mescroll.num === 1) data.tableData = [] // 第一页需手动置空列表
-        data.tableData = data.tableData.concat(curPageData) // 追加新数据
-        data.totalSize = res.total_size
+  messageApi
+    .getMessageListFromBigV({
+      bigv_id: bigVId.value,
+      count: mescroll.size,
+      offset: (mescroll.num - 1) * 10
+    })
+    .then((res) => {
+      if (res.status !== 1) return
+      const curPageData =
+        res.data.map((it) => {
+          return {
+            ...it,
+            needExpand: needExpandHandler(it.message),
+            pic_list:
+              (it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) || []
+          }
+        }) || [] // 当前页数据
+      if (mescroll.num === 1) data.tableData = [] // 第一页需手动置空列表
+      data.tableData = data.tableData.concat(curPageData) // 追加新数据
+      data.totalSize = res.total_size
 
-        mescroll.endBySize(curPageData.length, data.totalSize) // 必传参数(当前页的数据个数, 总数据量)
-
-        mescroll.endSuccess(curPageData.length) // 请求成功, 结束加载
-      })
-      .catch(() => {
-        mescroll.endErr() // 请求失败, 结束加载
-      })
-  }, 100)
+      mescroll.endBySize(curPageData.length, data.totalSize) // 必传参数(当前页的数据个数, 总数据量)
+      mescroll.endSuccess(curPageData.length) // 请求成功, 结束加载
+    })
+    .catch(() => {
+      mescroll.endErr() // 请求失败, 结束加载
+    })
 }
+
 onLoad((option) => {
   bigVId.value = option.id && Number(option.id)
 })
-
-// onShow(() => {
-//   getMescroll().resetUpScroll()
-// })
 </script>
 
 <style scoped lang="scss">

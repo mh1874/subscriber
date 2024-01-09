@@ -10,3 +10,7 @@ export interface IBigVMessage extends IPager {
 export interface IBigV extends IPager {
   platform?: string
 }
+
+export interface IWxInfo {
+  code: string
+}
