@@ -47,6 +47,7 @@
     "linebreak-style": "off",
     "prefer-promise-reject-errors": "off",
     "no-plusplus": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "no-unused-expressions": "off"
   }
 }

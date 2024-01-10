@@ -1,5 +1,17 @@
 <template>
   <view>
+    <u-input
+      trim
+      border
+      clearable
+      class="search-input"
+      border-color="#3cc51f"
+      v-model="searchVal"
+      type="text"
+      placeholder="搜索喜欢的大V"
+      @input="inputWord"
+      @clear="changeTab"
+    />
     <u-tabs
       :list="tabList"
       :is-scroll="false"
@@ -11,7 +23,7 @@
       @init="mescrollInit"
       @down="downCallback"
       @up="upCallback"
-      :top="100"
+      :top="180"
       :up="scrollOptions.up"
       :down="scrollOptions.down"
     >
@@ -46,6 +58,37 @@ const scrollOptions = reactive({
   up: { use: true, offset: 50, textNoMore: '-- 到底了 --' },
   down: { use: true }
 })
+
+const searchVal = ref('')
+const searchTimer = ref(null)
+
+const bigvSearcher = () => {
+  if (searchVal.value) {
+    data.tableData = [] // 先清空列表,显示加载进度
+    const params = {
+      nick: searchVal.value,
+      count: 5
+    }
+    searchApi.searchBigVList(params).then((res) => {
+      if (res.status !== 1) return
+      data.tableData = res.data || []
+    })
+  } else {
+    getMescroll().resetUpScroll()
+  }
+}
+// 搜索
+const doSearch = (word) => {
+  searchVal.value = word
+  bigvSearcher()
+}
+// 输入监听
+const inputWord = () => {
+  searchTimer.value && clearTimeout(searchTimer.value)
+  searchTimer.value = setTimeout(() => {
+    doSearch(searchVal.value)
+  }, 300)
+}
 
 const currentTab = ref(0)
 
@@ -86,7 +129,7 @@ const upCallback = async (mescroll, offsetVal) => {
     offset: isEmpty(offsetVal) ? (mescroll.num - 1) * 10 : offsetVal
   }
   if (currentTab.value !== 0) {
-    params.platform = platformEnum[currentTab.value]
+    params.source_platform = platformEnum[currentTab.value]
   }
   apiFunc(params)
     .then((res) => {
@@ -173,5 +216,10 @@ onLoad(() => {
 <style scoped lang="scss">
 .big-v-list {
   background-color: #f0f0f0;
+}
+.search-input {
+  ::v-deep .u-input {
+    margin: 0 5px;
+  }
 }
 </style>

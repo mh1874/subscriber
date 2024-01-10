@@ -1,3 +1,6 @@
+export interface IWxInfo {
+  code: string
+}
 export interface IPager {
   count: number
   offset: number
@@ -8,9 +11,10 @@ export interface IBigVMessage extends IPager {
 }
 
 export interface IBigV extends IPager {
-  platform?: string
+  source_platform?: string
 }
 
-export interface IWxInfo {
-  code: string
+export interface IBigVSearch {
+  nick: string
+  count?: number
 }

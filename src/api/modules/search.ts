@@ -1,5 +1,5 @@
 import request from '../request'
-import { IBigV } from '../types'
+import { IBigV, IPager, IBigVSearch } from '../types'
 
 // /**
 //  * 获取大V列表
@@ -65,7 +65,7 @@ export default {
    * @param user_id 用户id
    * @param params 分页信息
    */
-  getFollowedBigVList(params: IBigV): Promise<any> {
+  getFollowedBigVList(params: IPager): Promise<any> {
     return request('/bigv/follow/', {
       method: 'GET',
       params
@@ -94,6 +94,17 @@ export default {
       data: {
         bigv_id
       }
+    })
+  },
+  /**
+   * 模糊搜索大v: 按照nick模糊搜索，按照粉丝数降序排列， 取前count个
+   * @param nick 昵称
+   * @param count 数量
+   */
+  searchBigVList(params: IBigVSearch): Promise<any> {
+    return request('/bigv/search/', {
+      method: 'GET',
+      params
     })
   }
 }

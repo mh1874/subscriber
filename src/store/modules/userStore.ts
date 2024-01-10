@@ -18,7 +18,6 @@ const useUserStore = defineStore('user', {
       )
     },
     setUserId(user_id: any): void {
-      console.log('user_id ==>', user_id)
       this.userId = user_id
     }
   }
