@@ -20,7 +20,7 @@
 import { ref, reactive } from 'vue'
 import { onPageScroll, onReachBottom, onLoad } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
-
+import { needExpandHandler } from '@/utils/util'
 import { messageApi } from '@/api'
 import MessageItem from '@/components/MessageItem'
 

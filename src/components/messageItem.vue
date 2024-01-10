@@ -24,8 +24,9 @@
         v-if="props.item.retweeted_message"
         :content="props.item.retweeted_message"
       />
-      <template v-if="props.item.pic_list.length">
+      <template v-if="props.item.pic_list">
         <image
+          class="content-img"
           v-for="(img, index) in props.item.pic_list"
           :key="index"
           :src="img"
@@ -51,6 +52,15 @@ const props = defineProps({
   }
 })
 
+// const containerStyle = {
+//   overflow: 'hidden',
+//   'word-break': 'break-all',
+//   '-webkit-box-orient': 'vertical',
+//   display: '-webkit-box',
+//   '-webkit-line-clamp': '7',
+//   'text-overflow': 'ellipsis'
+// }
+
 // 计算属性，根据 source_platform 返回对应的 logo
 const getLogo = (platform) => {
   switch (platform) {
@@ -71,15 +81,15 @@ const formatTime = (time: string) => {
 
 const pageList = getCurrentPages()
 const currentPage = pageList[pageList.length - 1]?.route
-const messageWhiteList = ['pages/index/index', 'pages/bigVDetail/index']
-const bigvWhiteList = ['pages/index/index']
+const messageWhiteList = ['pages/message/index', 'pages/bigV/detail']
+const bigVWhiteList = ['pages/message/index']
 
 // 跳转大V动态
 const toBigVDetail = () => {
   // 消息列表可以跳转大V动态
-  if (!bigvWhiteList.includes(currentPage)) return
+  if (!bigVWhiteList.includes(currentPage)) return
   uni.navigateTo({
-    url: `/pages/bigVDetail/index?id=${props.item.bigv_id}`
+    url: `/pages/bigV/detail?id=${props.item.bigv_id}`
   })
 }
 
@@ -88,7 +98,7 @@ const toMessageDetail = () => {
   // 消息列表、大V动态可以跳转消息详情
   if (!messageWhiteList.includes(currentPage)) return
   uni.navigateTo({
-    url: `/pages/messageDetail/index?id=${props.item.mes_id}`
+    url: `/pages/message/detail?id=${props.item.mes_id}`
   })
 }
 </script>
@@ -129,11 +139,9 @@ const toMessageDetail = () => {
 
 .message-content {
   margin-top: 8px;
-  overflow: hidden;
-  word-break: break-all;
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  -webkit-line-clamp: 7;
-  text-overflow: ellipsis;
+  .content-img {
+    height: 100%;
+    object-fit: contain;
+  }
 }
 </style>

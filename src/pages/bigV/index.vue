@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { ref, reactive, nextTick } from 'vue'
 import { onPageScroll, onReachBottom, onLoad } from '@dcloudio/uni-app'
-import { searchApi } from '@/api'
+import { bigVApi } from '@/api'
 import BigV from '@/components/bigV.vue'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { isEmpty } from '@/utils/util'
@@ -62,16 +62,15 @@ const scrollOptions = reactive({
 const searchVal = ref('')
 const searchTimer = ref(null)
 
-const bigvSearcher = () => {
+const bigSearchHandler = () => {
   if (searchVal.value) {
-    data.tableData = [] // 先清空列表,显示加载进度
     const params = {
       nick: searchVal.value,
       count: 5
     }
-    searchApi.searchBigVList(params).then((res) => {
+    bigVApi.searchBigVList(params).then((res) => {
       if (res.status !== 1) return
-      data.tableData = res.data || []
+      data.tableData = [...res.data, ...data.tableData]
     })
   } else {
     getMescroll().resetUpScroll()
@@ -80,7 +79,7 @@ const bigvSearcher = () => {
 // 搜索
 const doSearch = (word) => {
   searchVal.value = word
-  bigvSearcher()
+  bigSearchHandler()
 }
 // 输入监听
 const inputWord = () => {
@@ -121,9 +120,7 @@ const platformEnum = {
 const upCallback = async (mescroll, offsetVal) => {
   await nextTick()
   const apiFunc =
-    currentTab.value === 0
-      ? searchApi.getFollowedBigVList
-      : searchApi.getBigVList
+    currentTab.value === 0 ? bigVApi.getFollowedBigVList : bigVApi.getBigVList
   const params = {
     count: mescroll.size,
     offset: isEmpty(offsetVal) ? (mescroll.num - 1) * 10 : offsetVal
@@ -166,7 +163,7 @@ const roundToNearestTen = (number) => {
 }
 
 const followAction = (item) => {
-  const apiFunc = item.is_follow ? searchApi.bigvUnFollow : searchApi.bigvFollow
+  const apiFunc = item.is_follow ? bigVApi.bigvUnFollow : bigVApi.bigvFollow
   apiFunc(item.bigv_id)
     .then((res) => {
       if (res.status !== 1) return

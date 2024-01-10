@@ -35,7 +35,7 @@ const props = defineProps({
 
 const pageList = getCurrentPages()
 const currentPage = pageList[pageList.length - 1]?.route
-const bigVWhiteList = ['pages/search/index']
+const bigVWhiteList = ['pages/bigV/index']
 
 const emits = defineEmits(['follow'])
 
@@ -48,7 +48,7 @@ const toBigVDetail = () => {
   // 大V列表可以跳转消息详情
   if (!bigVWhiteList.includes(currentPage)) return
   uni.navigateTo({
-    url: `/pages/bigVDetail/index?id=${props.item.bigv_id}`
+    url: `/pages/bigV/detail?id=${props.item.bigv_id}`
   })
 }
 </script>

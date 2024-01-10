@@ -1,2 +1,3 @@
 export { default as messageApi } from './modules/message'
-export { default as searchApi } from './modules/search'
+export { default as bigVApi } from './modules/bigV'
+export { default as mineApi } from './modules/mine'

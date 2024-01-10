@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { defaultTimeout } from './enums'
 import { IWxInfo } from './types'
-import { useUserStore } from '@/store'
 
 export const ACCESS_TOKEN_KEY = 'token'
 
@@ -99,11 +98,8 @@ export async function getToken() {
     try {
       const { data, status } = await getTokenByRefresh(wxInfo.code)
       if (status === 1) {
-        const userStore = useUserStore()
         token = data.token
         setToken(token)
-        console.log('userStore ==>', userStore)
-        userStore.setUserId(data.user_id)
         return token
       }
       return Promise.reject()

@@ -18,8 +18,9 @@
         v-if="data.item.retweeted_message"
         :content="data.item.retweeted_message"
       />
-      <template v-if="data.item.pic_list.length">
+      <template v-if="data.item.pic_list">
         <image
+          class="content-img"
           v-for="(img, index) in data.item.pic_list"
           :key="index"
           :src="img"
@@ -108,9 +109,10 @@ onLoad((option) => {
 }
 
 .message-content {
-  margin-top: 10px;
-  .message-text {
-    word-break: break-all;
+  margin-top: 8px;
+  .content-img {
+    height: 100%;
+    object-fit: contain;
   }
 }
 

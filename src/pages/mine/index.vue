@@ -8,7 +8,7 @@
       ></image>
       <view class="user-info">
         <text> 用户ID：{{ data.userInfo.userId }} </text>
-        <text> 今日推送：{{ data.userInfo.pushCount }} 次</text>
+        <text> 今日推送：{{ data.userInfo.noticeNum }} 次</text>
       </view>
     </view>
     <view class="setting">
@@ -25,21 +25,25 @@
 
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue'
-import { storeToRefs } from 'pinia'
 import defaultAvatar from '@/static/logo.png'
-import { useUserStore } from '@/store'
-
-const userStore = useUserStore()
-const { userId } = storeToRefs(userStore)
+import { mineApi } from '@/api'
 
 const data = reactive({ userInfo: {} })
 
+const getUserInfo = () => {
+  mineApi.getUserInfo().then((res) => {
+    if (res.status !== 1) return
+    data.userInfo = {
+      avatar: defaultAvatar,
+      userId: res.data.user_id,
+      noticeNum: res.data.notice_num,
+      userLevel: res.data.user_level
+    }
+  })
+}
+
 onMounted(() => {
-  data.userInfo = {
-    avatar: defaultAvatar,
-    userId,
-    pushCount: 5
-  }
+  getUserInfo()
 })
 </script>
 

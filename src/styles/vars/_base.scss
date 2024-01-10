@@ -1,2 +1,13 @@
 $title-size: 40rpx;
 $title-color: #bd34fe;
+
+.message-item {
+  ._root {
+    overflow: hidden;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    text-overflow: ellipsis;
+  }
+}

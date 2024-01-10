@@ -1,14 +1,14 @@
 {
   "pages": [
     {
-      "path": "pages/index/index",
+      "path": "pages/message/index",
       "style": {
         "navigationBarTitleText": "消息",
         "onReachBottomDistance": 50
       }
     },
     {
-      "path": "pages/search/index",
+      "path": "pages/bigV/index",
       "style": {
         "navigationBarTitleText": "大V",
         "onReachBottomDistance": 50
@@ -21,13 +21,13 @@
       }
     },
     {
-      "path": "pages/messageDetail/index",
+      "path": "pages/message/detail",
       "style": {
         "navigationBarTitleText": "消息详情"
       }
     },
     {
-      "path": "pages/bigVDetail/index",
+      "path": "pages/bigV/detail",
       "style": {
         "navigationBarTitleText": "大V动态"
       }
@@ -40,14 +40,14 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/message/index",
         "iconPath": "static/tabbar/home.png",
         "selectedIconPath": "static/tabbar/home-active.png",
         "selectedColor": "#59c272",
         "text": "消息"
       },
       {
-        "pagePath": "pages/search/index",
+        "pagePath": "pages/bigV/index",
         "iconPath": "static/tabbar/search.png",
         "selectedIconPath": "static/tabbar/search-active.png",
         "selectedColor": "#59c272",
