@@ -52,15 +52,6 @@ const props = defineProps({
   }
 })
 
-// const containerStyle = {
-//   overflow: 'hidden',
-//   'word-break': 'break-all',
-//   '-webkit-box-orient': 'vertical',
-//   display: '-webkit-box',
-//   '-webkit-line-clamp': '7',
-//   'text-overflow': 'ellipsis'
-// }
-
 // 计算属性，根据 source_platform 返回对应的 logo
 const getLogo = (platform) => {
   switch (platform) {

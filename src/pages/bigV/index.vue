@@ -1,16 +1,13 @@
 <template>
   <view>
-    <u-input
+    <u-field
       trim
-      border
       clearable
-      class="search-input"
-      border-color="#3cc51f"
+      icon="search"
+      icon-color="#3cc51f"
       v-model="searchVal"
-      type="text"
       placeholder="搜索喜欢的大V"
       @input="inputWord"
-      @clear="changeTab"
     />
     <u-tabs
       :list="tabList"
@@ -62,7 +59,7 @@ const scrollOptions = reactive({
 const searchVal = ref('')
 const searchTimer = ref(null)
 
-const bigSearchHandler = () => {
+const bigVSearchHandler = () => {
   if (searchVal.value) {
     const params = {
       nick: searchVal.value,
@@ -70,22 +67,23 @@ const bigSearchHandler = () => {
     }
     bigVApi.searchBigVList(params).then((res) => {
       if (res.status !== 1) return
-      data.tableData = [...res.data, ...data.tableData]
+      if (res.data.length) {
+        data.tableData = [...res.data, ...data.tableData]
+        getMescroll().endSuccess(data.tableData.length)
+      } else {
+        data.tableData = []
+        getMescroll().endSuccess(0) // 请求成功, 结束加载
+      }
     })
   } else {
     getMescroll().resetUpScroll()
   }
 }
-// 搜索
-const doSearch = (word) => {
-  searchVal.value = word
-  bigSearchHandler()
-}
 // 输入监听
 const inputWord = () => {
   searchTimer.value && clearTimeout(searchTimer.value)
   searchTimer.value = setTimeout(() => {
-    doSearch(searchVal.value)
+    bigVSearchHandler()
   }, 300)
 }
 
@@ -213,10 +211,5 @@ onLoad(() => {
 <style scoped lang="scss">
 .big-v-list {
   background-color: #f0f0f0;
-}
-.search-input {
-  ::v-deep .u-input {
-    margin: 0 5px;
-  }
 }
 </style>
