@@ -1,13 +1,18 @@
 <template>
   <view>
-    <u-field
+    <u-search
       trim
       clearable
-      icon="search"
-      icon-color="#3cc51f"
+      shape="square"
+      search-icon-color="#3cc51f"
+      border-color="#3cc51f"
+      bg-color="#fff"
+      :show-action="false"
+      margin="10rpx 20rpx"
       v-model="searchVal"
       placeholder="搜索喜欢的大V"
-      @input="inputWord"
+      @change="changeSearchVal"
+      @blur="searchBlur"
     />
     <u-tabs
       :list="tabList"
@@ -80,11 +85,16 @@ const bigVSearchHandler = () => {
   }
 }
 // 输入监听
-const inputWord = () => {
+const changeSearchVal = () => {
   searchTimer.value && clearTimeout(searchTimer.value)
   searchTimer.value = setTimeout(() => {
     bigVSearchHandler()
   }, 300)
+}
+// 失焦判断
+const searchBlur = () => {
+  searchVal.value = ''
+  getMescroll().resetUpScroll()
 }
 
 const currentTab = ref(0)
