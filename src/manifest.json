@@ -1,5 +1,5 @@
 {
-  "name": "uni-vue3-vite-ts-template",
+  "name": "subscriber",
   "appid": "__UNI__DA16D5F",
   "description": "",
   "versionName": "1.0.0",
@@ -54,7 +54,7 @@
   "quickapp": {},
   /* 小程序特有相关 */
   "mp-weixin": {
-    "appid": "wxf326f1995627c671",
+    "appid": "wxad8965a1951dd4ae",
     "setting": {
       "urlCheck": false
     },

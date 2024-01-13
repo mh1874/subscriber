@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, nextTick } from 'vue'
-import { onPageScroll, onReachBottom, onLoad } from '@dcloudio/uni-app'
+import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import { bigVApi } from '@/api'
 import BigV from '@/components/bigV.vue'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
@@ -215,6 +215,11 @@ onLoad(() => {
     getMescroll().scrollTo(0, 0)
   }
   canReset.value = true
+})
+
+onShow(() => {
+  uni.$u.mpShare.path = ''
+  uni.$u.mpShare.imageUrl = ''
 })
 </script>
 

@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref, reactive, getCurrentInstance } from 'vue'
 import { messageApi } from '@/api'
 
@@ -70,6 +70,11 @@ const formatTime = (time: string) => {
 onLoad((option) => {
   messageId.value = option.id && Number(option.id)
   queryMessageDetail()
+})
+
+onShow(() => {
+  uni.$u.mpShare.path = ''
+  uni.$u.mpShare.imageUrl = ''
 })
 </script>
 

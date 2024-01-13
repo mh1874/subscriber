@@ -31,6 +31,12 @@
       "style": {
         "navigationBarTitleText": "大V动态"
       }
+    },
+    {
+      "path": "pages/mine/detail/userLevel",
+      "style": {
+        "navigationBarTitleText": "分享"
+      }
     }
   ],
   "tabBar": {

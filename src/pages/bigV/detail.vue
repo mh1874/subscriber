@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { onPageScroll, onReachBottom, onLoad } from '@dcloudio/uni-app'
+import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { needExpandHandler } from '@/utils/util'
 import { messageApi } from '@/api'
@@ -67,6 +67,11 @@ const upCallback = (mescroll) => {
 
 onLoad((option) => {
   bigVId.value = option.id && Number(option.id)
+})
+
+onShow(() => {
+  uni.$u.mpShare.path = ''
+  uni.$u.mpShare.imageUrl = ''
 })
 </script>
 

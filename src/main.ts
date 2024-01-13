@@ -4,7 +4,9 @@ import * as Pinia from 'pinia'
 import uView from 'vk-uview-ui'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import 'dayjs/locale/zh-cn' // +
+import 'dayjs/locale/zh-cn'
+// import mpShare from 'vk-uview-ui/libs/mixin/mpShare'
+import mpShare from '@/mixins/share'
 
 import App from './App.vue'
 
@@ -16,6 +18,7 @@ dayjs.locale('zh-cn')
 
 export function createApp() {
   const app = createSSRApp(App)
+  app.mixin(mpShare)
   app.use(Pinia.createPinia())
   app.use(uView)
   app.config.globalProperties.$dayjs = dayjs

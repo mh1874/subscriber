@@ -1,8 +1,15 @@
 import { defineStore } from 'pinia'
 
+interface IUserInfo {
+  avatar: any
+  userId: number
+  noticeNum: number
+  userLevel: number
+}
+
 const useUserStore = defineStore('user', {
   state: () => ({
-    userId: ''
+    userInfo: {}
   }),
   actions: {
     isLogin() {
@@ -17,8 +24,8 @@ const useUserStore = defineStore('user', {
         })
       )
     },
-    setUserId(user_id: any): void {
-      this.userId = user_id
+    setUserInfo(userInfo: IUserInfo): void {
+      this.userInfo = userInfo
     }
   }
 })

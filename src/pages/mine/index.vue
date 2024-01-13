@@ -13,7 +13,11 @@
     </view>
     <view class="setting">
       <u-cell-group>
-        <u-cell-item icon="integral-fill" title="会员等级"></u-cell-item>
+        <u-cell-item
+          icon="share-fill"
+          title="分享"
+          @click="toDetail('userLevel')"
+        ></u-cell-item>
         <u-cell-item icon="bell-fill" title="提醒设置"></u-cell-item>
         <u-cell-item icon="question" title="常见问题"></u-cell-item>
         <u-cell-item icon="email-fill" title="反馈与建议"></u-cell-item>
@@ -24,11 +28,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
-import defaultAvatar from '@/static/logo.png'
+import { onLoad, onShow } from '@dcloudio/uni-app'
+import { reactive } from 'vue'
 import { mineApi } from '@/api'
+import defaultAvatar from '@/static/logo.png'
+import { useUserStore } from '@/store'
 
 const data = reactive({ userInfo: {} })
+const userStore = useUserStore()
 
 const getUserInfo = () => {
   mineApi.getUserInfo().then((res) => {
@@ -39,11 +46,29 @@ const getUserInfo = () => {
       noticeNum: res.data.notice_num,
       userLevel: res.data.user_level
     }
+    userStore.setUserInfo(data.userInfo)
   })
 }
 
-onMounted(() => {
+const toDetail = (key: string) => {
+  let url = ''
+  switch (key) {
+    case 'userLevel':
+      url = `/pages/mine/detail/${key}?level=${data.userInfo.userLevel}`
+      break
+    default:
+      break
+  }
+  uni.navigateTo({ url })
+}
+
+onLoad(() => {
   getUserInfo()
+})
+
+onShow(() => {
+  uni.$u.mpShare.path = ''
+  uni.$u.mpShare.imageUrl = ''
 })
 </script>
 

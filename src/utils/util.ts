@@ -41,3 +41,15 @@ export function isEmpty(v: any) {
   }
   return false
 }
+
+/**
+ * 获取当前页路由及其当前页url query参数
+ */
+export const getCurrentPageInfo = () => {
+  const routes = getCurrentPages() as any // 获取当前打开过的页面路由数组
+  const curRoute = routes[routes.length - 1].route // 获取当前页面路由
+  // 在微信小程序或是app中，通过curPage.options
+  const { fullPath } = routes[routes.length - 1].$page
+  const curParam = routes[routes.length - 1].options
+  return { fullPath, curRoute, routes, curQuery: curParam }
+}

@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { onPageScroll, onReachBottom, onLoad } from '@dcloudio/uni-app'
+import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { messageApi } from '@/api'
 import MessageItem from '@/components/MessageItem'
@@ -87,6 +87,11 @@ onLoad(() => {
     getMescroll().scrollTo(0, 0)
   }
   canReset.value = true
+})
+
+onShow(() => {
+  uni.$u.mpShare.path = ''
+  uni.$u.mpShare.imageUrl = ''
 })
 </script>
 
