@@ -1,43 +1,34 @@
 <template>
   <view class="member-page">
-    <view class="header">
+    <view class="member-header">
       <!-- 用户信息 -->
       <view class="user-info">
         <image class="avatar" :src="userInfo.avatar" mode="aspectFill"></image>
         <view class="info-text">
           <view class="font-bold user-name">{{ userInfo.userName }}</view>
-          <view class="user-level">
-            {{ getUserLevel(userInfo.userLevel) }}
-          </view>
+          <view class="user-level">{{ getUserLevel(userInfo.userLevel) }}</view>
         </view>
       </view>
       <!-- 会员选择Tab -->
       <view class="tab-bar">
         <text
+          v-for="tab in tabs"
+          :key="tab.value"
           class="tab font-bold"
-          :class="{ 'tab-active': selectedTab === 'ordinary' }"
-          @click="selectTab('ordinary')"
+          :class="{ 'tab-active': selectedTab === tab.value }"
+          @click="selectTab(tab.value)"
         >
-          普通会员
-        </text>
-        <text
-          class="tab font-bold"
-          :class="{ 'tab-active': selectedTab === 'premium' }"
-          @click="selectTab('premium')"
-        >
-          高级会员
+          {{ tab.label }}
         </text>
       </view>
     </view>
 
-    <!-- 根据Tab显示的内容 -->
-    <view class="member-content" v-if="selectedTab === 'ordinary'">
-      <!-- 普通会员的内容 -->
+    <view class="member-content">
       <!-- 会员费用 -->
       <view class="membership-fees">
         <view
           class="fee-card"
-          v-for="(fee, index) in ordinaryMembershipFees"
+          v-for="(fee, index) in currentMembershipFees"
           :key="index"
           :class="{ 'fee-active': selectedFee === fee.id }"
           @click="chooseFee(fee)"
@@ -54,40 +45,7 @@
       <view class="membership-benefits">
         <text class="title">会员权益</text>
         <view
-          v-for="(benefit, index) in ordinaryMembershipBenefits"
-          :key="index"
-          class="benefit-item"
-        >
-          <image class="icon" :src="benefit.icon" />
-          <text class="name">{{ benefit.name }}</text>
-        </view>
-      </view>
-    </view>
-
-    <view class="member-content" v-if="selectedTab === 'premium'">
-      <!-- 高级会员的内容 -->
-      <!-- 会员费用 -->
-      <view class="membership-fees">
-        <view
-          class="fee-card"
-          v-for="(fee, index) in premiumMembershipFees"
-          :key="index"
-          :class="{ 'fee-active': selectedFee === fee.id }"
-          @click="chooseFee(fee)"
-        >
-          <view class="type">{{ fee.type }}</view>
-          <text class="price">
-            <text class="mr-0.5">￥</text>
-            <text class="text-3xl">{{ fee.price }}</text>
-          </text>
-        </view>
-      </view>
-
-      <!-- 会员权益 -->
-      <view class="membership-benefits">
-        <text class="title">会员权益</text>
-        <view
-          v-for="(benefit, index) in premiumMembershipBenefits"
+          v-for="(benefit, index) in currentMembershipBenefits"
           :key="index"
           class="benefit-item"
         >
@@ -99,14 +57,25 @@
 
     <!-- 支付区域 -->
     <view class="payment">
-      <text class="price">{{ selectedMembership.price }}</text>
-      <button @click="buyMembership">立即购买</button>
+      <text class="price">
+        <text class="mr-0.5">￥</text>
+        <text class="text-3xl">{{ selectedMembership.price }}</text>
+      </text>
+      <u-button
+        class="buy-btn"
+        type="success"
+        shape="circle"
+        size="medium"
+        @click="buyMembership"
+      >
+        立即购买
+      </u-button>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store'
 import { getUserLevel } from '@/utils/util'
@@ -117,6 +86,7 @@ const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 
 interface MembershipFee {
+  id: number
   type: string
   price: string
 }
@@ -132,35 +102,51 @@ interface SelectedMembership {
   price: string
 }
 
-const ordinaryMembershipFees = reactive<MembershipFee[]>([
+const tabs = [
+  { label: '普通会员', value: 'ordinary' },
+  { label: '高级会员', value: 'premium' }
+]
+
+const ordinaryMembershipFees: MembershipFee[] = [
   { id: 1, type: '年费VIP', price: '99' },
   { id: 2, type: '季费VIP', price: '30' },
   { id: 3, type: '月费VIP', price: '10' }
-])
+]
 
-const ordinaryMembershipBenefits = reactive<MembershipBenefit[]>([
+const ordinaryMembershipBenefits: MembershipBenefit[] = [
   { name: '免费下载', icon: 'path-to-download-icon' },
   { name: '高速上传', icon: 'path-to-upload-icon' }
-])
+]
 
-const premiumMembershipFees = reactive<MembershipFee[]>([
+const premiumMembershipFees: MembershipFee[] = [
   { id: 4, type: '年费SVIP', price: '199' },
   { id: 5, type: '季费SVIP', price: '50' },
   { id: 6, type: '月费SVIP', price: '20' }
-])
+]
 
-const premiumMembershipBenefits = reactive<MembershipBenefit[]>([
+const premiumMembershipBenefits: MembershipBenefit[] = [
   { name: '免费下载', icon: 'path-to-download-icon' },
   { name: '高速上传', icon: 'path-to-upload-icon' },
   { name: '更多特权', icon: 'path-to-more-privileges-icon' }
-])
+]
 
 const selectedTab = ref<'ordinary' | 'premium'>('ordinary')
-const selectedFee = ref<MembershipFee | null>(1)
+const selectedFee = ref<number | null>(1)
 const selectedMembership = ref<SelectedMembership>({
   type: '',
   price: '99'
 })
+
+const currentMembershipFees = computed(() =>
+  selectedTab.value === 'ordinary'
+    ? ordinaryMembershipFees
+    : premiumMembershipFees
+)
+const currentMembershipBenefits = computed(() =>
+  selectedTab.value === 'ordinary'
+    ? ordinaryMembershipBenefits
+    : premiumMembershipBenefits
+)
 
 const getMembershipPrice = (id: string): string => {
   const dataSource =
@@ -204,7 +190,7 @@ const buyMembership = (): void => {
 </script>
 
 <style lang="scss" scoped>
-.header {
+.member-header {
   padding: 20px 20px 10px;
   box-sizing: border-box;
   background-image: linear-gradient(to right, #130f01, #1c1208, #28130e);
@@ -212,7 +198,6 @@ const buyMembership = (): void => {
 }
 .member-content {
   padding: 10px 5px;
-  background-color: #f0f0f0;
 }
 
 .user-info {
@@ -258,7 +243,7 @@ const buyMembership = (): void => {
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 8px solid #f8dbb9; /* Use the same color as the active tab text color */
+    border-bottom: 8px solid #f8dbb9;
     bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
@@ -299,28 +284,24 @@ const buyMembership = (): void => {
 
 .membership-benefits {
   margin-bottom: 20px;
-}
-
-.title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.benefit-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.icon {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-}
-
-.name {
-  font-size: 14px;
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .benefit-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  .name {
+    font-size: 14px;
+  }
 }
 
 .payment {
@@ -333,19 +314,16 @@ const buyMembership = (): void => {
   display: flex;
   justify-content: space-between;
   box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1);
-}
-
-.price {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  .price {
+    font-weight: bold;
+    color: orange;
+  }
+  .buy-btn {
+    ::v-deep .u-btn {
+      background-image: linear-gradient(to right, #fbe9c1, #f8d7ac, #f3c1aa);
+      color: #62300d;
+      font-weight: bold;
+    }
+  }
 }
 </style>
