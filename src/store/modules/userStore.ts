@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 interface IUserInfo {
   avatar: any
+  userName: string
   userId: number
   noticeNum: number
   userLevel: number

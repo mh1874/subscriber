@@ -12,9 +12,9 @@
       ></image>
       <view class="info-text">
         <view class="font-bold">{{ props.item.bigv.nick }}</view>
-        <view class="time">{{
-          formatTime(props.item.source_created_time)
-        }}</view>
+        <view class="time">
+          {{ formatTime(props.item.source_created_time) }}
+        </view>
       </view>
     </view>
     <view class="message-content" @click="toMessageDetail">

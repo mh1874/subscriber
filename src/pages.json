@@ -35,7 +35,13 @@
     {
       "path": "pages/mine/detail/userLevel",
       "style": {
-        "navigationBarTitleText": "分享"
+        "navigationBarTitleText": "我的分享"
+      }
+    },
+    {
+      "path": "pages/mine/detail/member",
+      "style": {
+        "navigationBarTitleText": "会员升级"
       }
     }
   ],

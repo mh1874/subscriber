@@ -53,3 +53,15 @@ export const getCurrentPageInfo = () => {
   const curParam = routes[routes.length - 1].options
   return { fullPath, curRoute, routes, curQuery: curParam }
 }
+
+/**
+ * 获取用户等级
+ */
+const userLevelEnum: any = {
+  1: '普通用户',
+  2: '普通会员',
+  3: '高级会员'
+}
+export const getUserLevel = (level: number): string => {
+  return userLevelEnum[level]
+}

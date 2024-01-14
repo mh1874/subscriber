@@ -15,8 +15,13 @@
       <u-cell-group>
         <u-cell-item
           icon="share-fill"
-          title="分享"
+          title="我的分享"
           @click="toDetail('userLevel')"
+        ></u-cell-item>
+        <u-cell-item
+          icon="integral-fill"
+          title="会员升级"
+          @click="toDetail('member')"
         ></u-cell-item>
         <u-cell-item icon="bell-fill" title="提醒设置"></u-cell-item>
         <u-cell-item icon="question" title="常见问题"></u-cell-item>
@@ -42,6 +47,7 @@ const getUserInfo = () => {
     if (res.status !== 1) return
     data.userInfo = {
       avatar: defaultAvatar,
+      userName: 'John Doe',
       userId: res.data.user_id,
       noticeNum: res.data.notice_num,
       userLevel: res.data.user_level
@@ -54,7 +60,10 @@ const toDetail = (key: string) => {
   let url = ''
   switch (key) {
     case 'userLevel':
-      url = `/pages/mine/detail/${key}?level=${data.userInfo.userLevel}`
+      url = `/pages/mine/detail/${key}`
+      break
+    case 'member':
+      url = `/pages/mine/detail/${key}`
       break
     default:
       break
