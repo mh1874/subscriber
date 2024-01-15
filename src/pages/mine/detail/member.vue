@@ -24,33 +24,35 @@
     </view>
 
     <view class="member-content">
+      <view class="tips">尊享不限推送次数、优先推送、秒级响应等多项特权</view>
       <!-- 会员费用 -->
-      <view class="membership-fees">
+      <view class="fees">
         <view
           class="fee-card"
-          v-for="(fee, index) in currentMembershipFees"
+          v-for="(item, index) in currentMembershipData.fee"
           :key="index"
-          :class="{ 'fee-active': selectedFee === fee.id }"
-          @click="chooseFee(fee)"
+          :class="{ 'fee-active': selectedFee === item.id }"
+          @click="chooseFee(item)"
         >
-          <view class="type">{{ fee.type }}</view>
+          <view class="type">{{ item.type }}</view>
           <text class="price">
             <text class="mr-0.5">￥</text>
-            <text class="text-3xl">{{ fee.price }}</text>
+            <text class="text-3xl">{{ item.price }}</text>
           </text>
         </view>
       </view>
-
       <!-- 会员权益 -->
-      <view class="membership-benefits">
-        <text class="title">会员权益</text>
-        <view
-          v-for="(benefit, index) in currentMembershipBenefits"
-          :key="index"
-          class="benefit-item"
-        >
-          <image class="icon" :src="benefit.icon" />
-          <text class="name">{{ benefit.name }}</text>
+      <view class="benefits">
+        <text class="title block">会员权益</text>
+        <view class="benefit-area">
+          <view
+            v-for="(item, index) in currentMembershipData.benefit"
+            :key="index"
+            class="benefit-item"
+          >
+            <image class="icon" :src="getIcon(item.icon)" />
+            <text class="name">{{ item.name }}</text>
+          </view>
         </view>
       </view>
     </view>
@@ -79,6 +81,11 @@ import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store'
 import { getUserLevel } from '@/utils/util'
+import fiftyIcon from '@/static/member/fifty.png'
+import infinityIcon from '@/static/member/infinity.png'
+import pushIcon from '@/static/member/push.png'
+import responseIcon from '@/static/member/response.png'
+import secondIcon from '@/static/member/second.png'
 
 const userStore = useUserStore()
 
@@ -102,58 +109,80 @@ interface SelectedMembership {
   price: string
 }
 
+interface MembershipData {
+  fee: MembershipFee[]
+  benefit: MembershipBenefit[]
+}
+
 const tabs = [
   { label: '普通会员', value: 'ordinary' },
   { label: '高级会员', value: 'premium' }
 ]
 
-const ordinaryMembershipFees: MembershipFee[] = [
-  { id: 1, type: '年费VIP', price: '99' },
-  { id: 2, type: '季费VIP', price: '30' },
-  { id: 3, type: '月费VIP', price: '10' }
-]
+const ordinaryMembershipData: MembershipData = {
+  fee: [
+    { id: 1, type: '年费VIP', price: '299' },
+    { id: 2, type: '季费VIP', price: '99' },
+    { id: 3, type: '月费VIP', price: '29' }
+  ],
+  benefit: [
+    { name: '每天50条推送', icon: 'fifty' },
+    { name: '秒级响应', icon: 'second' },
+    { name: '需求优先处理', icon: 'response' }
+  ]
+}
 
-const ordinaryMembershipBenefits: MembershipBenefit[] = [
-  { name: '免费下载', icon: 'path-to-download-icon' },
-  { name: '高速上传', icon: 'path-to-upload-icon' }
-]
+const premiumMembershipData: MembershipData = {
+  fee: [
+    { id: 4, type: '年费SVIP', price: '499' },
+    { id: 5, type: '季费SVIP', price: '149' },
+    { id: 6, type: '月费SVIP', price: '59' }
+  ],
+  benefit: [
+    { name: '不限条数推送', icon: 'infinity' },
+    { name: '秒级响应', icon: 'second' },
+    { name: '优先推送', icon: 'push' },
+    { name: '需求优先处理', icon: 'response' }
+  ]
+}
 
-const premiumMembershipFees: MembershipFee[] = [
-  { id: 4, type: '年费SVIP', price: '199' },
-  { id: 5, type: '季费SVIP', price: '50' },
-  { id: 6, type: '月费SVIP', price: '20' }
-]
-
-const premiumMembershipBenefits: MembershipBenefit[] = [
-  { name: '免费下载', icon: 'path-to-download-icon' },
-  { name: '高速上传', icon: 'path-to-upload-icon' },
-  { name: '更多特权', icon: 'path-to-more-privileges-icon' }
-]
+const getIcon = (icon) => {
+  switch (icon) {
+    case 'fifty':
+      return fiftyIcon
+    case 'infinity':
+      return infinityIcon
+    case 'push':
+      return pushIcon
+    case 'response':
+      return responseIcon
+    case 'second':
+      return secondIcon
+    default:
+      return null
+  }
+}
 
 const selectedTab = ref<'ordinary' | 'premium'>('ordinary')
 const selectedFee = ref<number | null>(1)
 const selectedMembership = ref<SelectedMembership>({
+  id: 0,
   type: '',
   price: '99'
 })
 
-const currentMembershipFees = computed(() =>
+const currentMembershipData = computed(() =>
   selectedTab.value === 'ordinary'
-    ? ordinaryMembershipFees
-    : premiumMembershipFees
-)
-const currentMembershipBenefits = computed(() =>
-  selectedTab.value === 'ordinary'
-    ? ordinaryMembershipBenefits
-    : premiumMembershipBenefits
+    ? ordinaryMembershipData
+    : premiumMembershipData
 )
 
 const getMembershipPrice = (id: string): string => {
   const dataSource =
     selectedTab.value === 'ordinary'
-      ? ordinaryMembershipFees
-      : premiumMembershipFees
-  return dataSource.find((item) => item.id === id)?.price ?? ''
+      ? ordinaryMembershipData.fee
+      : premiumMembershipData.fee
+  return dataSource.find((item) => item.id === +id)?.price ?? ''
 }
 
 watch(selectedTab, () => {
@@ -161,23 +190,25 @@ watch(selectedTab, () => {
   selectedMembership.value.type = selectedTab.value
   selectedFee.value =
     selectedTab.value === 'ordinary'
-      ? ordinaryMembershipFees[0].id
-      : premiumMembershipFees[0].id
+      ? ordinaryMembershipData.fee[0].id
+      : premiumMembershipData.fee[0].id
 })
 
 const selectTab = (tab: 'ordinary' | 'premium'): void => {
   selectedTab.value = tab
 }
 
-const chooseFee = (fee: MembershipFee): void => {
+const chooseFee = (item: MembershipFee): void => {
   // Update selectedMembership when fee is chosen
-  selectedFee.value = fee.id
-  selectedMembership.value.price = fee.price
+  selectedFee.value = item.id
+  selectedMembership.value.price = item.price
 }
 
 watch(selectedFee, () => {
   // Update selectedMembership when tab changes
-  selectedMembership.value.price = getMembershipPrice(selectedFee.value)
+  selectedMembership.value.price = getMembershipPrice(
+    selectedFee.value.toString()
+  )
 })
 
 const buyMembership = (): void => {
@@ -197,7 +228,8 @@ const buyMembership = (): void => {
   border-bottom: 5px solid #f8dbb9;
 }
 .member-content {
-  padding: 10px 5px;
+  padding: 10px 5px 120px;
+  background-color: #f2f3f6;
 }
 
 .user-info {
@@ -250,16 +282,26 @@ const buyMembership = (): void => {
   }
 }
 
-.membership-fees {
-  margin-bottom: 20px;
-  padding: 10px;
+.tips {
+  margin: 5px;
+  padding: 8px;
+  background-color: #fdf7ea;
+  border: 1px solid #fcf1e3;
+  border-radius: 8px;
+  font-size: 13px;
+  text-align: center;
+  color: #c17b3d;
+  font-weight: bold;
+}
+.fees {
   display: flex;
+  margin-bottom: 10px;
+  padding: 5px;
   .fee-card {
     flex: 1;
     height: 130px;
-    margin-right: 8px;
+    margin-right: 10px;
     padding: 20px 5px;
-    border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #fff;
     text-align: center;
@@ -282,25 +324,36 @@ const buyMembership = (): void => {
   }
 }
 
-.membership-benefits {
-  margin-bottom: 20px;
+.benefits {
+  padding: 10px;
+  margin: 0 5px 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   .title {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
   }
+  .benefit-area {
+    display: flex;
+    padding: 10px;
+    background-color: #fef9f2;
+  }
   .benefit-item {
+    flex: 1;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-  }
-  .icon {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-  }
-  .name {
-    font-size: 14px;
+    flex-direction: column;
+    .icon {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 5px;
+    }
+    .name {
+      color: #563416;
+      font-size: 12px;
+    }
   }
 }
 

@@ -52,7 +52,7 @@ const props = defineProps({
   }
 })
 
-// 计算属性，根据 source_platform 返回对应的 logo
+// 根据 source_platform 返回对应的 logo
 const getLogo = (platform) => {
   switch (platform) {
     case 'xueqiu':
@@ -62,7 +62,7 @@ const getLogo = (platform) => {
     case 'dongcai':
       return dongcaiLogo
     default:
-      return null // 如果没有匹配到，可以返回默认的 logo 或 null
+      return null
   }
 }
 // 格式化时间的函数
