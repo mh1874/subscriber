@@ -221,6 +221,9 @@ const buyMembership = (): void => {
 </script>
 
 <style lang="scss" scoped>
+page {
+  background-color: #f2f3f6;
+}
 .member-header {
   padding: 20px 20px 10px;
   box-sizing: border-box;
@@ -228,8 +231,7 @@ const buyMembership = (): void => {
   border-bottom: 5px solid #f8dbb9;
 }
 .member-content {
-  padding: 10px 5px 120px;
-  background-color: #f2f3f6;
+  padding: 10px 5px;
 }
 
 .user-info {
@@ -359,14 +361,14 @@ const buyMembership = (): void => {
 
 .payment {
   position: fixed;
-  bottom: 0;
+  bottom: 2px;
   left: 0;
   width: 100%;
   background-color: #fff;
-  padding: 10px;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
-  box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   .price {
     font-weight: bold;
     color: orange;
