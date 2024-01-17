@@ -10,7 +10,7 @@
     {
       "path": "pages/bigV/index",
       "style": {
-        "navigationBarTitleText": "大V",
+        "navigationBarTitleText": "牛人",
         "onReachBottomDistance": 50
       }
     },
@@ -29,7 +29,7 @@
     {
       "path": "pages/bigV/detail",
       "style": {
-        "navigationBarTitleText": "大V动态"
+        "navigationBarTitleText": "牛人动态"
       }
     },
     {
@@ -63,7 +63,7 @@
         "iconPath": "static/tabbar/search.png",
         "selectedIconPath": "static/tabbar/search-active.png",
         "selectedColor": "#59c272",
-        "text": "大V"
+        "text": "牛人"
       },
       {
         "pagePath": "pages/mine/index",

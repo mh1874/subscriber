@@ -10,7 +10,7 @@
       :show-action="false"
       margin="10rpx 20rpx"
       v-model="searchVal"
-      placeholder="搜索喜欢的大V"
+      placeholder="搜索喜欢的牛人"
       @change="changeSearchVal"
       @blur="searchBlur"
     />
@@ -190,7 +190,7 @@ const followAction = (item) => {
     })
 }
 
-// 大V订阅or取消订阅
+// 牛人订阅or取消订阅
 const followHandler = (item) => {
   if (!item.is_follow) {
     uni.requestSubscribeMessage({

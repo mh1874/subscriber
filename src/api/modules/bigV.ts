@@ -1,56 +1,9 @@
 import request from '../request'
 import { IBigV, IPager, IBigVSearch } from '../types'
 
-// /**
-//  * 获取大V列表
-//  * @param user_id 用户id
-//  * @param params 分页信息
-//  */
-// function getBigVList(params: IBigV): Promise<{ res: any }> {
-//   return http.get('/bigv/', {
-//     params: {
-//       ...params
-//     }
-//   })
-// }
-
-// /**
-//  * 获取大V列表-我的关注
-//  * @param user_id 用户id
-//  * @param params 分页信息
-//  */
-// function getFollowedBigVList(params: IBigV): Promise<{ res: any }> {
-//   return http.get('/bigv/follow/', {
-//     params: {
-//       ...params
-//     }
-//   })
-// }
-
-// /**
-//  * 大V关注
-//  * @param bigv_id 大Vid
-//  */
-// function bigvFollow(bigv_id: number): Promise<{ res: any }> {
-//   return http.post('/user/follow/', {
-//     bigv_id
-//   })
-// }
-
-// /**
-//  * 大V取消关注
-//  * @param bigv_id 大Vid
-//  * @param params 分页信息
-//  */
-// function bigvUnFollow(bigv_id: number): Promise<{ res: any }> {
-//   return http.post('/user/unfollow/', {
-//     bigv_id
-//   })
-// }
-
 export default {
   /**
-   * 获取大V列表
+   * 获取牛人列表
    * @param user_id 用户id
    * @param params 分页信息
    */
@@ -61,7 +14,7 @@ export default {
     })
   },
   /**
-   * 获取大V列表-我的关注
+   * 获取牛人列表-我的关注
    * @param user_id 用户id
    * @param params 分页信息
    */
@@ -72,8 +25,8 @@ export default {
     })
   },
   /**
-   * 大V关注
-   * @param bigv_id 大Vid
+   * 牛人关注
+   * @param bigv_id 牛人id
    */
   bigvFollow(bigv_id: number): Promise<any> {
     return request('/user/follow/', {
@@ -84,8 +37,8 @@ export default {
     })
   },
   /**
-   * 大V取消关注
-   * @param bigv_id 大Vid
+   * 牛人取消关注
+   * @param bigv_id 牛人id
    * @param params 分页信息
    */
   bigvUnFollow(bigv_id: number): Promise<any> {
@@ -97,7 +50,7 @@ export default {
     })
   },
   /**
-   * 模糊搜索大v: 按照nick模糊搜索，按照粉丝数降序排列， 取前count个
+   * 模糊搜索牛人: 按照nick模糊搜索，按照粉丝数降序排列， 取前count个
    * @param nick 昵称
    * @param count 数量
    */

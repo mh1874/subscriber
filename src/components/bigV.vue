@@ -45,7 +45,7 @@ const handleFollow = () => {
 
 // 跳转消息详情
 const toBigVDetail = () => {
-  // 大V列表可以跳转消息详情
+  // 牛人列表可以跳转消息详情
   if (!bigVWhiteList.includes(currentPage)) return
   uni.navigateTo({
     url: `/pages/bigV/detail?id=${props.item.bigv_id}`

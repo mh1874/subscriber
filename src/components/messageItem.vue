@@ -75,9 +75,9 @@ const currentPage = pageList[pageList.length - 1]?.route
 const messageWhiteList = ['pages/message/index', 'pages/bigV/detail']
 const bigVWhiteList = ['pages/message/index']
 
-// 跳转大V动态
+// 跳转牛人动态
 const toBigVDetail = () => {
-  // 消息列表可以跳转大V动态
+  // 消息列表可以跳转牛人动态
   if (!bigVWhiteList.includes(currentPage)) return
   uni.navigateTo({
     url: `/pages/bigV/detail?id=${props.item.bigv_id}`
@@ -86,7 +86,7 @@ const toBigVDetail = () => {
 
 // 跳转消息详情
 const toMessageDetail = () => {
-  // 消息列表、大V动态可以跳转消息详情
+  // 消息列表、牛人动态可以跳转消息详情
   if (!messageWhiteList.includes(currentPage)) return
   uni.navigateTo({
     url: `/pages/message/detail?id=${props.item.mes_id}`
