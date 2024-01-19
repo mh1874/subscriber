@@ -5,7 +5,6 @@ import uView from 'vk-uview-ui'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
-// import mpShare from 'vk-uview-ui/libs/mixin/mpShare'
 import mpShare from '@/mixins/share'
 
 import App from './App.vue'

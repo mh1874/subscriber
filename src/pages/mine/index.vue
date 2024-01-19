@@ -25,7 +25,11 @@
         ></u-cell-item>
         <u-cell-item icon="bell-fill" title="提醒设置"></u-cell-item>
         <u-cell-item icon="question" title="常见问题"></u-cell-item>
-        <u-cell-item icon="email-fill" title="反馈与建议"></u-cell-item>
+        <u-cell-item
+          icon="email-fill"
+          title="反馈和建议"
+          @click="toDetail('feedback')"
+        ></u-cell-item>
         <u-cell-item icon="setting-fill" title="关于"></u-cell-item>
       </u-cell-group>
     </view>
@@ -57,17 +61,17 @@ const getUserInfo = () => {
 }
 
 const toDetail = (key: string) => {
-  let url = ''
-  switch (key) {
-    case 'userLevel':
-      url = `/pages/mine/detail/${key}`
-      break
-    case 'member':
-      url = `/pages/mine/detail/${key}`
-      break
-    default:
-      break
-  }
+  const url = `/pages/mine/detail/${key}`
+  // switch (key) {
+  //   case 'userLevel':
+  //     url = `/pages/mine/detail/${key}`
+  //     break
+  //   case 'member':
+  //     url = `/pages/mine/detail/${key}`
+  //     break
+  //   default:
+  //     break
+  // }
   uni.navigateTo({ url })
 }
 

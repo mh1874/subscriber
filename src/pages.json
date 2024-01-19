@@ -43,6 +43,12 @@
       "style": {
         "navigationBarTitleText": "会员升级"
       }
+    },
+    {
+      "path": "pages/mine/detail/feedback",
+      "style": {
+        "navigationBarTitleText": "反馈和建议"
+      }
     }
   ],
   "tabBar": {
