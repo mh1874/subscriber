@@ -9,6 +9,7 @@
         :border="feedbackOptions.border"
         :height="feedbackOptions.height"
         :auto-height="feedbackOptions.autoHeight"
+        :maxlength="feedbackOptions.maxlength"
         :placeholder="feedbackOptions.placeholder"
       />
       <view class="tips">反馈的内容我们会尽快处理，请耐心等待。</view>
@@ -28,6 +29,7 @@ const feedbackOptions = {
   border: true,
   height: 200,
   autoHeight: true,
+  maxlength: 500,
   placeholder: '请输入您要反馈的问题或建议'
 }
 
