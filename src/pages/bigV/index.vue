@@ -116,6 +116,7 @@ const tabList = reactive([
 
 const changeTab = () => {
   getMescroll().resetUpScroll()
+  getMescroll().scrollTo(0, 0)
 }
 
 const platformEnum = {
@@ -125,13 +126,13 @@ const platformEnum = {
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
-const upCallback = async (mescroll, offsetVal) => {
+const upCallback = async (mescroll) => {
   await nextTick()
   const apiFunc =
     currentTab.value === 0 ? bigVApi.getFollowedBigVList : bigVApi.getBigVList
   const params = {
     count: mescroll.size,
-    offset: isEmpty(offsetVal) ? (mescroll.num - 1) * 10 : offsetVal
+    offset: (mescroll.num - 1) * 10
   }
   if (currentTab.value !== 0) {
     params.source_platform = platformEnum[currentTab.value]
@@ -156,18 +157,12 @@ const upCallback = async (mescroll, offsetVal) => {
         }
       }
       data.totalSize = res.total_size
-
       mescroll.endBySize(curPageData.length, data.totalSize) // 必传参数(当前页的数据个数, 总数据量)
       mescroll.endSuccess(curPageData.length) // 请求成功, 结束加载
     })
     .catch(() => {
       mescroll.endErr() // 请求失败, 结束加载
     })
-}
-
-const roundToNearestTen = (number) => {
-  const base = 10
-  return Math.floor(number / base) * base
 }
 
 const followAction = (item) => {
@@ -182,8 +177,7 @@ const followAction = (item) => {
       const itemIndex = data.tableData.findIndex(
         (it) => it.bigv_id === item.bigv_id
       )
-      const offsetVal = roundToNearestTen(itemIndex)
-      upCallback(getMescroll(), offsetVal)
+      changeTab()
     })
     .catch((err) => {
       console.log(err)
@@ -212,8 +206,7 @@ const canReset = ref(false)
 
 onLoad(() => {
   if (canReset.value) {
-    getMescroll().resetUpScroll() // 重置列表数据为第一页
-    getMescroll().scrollTo(0, 0)
+    changeTab()
   }
   canReset.value = true
 })
