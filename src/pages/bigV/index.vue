@@ -193,15 +193,16 @@ const followAction = (item) => {
 // 牛人订阅or取消订阅
 const followHandler = (item) => {
   if (!item.is_follow) {
-    uni.requestSubscribeMessage({
-      tmplIds: ['9tsp0RZWS7Fq-K6tOuE7OTbJbDa9zjSUQtMErs_Tu9Y'],
-      success: () => {
-        followAction(item)
-      },
-      fail: () => {
-        console.log('request Subscribe error ==>')
-      }
-    })
+    // TODO: deadline 20240130 小程序审核通过后，更换为长期模板的id
+    // uni.requestSubscribeMessage({
+    //   tmplIds: ['9tsp0RZWS7Fq-K6tOuE7OTbJbDa9zjSUQtMErs_Tu9Y'],
+    //   success: () => {
+    followAction(item)
+    //   },
+    //   fail: () => {
+    //     console.log('request Subscribe error ==>')
+    //   }
+    // })
   } else {
     followAction(item)
   }
