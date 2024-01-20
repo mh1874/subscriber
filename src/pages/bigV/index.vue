@@ -104,13 +104,13 @@ const tabList = reactive([
     name: '我的订阅'
   },
   {
-    name: '雪球'
+    name: '球球'
   },
   {
-    name: '微博'
+    name: '围脖'
   },
   {
-    name: '东财'
+    name: '冬菜'
   }
 ])
 

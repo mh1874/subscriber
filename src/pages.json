@@ -49,6 +49,12 @@
       "style": {
         "navigationBarTitleText": "反馈和建议"
       }
+    },
+    {
+      "path": "pages/mine/detail/problem",
+      "style": {
+        "navigationBarTitleText": "常见问题"
+      }
     }
   ],
   "tabBar": {

@@ -24,7 +24,11 @@
           @click="toDetail('member')"
         ></u-cell-item>
         <u-cell-item icon="bell-fill" title="提醒设置"></u-cell-item>
-        <u-cell-item icon="question" title="常见问题"></u-cell-item>
+        <u-cell-item
+          icon="question"
+          title="常见问题"
+          @click="toDetail('problem')"
+        ></u-cell-item>
         <u-cell-item
           icon="email-fill"
           title="反馈和建议"
