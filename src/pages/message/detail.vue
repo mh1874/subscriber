@@ -8,16 +8,18 @@
           formatTime(data.item.source_created_time)
         }}</view>
       </view>
-      <u-button type="success" plain size="mini">分享信息</u-button>
+      <u-button type="success" plain size="mini" open-type="share">
+        分享信息
+      </u-button>
     </view>
     <view class="divider"></view>
     <view class="message-content">
-      <mp-html :copy-link="false" :content="data.item.message" />
-      <mp-html
-        :copy-link="false"
-        v-if="data.item.retweeted_message"
-        :content="data.item.retweeted_message"
-      />
+      <view class="mb-1">
+        <mp-html :copy-link="false" :content="data.item.message" />
+      </view>
+      <view v-if="data.item.retweeted_message" class="retweeted">
+        <mp-html :copy-link="false" :content="data.item.retweeted_message" />
+      </view>
       <template v-if="data.item.pic_list">
         <image
           class="content-img"
@@ -27,9 +29,8 @@
         ></image>
       </template>
     </view>
-    <view class="original-link">
-      <view>本文版权属于原作者或组织</view>
-      <view>原文地址：{{ data.item.source_url }}</view>
+    <view class="copyright-tips">
+      <view>本文内容版权归原作者或相关组织所有。</view>
     </view>
   </view>
 </template>
@@ -89,22 +90,21 @@ onShow(() => {
 .user-info {
   display: flex;
   align-items: center;
-}
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
+  .info-text {
+    flex: 1;
+    font-size: 14px;
+  }
 
-.info-text {
-  flex: 1;
-  font-size: 14px;
-}
-
-.time {
-  color: #888;
+  .time {
+    color: #888;
+  }
 }
 
 .divider {
@@ -114,17 +114,21 @@ onShow(() => {
 }
 
 .message-content {
-  margin-top: 8px;
+  margin: 8px 0;
   .content-img {
     height: 100%;
     object-fit: contain;
   }
+  .retweeted {
+    padding: 15px 10px;
+    background-color: #f7f7f7;
+  }
 }
 
-.original-link {
+.copyright-tips {
   margin-top: 80px;
   text-align: left;
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.5);
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
 }
 </style>

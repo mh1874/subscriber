@@ -3,22 +3,23 @@
  * @param message
  * @returns boolean
  */
-export const needExpandHandler = (message: string) => {
-  const hasHtmlNode = [
-    '<div',
-    '<p',
-    '<span',
-    '<a',
-    '<img',
-    'src=',
-    'href=',
-    'style=',
-    'class='
-  ].includes(message)
-  if (hasHtmlNode) {
-    return message.length > 400
+export const estimateLineCount = (message: string) => {
+  const fontSize = 14
+  const maxCharsPerLine = 25
+  const lineWidth = maxCharsPerLine * fontSize
+
+  // 移除 HTML 标签，只保留文本内容
+  const textContent = message.replace(/<[^>]+>/g, '')
+  const lines = textContent.split(/<br\s*\/?>|\n/)
+
+  let totalLines = 0
+  for (const line of lines) {
+    const lineText = line.trim()
+    const lineCount = Math.ceil(lineText.length / maxCharsPerLine)
+    totalLines += lineCount
   }
-  return message.length > 240
+
+  return totalLines > 7
 }
 
 /**

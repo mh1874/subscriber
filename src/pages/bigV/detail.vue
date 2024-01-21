@@ -20,7 +20,7 @@
 import { ref, reactive } from 'vue'
 import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
-import { needExpandHandler } from '@/utils/util'
+import { estimateLineCount } from '@/utils/util'
 import { messageApi } from '@/api'
 import MessageItem from '@/components/MessageItem'
 
@@ -48,7 +48,7 @@ const upCallback = (mescroll) => {
         res.data.map((it) => {
           return {
             ...it,
-            needExpand: needExpandHandler(it.message),
+            needExpand: estimateLineCount(it.message + it.retweeted_message),
             pic_list:
               (it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) || []
           }

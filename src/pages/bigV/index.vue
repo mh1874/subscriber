@@ -4,6 +4,7 @@
       trim
       clearable
       shape="square"
+      class="search-input"
       search-icon-color="#3cc51f"
       border-color="#3cc51f"
       bg-color="#fff"
@@ -12,8 +13,35 @@
       v-model="searchVal"
       placeholder="搜索喜欢的牛人"
       @change="changeSearchVal"
-      @blur="searchBlur"
+      @focus="searchFocus"
+      @clear="clearSearchVal"
     />
+    <u-popup
+      mode="top"
+      z-index="1999"
+      height="280px"
+      v-model="searchAreaVisible"
+      @close="closeSearchArea"
+    >
+      <scroll-view class="search-content" scroll-y="true">
+        <template v-if="data.searchData.length">
+          <big-v
+            mode="search"
+            v-for="item in data.searchData"
+            :key="item.bigv_id"
+            :item="item"
+            @follow="(it) => followHandler('search', it)"
+          ></big-v>
+        </template>
+        <template v-else>
+          <u-empty class="empty-tips" :text="emptyOptions.text" mode="data">
+            <template v-if="emptyOptions.noData" v-slot:bottom>
+              <a class="feedback-btn" @click="handleFeedback">建议我们收录</a>
+            </template>
+          </u-empty>
+        </template>
+      </scroll-view>
+    </u-popup>
     <u-tabs
       :list="tabList"
       :is-scroll="false"
@@ -31,10 +59,11 @@
     >
       <view class="big-v-list">
         <big-v
+          mode="bigV"
           v-for="item in data.tableData"
           :key="item.bigv_id"
           :item="item"
-          @follow="followHandler"
+          @follow="(it) => followHandler('list', it)"
         ></big-v>
       </view>
     </mescroll-uni>
@@ -54,51 +83,15 @@ const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onReachBottom
 )
 
-const data = reactive({ tableData: [], totalSize: 0 })
+const data = reactive({ tableData: [], totalSize: 0, searchData: [] })
 
 const scrollOptions = reactive({
   up: { use: true, offset: 50, textNoMore: '-- 到底了 --' },
   down: { use: true }
 })
 
-const searchVal = ref('')
-const searchTimer = ref(null)
-
-const bigVSearchHandler = () => {
-  if (searchVal.value) {
-    const params = {
-      nick: searchVal.value,
-      count: 5
-    }
-    bigVApi.searchBigVList(params).then((res) => {
-      if (res.status !== 1) return
-      if (res.data.length) {
-        data.tableData = [...res.data, ...data.tableData]
-        getMescroll().endSuccess(data.tableData.length)
-      } else {
-        data.tableData = []
-        getMescroll().endSuccess(0) // 请求成功, 结束加载
-      }
-    })
-  } else {
-    getMescroll().resetUpScroll()
-  }
-}
-// 输入监听
-const changeSearchVal = () => {
-  searchTimer.value && clearTimeout(searchTimer.value)
-  searchTimer.value = setTimeout(() => {
-    bigVSearchHandler()
-  }, 300)
-}
-// 失焦判断
-const searchBlur = () => {
-  searchVal.value = ''
-  getMescroll().resetUpScroll()
-}
-
+// tab部分
 const currentTab = ref(0)
-
 const tabList = reactive([
   {
     name: '我的订阅'
@@ -119,6 +112,68 @@ const changeTab = () => {
   getMescroll().scrollTo(0, 0)
 }
 
+// 搜索部分
+const searchVal = ref('')
+const searchTimer = ref(null)
+const searchAreaVisible = ref(false)
+const emptyOptions = reactive({
+  noData: false,
+  text: '请输入昵称搜索'
+})
+
+// 搜索输入
+const changeSearchVal = () => {
+  searchTimer.value && clearTimeout(searchTimer.value)
+  searchTimer.value = setTimeout(() => {
+    bigVSearchHandler()
+  }, 300)
+}
+// 清空搜索值
+const clearSearchVal = () => {
+  emptyOptions.noData = false
+  emptyOptions.text = '请输入昵称搜索'
+  data.searchData = []
+}
+const searchFocus = () => {
+  searchAreaVisible.value = true
+}
+// 跳转反馈页面
+const handleFeedback = () => {
+  uni.navigateTo({
+    url: '/pages/mine/detail/feedback'
+  })
+}
+// 关闭搜索区域
+const closeSearchArea = () => {
+  searchVal.value = ''
+  emptyOptions.noData = false
+  emptyOptions.text = '请输入昵称搜索'
+  data.searchData = []
+  changeTab()
+}
+
+const bigVSearchHandler = () => {
+  if (searchVal.value) {
+    const params = {
+      nick: searchVal.value,
+      count: 5
+    }
+    bigVApi.searchBigVList(params).then((res) => {
+      if (res.status !== 1) return
+      if (res.data.length) {
+        data.searchData = [...res.data]
+      } else {
+        data.searchData = []
+        emptyOptions.noData = true
+        emptyOptions.text = '-- 暂未收录 --'
+      }
+    })
+  } else {
+    clearSearchVal()
+  }
+}
+
+// 平台枚举
 const platformEnum = {
   1: 'xueqiu',
   2: 'weibo',
@@ -126,13 +181,13 @@ const platformEnum = {
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
-const upCallback = async (mescroll) => {
+const upCallback = async (mescroll, offsetVal) => {
   await nextTick()
   const apiFunc =
     currentTab.value === 0 ? bigVApi.getFollowedBigVList : bigVApi.getBigVList
   const params = {
     count: mescroll.size,
-    offset: (mescroll.num - 1) * 10
+    offset: isEmpty(offsetVal) ? (mescroll.num - 1) * 10 : offsetVal
   }
   if (currentTab.value !== 0) {
     params.source_platform = platformEnum[currentTab.value]
@@ -165,7 +220,13 @@ const upCallback = async (mescroll) => {
     })
 }
 
-const followAction = (item) => {
+const roundToNearestTen = (number) => {
+  const base = 10
+  return Math.floor(number / base) * base
+}
+
+// type list 列表关注 search 搜索关注
+const followAction = (type, item) => {
   const apiFunc = item.is_follow ? bigVApi.bigvUnFollow : bigVApi.bigvFollow
   apiFunc(item.bigv_id)
     .then((res) => {
@@ -174,10 +235,15 @@ const followAction = (item) => {
         title: res.msg,
         icon: 'none'
       })
-      const itemIndex = data.tableData.findIndex(
-        (it) => it.bigv_id === item.bigv_id
-      )
-      changeTab()
+      if (type === 'list') {
+        const itemIndex = data.tableData.findIndex(
+          (it) => it.bigv_id === item.bigv_id
+        )
+        const offsetVal = roundToNearestTen(itemIndex)
+        upCallback(getMescroll(), offsetVal)
+      } else {
+        bigVSearchHandler()
+      }
     })
     .catch((err) => {
       console.log(err)
@@ -185,20 +251,20 @@ const followAction = (item) => {
 }
 
 // 牛人订阅or取消订阅
-const followHandler = (item) => {
+const followHandler = (type, item) => {
   if (!item.is_follow) {
     // TODO: deadline 20240130 小程序审核通过后，更换为长期模板的id
     // uni.requestSubscribeMessage({
     //   tmplIds: ['9tsp0RZWS7Fq-K6tOuE7OTbJbDa9zjSUQtMErs_Tu9Y'],
     //   success: () => {
-    followAction(item)
+    followAction(type, item)
     //   },
     //   fail: () => {
     //     console.log('request Subscribe error ==>')
     //   }
     // })
   } else {
-    followAction(item)
+    followAction(type, item)
   }
 }
 
@@ -217,8 +283,34 @@ onShow(() => {
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .big-v-list {
   background-color: #f0f0f0;
+}
+
+.search-input {
+  z-index: 3000;
+}
+
+.search-content {
+  height: 100%;
+  .empty-tips {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    height: 100%;
+    .feedback-btn {
+      margin-top: 8px;
+      color: #333;
+      text-decoration: underline;
+    }
+  }
+}
+
+::v-deep .u-drawer {
+  top: 45px !important;
+  .u-mask {
+    top: 45px;
+  }
 }
 </style>

@@ -2,10 +2,6 @@
   <view class="message-item">
     <view class="user-info" @click="toBigVDetail">
       <image
-        class="platform-icon"
-        :src="getLogo(props.item.source_platform)"
-      ></image>
-      <image
         class="avatar"
         :src="props.item.bigv.avatar"
         mode="aspectFill"
@@ -18,12 +14,12 @@
       </view>
     </view>
     <view class="message-content" @click="toMessageDetail">
-      <mp-html :copy-link="false" :content="props.item.message" />
-      <mp-html
-        :copy-link="false"
-        v-if="props.item.retweeted_message"
-        :content="props.item.retweeted_message"
-      />
+      <view class="mb-1">
+        <mp-html :copy-link="false" :content="props.item.message" />
+      </view>
+      <view v-if="props.item.retweeted_message" class="retweeted">
+        <mp-html :copy-link="false" :content="props.item.retweeted_message" />
+      </view>
       <template v-if="props.item.pic_list">
         <image
           class="content-img"
@@ -39,9 +35,6 @@
 
 <script setup lang="ts">
 import { defineProps, getCurrentInstance } from 'vue'
-import xueqiuLogo from '@/static/platform/xueqiu.png'
-import weiboLogo from '@/static/platform/weibo.png'
-import dongcaiLogo from '@/static/platform/dongcai.png'
 
 const { proxy } = getCurrentInstance()
 
@@ -52,19 +45,6 @@ const props = defineProps({
   }
 })
 
-// 根据 source_platform 返回对应的 logo
-const getLogo = (platform) => {
-  switch (platform) {
-    case 'xueqiu':
-      return xueqiuLogo
-    case 'weibo':
-      return weiboLogo
-    case 'dongcai':
-      return dongcaiLogo
-    default:
-      return null
-  }
-}
 // 格式化时间的函数
 const formatTime = (time: string) => {
   return proxy.$dayjs(time).fromNow()
@@ -100,39 +80,34 @@ const toMessageDetail = () => {
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-}
-
-.platform-icon {
-  width: 25px;
-  height: 25px;
-  margin-right: 5px;
-}
-.avatar {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  margin-right: 5px;
-}
-
-.info-text {
-  margin-left: 10px;
-  font-size: 14px;
-}
-
-.time {
-  color: #888;
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  .avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  .info-text {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+  .time {
+    color: #888;
+  }
 }
 
 .message-content {
-  margin-top: 8px;
+  margin: 8px 0;
   .content-img {
     height: 100%;
     object-fit: contain;
+  }
+  .retweeted {
+    padding: 15px 10px;
+    background-color: #f7f7f7;
   }
 }
 </style>
