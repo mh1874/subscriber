@@ -49,7 +49,8 @@ const upCallback = async (mescroll) => {
       if (res.status !== 1) return
       const curPageData =
         res.data.map((it) => {
-          msgText = it.message + it.retweeted_message
+          msgText = it.message
+          if (it.retweeted_message) msgText += it.retweeted_message
           picList =
             (it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) || []
           return {
