@@ -8,7 +8,15 @@
       ></image>
       <view class="user-info">
         <text> 用户ID：{{ data.userInfo.userId }} </text>
-        <text> 今日推送：{{ data.userInfo.noticeNum }} 次</text>
+        <text>
+          <text class="mr-2 text-orange-400">
+            {{ getUserLevel(data.userInfo.userLevel) }}
+          </text>
+          今日推送：<text class="text-orange-400">
+            {{ data.userInfo.noticeNum }}
+          </text>
+          次
+        </text>
       </view>
     </view>
     <view class="setting">
@@ -46,6 +54,7 @@ import { reactive } from 'vue'
 import { mineApi } from '@/api'
 import defaultAvatar from '@/static/logo.png'
 import { useUserStore } from '@/store'
+import { getUserLevel } from '@/utils/util'
 
 const data = reactive({ userInfo: {} })
 const userStore = useUserStore()
@@ -57,7 +66,7 @@ const getUserInfo = () => {
       avatar: defaultAvatar,
       userName: 'John Doe',
       userId: res.data.user_id,
-      noticeNum: res.data.notice_num,
+      noticeNum: res.data.notice_num_free + res.data.notice_num_reward,
       userLevel: res.data.user_level
     }
     userStore.setUserInfo(data.userInfo)

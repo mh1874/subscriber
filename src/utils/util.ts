@@ -54,12 +54,12 @@ export const getCurrentPageInfo = () => {
 }
 
 /**
- * 获取用户等级
+ * 用户等级文案展示
  */
 const userLevelEnum: any = {
-  1: '普通用户',
-  2: '普通会员',
-  3: '高级会员'
+  1: '您还不是会员~',
+  2: '高级会员VIP',
+  3: '超级会员SVIP'
 }
 export const getUserLevel = (level: number): string => {
   return userLevelEnum[level]

@@ -1,92 +1,108 @@
 <template>
-  <view class="member-page">
-    <view class="member-header">
-      <!-- 用户信息 -->
-      <view class="user-info">
-        <image class="avatar" :src="userInfo.avatar" mode="aspectFill"></image>
-        <view class="info-text">
-          <view class="font-bold user-name">{{ userInfo.userName }}</view>
-          <view class="user-level">{{ getUserLevel(userInfo.userLevel) }}</view>
-        </view>
+  <!-- 省略了其他部分，保留了原始的结构 -->
+  <view class="member-header">
+    <!-- 用户信息 -->
+    <view class="user-info">
+      <image class="avatar" :src="userInfo.avatar" mode="aspectFill"></image>
+      <view class="info-text">
+        <view class="font-bold user-name">{{ userInfo.userName }}</view>
+        <view class="user-level">{{ getUserLevel(userInfo.userLevel) }}</view>
       </view>
-      <!-- 会员选择Tab -->
-      <view class="tab-bar">
-        <text
-          v-for="tab in tabs"
-          :key="tab.value"
-          class="tab font-bold"
-          :class="{ 'tab-active': selectedTab === tab.value }"
-          @click="selectTab(tab.value)"
-        >
-          {{ tab.label }}
+    </view>
+    <!-- 会员选择Tab -->
+    <view class="tab-bar">
+      <text
+        v-for="tab in tabs"
+        :key="tab.value"
+        class="tab font-bold"
+        :class="{ 'tab-active': selectedTab === tab.value }"
+        @click="selectTab(tab.value)"
+      >
+        {{ tab.label }}
+      </text>
+    </view>
+  </view>
+
+  <view class="member-content">
+    <view class="tips">尊享不限推送次数、优先推送、秒级响应等多项特权</view>
+    <!-- 会员费用 -->
+    <view class="fees">
+      <view
+        class="fee-card"
+        v-for="(item, index) in getMembershipData.fee"
+        :key="index"
+        :class="{ 'fee-active': selectedMembership.id === item.id }"
+        @click="chooseFee(item)"
+      >
+        <view class="type">{{ item.type }}</view>
+        <text class="price">
+          <text class="mr-0.5">￥</text>
+          <text class="text-3xl">{{ item.price }}</text>
         </text>
       </view>
     </view>
-
-    <view class="member-content">
-      <view class="tips">尊享不限推送次数、优先推送、秒级响应等多项特权</view>
-      <!-- 会员费用 -->
-      <view class="fees">
-        <view
-          class="fee-card"
-          v-for="(item, index) in currentMembershipData.fee"
-          :key="index"
-          :class="{ 'fee-active': selectedFee === item.id }"
-          @click="chooseFee(item)"
-        >
-          <view class="type">{{ item.type }}</view>
-          <text class="price">
-            <text class="mr-0.5">￥</text>
-            <text class="text-3xl">{{ item.price }}</text>
-          </text>
-        </view>
-      </view>
-      <!-- 会员权益 -->
-      <view class="benefits">
-        <text class="title block">会员权益</text>
-        <view class="benefit-area">
-          <view
-            v-for="(item, index) in currentMembershipData.benefit"
-            :key="index"
-            class="benefit-item"
-          >
-            <image class="icon" :src="getIcon(item.icon)" />
-            <text class="name">{{ item.name }}</text>
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <!-- 支付区域 -->
-    <view class="payment">
-      <text class="price">
-        <text class="mr-0.5">￥</text>
-        <text class="text-3xl">{{ selectedMembership.price }}</text>
+    <!-- 过期时间 -->
+    <view class="expire-date">
+      <template v-if="selectedMembership.extraDays">
+        · 限时加送
+        <text class="text-orange-400">
+          {{ selectedMembership.extraDays }}
+        </text>
+        天，
+      </template>
+      将于
+      <text class="text-orange-400">
+        {{ expireDateHandler(selectedMembership.days) }}
       </text>
-      <u-button
-        class="buy-btn"
-        type="success"
-        shape="circle"
-        size="medium"
-        @click="buyMembership"
-      >
-        立即购买
-      </u-button>
+      到期
     </view>
+    <!-- 会员权益 -->
+    <view class="benefits">
+      <text class="title block">会员权益</text>
+      <view class="benefit-area">
+        <view
+          v-for="(item, index) in getMembershipData.benefit"
+          :key="index"
+          class="benefit-item"
+        >
+          <image class="icon" :src="getIcon(item.icon)" />
+          <text class="name">{{ item.name }}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 支付区域 -->
+  <view class="payment">
+    <text class="price">
+      <text class="mr-0.5">￥</text>
+      <text class="text-3xl">{{ selectedMembership.price }}</text>
+    </text>
+    <u-button
+      class="buy-btn"
+      type="success"
+      shape="circle"
+      size="medium"
+      @click="buyMembership"
+    >
+      立即购买
+    </u-button>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, getCurrentInstance } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store'
 import { getUserLevel } from '@/utils/util'
-import fiftyIcon from '@/static/member/fifty.png'
+import { mineApi } from '@/api'
+import thirtyIcon from '@/static/member/thirty.png'
 import infinityIcon from '@/static/member/infinity.png'
 import pushIcon from '@/static/member/push.png'
 import responseIcon from '@/static/member/response.png'
 import secondIcon from '@/static/member/second.png'
 
+const { proxy } = getCurrentInstance()
 const userStore = useUserStore()
 
 // 取需要的 state
@@ -115,28 +131,28 @@ interface MembershipData {
 }
 
 const tabs = [
-  { label: '普通会员', value: 'ordinary' },
-  { label: '高级会员', value: 'premium' }
+  { label: '高级会员VIP', value: 'premium' },
+  { label: '超级会员SVIP', value: 'super' }
 ]
 
-const ordinaryMembershipData: MembershipData = {
+const premiumMembershipData: MembershipData = {
   fee: [
-    { id: 1, type: '年费VIP', price: '299' },
-    { id: 2, type: '季费VIP', price: '99' },
-    { id: 3, type: '月费VIP', price: '29' }
+    { id: 1, type: '年费VIP', price: 299, days: 375, extraDays: 10 },
+    { id: 2, type: '季费VIP', price: 99, days: 93, extraDays: 3 },
+    { id: 3, type: '月费VIP', price: 29, days: 30 }
   ],
   benefit: [
-    { name: '每天50条推送', icon: 'fifty' },
+    { name: '每天30条推送', icon: 'fifty' },
     { name: '秒级响应', icon: 'second' },
     { name: '需求优先处理', icon: 'response' }
   ]
 }
 
-const premiumMembershipData: MembershipData = {
+const superMembershipData: MembershipData = {
   fee: [
-    { id: 4, type: '年费SVIP', price: '499' },
-    { id: 5, type: '季费SVIP', price: '149' },
-    { id: 6, type: '月费SVIP', price: '59' }
+    { id: 4, type: '年费SVIP', price: 499, days: 375, extraDays: 10 },
+    { id: 5, type: '季费SVIP', price: 149, days: 93, extraDays: 3 },
+    { id: 6, type: '月费SVIP', price: 59, days: 30 }
   ],
   benefit: [
     { name: '不限条数推送', icon: 'infinity' },
@@ -149,7 +165,7 @@ const premiumMembershipData: MembershipData = {
 const getIcon = (icon) => {
   switch (icon) {
     case 'fifty':
-      return fiftyIcon
+      return thirtyIcon
     case 'infinity':
       return infinityIcon
     case 'push':
@@ -163,63 +179,71 @@ const getIcon = (icon) => {
   }
 }
 
-const selectedTab = ref<'ordinary' | 'premium'>('ordinary')
-const selectedFee = ref<number | null>(1)
+const selectedTab = ref<'premium' | 'super'>('premium')
+
 const selectedMembership = ref<SelectedMembership>({
-  id: 0,
+  id: 1,
   type: '',
-  price: '99'
+  price: 299,
+  days: 375,
+  extraDays: 10
 })
 
-const currentMembershipData = computed(() =>
-  selectedTab.value === 'ordinary'
-    ? ordinaryMembershipData
-    : premiumMembershipData
+const getMembershipData = computed(() =>
+  selectedTab.value === 'premium' ? premiumMembershipData : superMembershipData
 )
 
-const getMembershipPrice = (id: string): string => {
-  const dataSource =
-    selectedTab.value === 'ordinary'
-      ? ordinaryMembershipData.fee
-      : premiumMembershipData.fee
-  return dataSource.find((item) => item.id === +id)?.price ?? ''
-}
-
-watch(selectedTab, () => {
-  // Update selectedMembership when tab changes
-  selectedMembership.value.type = selectedTab.value
-  selectedFee.value =
-    selectedTab.value === 'ordinary'
-      ? ordinaryMembershipData.fee[0].id
-      : premiumMembershipData.fee[0].id
-})
-
-const selectTab = (tab: 'ordinary' | 'premium'): void => {
+const selectTab = (tab: 'premium' | 'super'): void => {
   selectedTab.value = tab
+  // Reset selected fee and membership when tab changes
+  const initVal = getMembershipData.value.fee[0]
+  selectedMembership.value = {
+    id: tab === 'premium' ? 1 : 4,
+    type: '',
+    price: initVal.price,
+    days: initVal.days,
+    extraDays: initVal.extraDays
+  }
 }
 
 const chooseFee = (item: MembershipFee): void => {
-  // Update selectedMembership when fee is chosen
-  selectedFee.value = item.id
-  selectedMembership.value.price = item.price
+  selectedMembership.value = {
+    id: item.id,
+    type: selectedTab.value,
+    price: item.price,
+    days: item.days,
+    extraDays: item.extraDays
+  }
 }
 
-watch(selectedFee, () => {
-  // Update selectedMembership when tab changes
-  selectedMembership.value.price = getMembershipPrice(
-    selectedFee.value.toString()
-  )
-})
+// 过期时间处理
+const expireDateHandler = (days: number) => {
+  return proxy.$dayjs().add(days, 'day').format('YYYY-MM-DD')
+}
 
 const buyMembership = (): void => {
-  /**
-   * 1. 先调用接口 参数为 普通/高级 & 年/季/月的天数 31 91 366 & 金额
-   * 2. 通过后端返回的签名信息 调用 uni.requestPayment API
-   * reference: https://zh.uniapp.dcloud.io/api/plugins/payment.html
-   * */
-  console.log(
-    `Buying ${selectedMembership.value.type} membership for ${selectedMembership.value.price}`
-  )
+  const params = {
+    recharge_level: selectedTab.value === 'premium' ? 2 : 3,
+    pay_money: 1,
+    recharge_days: selectedMembership.value.days
+  }
+  mineApi.payMiniProg(params).then(({ status, data }) => {
+    if (status !== 1) return
+    uni.requestPayment({
+      provider: 'wxpay',
+      timeStamp: data.timeStamp,
+      nonceStr: data.nonceStr,
+      package: data.package,
+      signType: data.signType,
+      paySign: data.paySign,
+      success(res) {
+        uni.switchTab({ url: '/pages/mine/index' })
+      },
+      fail(res) {
+        console.log('pay fail ==>', res)
+      }
+    })
+  })
 }
 </script>
 
@@ -327,6 +351,10 @@ page {
   .fee-card:nth-last-child(1) {
     margin-right: 0;
   }
+}
+.expire-date {
+  margin: 10px 5px;
+  font-weight: 600;
 }
 
 .benefits {

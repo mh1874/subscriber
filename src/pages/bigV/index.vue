@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, nextTick } from 'vue'
+import { ref, reactive, nextTick, watch } from 'vue'
 import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import { bigVApi } from '@/api'
 import BigV from '@/components/bigV.vue'
@@ -121,37 +121,13 @@ const emptyOptions = reactive({
   text: '请输入昵称搜索'
 })
 
-// 搜索输入
-const changeSearchVal = () => {
-  searchTimer.value && clearTimeout(searchTimer.value)
-  searchTimer.value = setTimeout(() => {
-    bigVSearchHandler()
-  }, 300)
-}
 // 清空搜索值
 const clearSearchVal = () => {
   emptyOptions.noData = false
   emptyOptions.text = '请输入昵称搜索'
   data.searchData = []
 }
-const searchFocus = () => {
-  searchAreaVisible.value = true
-}
-// 跳转反馈页面
-const handleFeedback = () => {
-  uni.navigateTo({
-    url: '/pages/mine/detail/feedback'
-  })
-}
-// 关闭搜索区域
-const closeSearchArea = () => {
-  searchVal.value = ''
-  emptyOptions.noData = false
-  emptyOptions.text = '请输入昵称搜索'
-  data.searchData = []
-  changeTab()
-}
-
+// 搜索请求
 const bigVSearchHandler = () => {
   if (searchVal.value) {
     const params = {
@@ -172,6 +148,34 @@ const bigVSearchHandler = () => {
     clearSearchVal()
   }
 }
+// 搜索输入
+const changeSearchVal = () => {
+  searchTimer.value && clearTimeout(searchTimer.value)
+  searchTimer.value = setTimeout(() => {
+    bigVSearchHandler()
+  }, 300)
+}
+// 搜索框选中
+const searchFocus = () => {
+  searchAreaVisible.value = true
+}
+// 跳转反馈页面
+const handleFeedback = () => {
+  uni.navigateTo({
+    url: '/pages/mine/detail/feedback'
+  })
+}
+// 关闭搜索区域
+const closeSearchArea = () => {
+  searchVal.value = ''
+  emptyOptions.noData = false
+  emptyOptions.text = '请输入昵称搜索'
+  data.searchData = []
+}
+// 关闭搜索区域时，刷新牛人数据
+watch(searchAreaVisible, (value) => {
+  if (!value) changeTab()
+})
 
 // 平台枚举
 const platformEnum = {
