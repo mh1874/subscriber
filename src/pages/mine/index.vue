@@ -15,7 +15,7 @@
       <u-cell-group>
         <u-cell-item
           icon="share-fill"
-          title="我的分享"
+          title="分享得推送次数"
           @click="toDetail('userLevel')"
         ></u-cell-item>
         <u-cell-item

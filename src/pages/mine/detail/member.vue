@@ -212,8 +212,11 @@ watch(selectedFee, () => {
 })
 
 const buyMembership = (): void => {
-  // Logic to handle the purchase action
-  // Replace with your actual logic
+  /**
+   * 1. 先调用接口 参数为 普通/高级 & 年/季/月的天数 31 91 366 & 金额
+   * 2. 通过后端返回的签名信息 调用 uni.requestPayment API
+   * reference: https://zh.uniapp.dcloud.io/api/plugins/payment.html
+   * */
   console.log(
     `Buying ${selectedMembership.value.type} membership for ${selectedMembership.value.price}`
   )

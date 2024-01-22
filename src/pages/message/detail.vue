@@ -116,7 +116,6 @@ onShow(() => {
 .message-content {
   margin: 8px 0;
   .content-img {
-    height: 100%;
     object-fit: contain;
   }
   .retweeted {

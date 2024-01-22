@@ -1,25 +1,22 @@
 /**
  * 判断消息内容是否需要做展开处理
+ * 文本超过7行 或 图片超过1个
  * @param message
  * @returns boolean
  */
-export const estimateLineCount = (message: string) => {
-  const fontSize = 14
+export const estimateLineCount = (message: string, picList: string[]) => {
   const maxCharsPerLine = 25
-  const lineWidth = maxCharsPerLine * fontSize
-
   // 移除 HTML 标签，只保留文本内容
   const textContent = message.replace(/<[^>]+>/g, '')
   const lines = textContent.split(/<br\s*\/?>|\n/)
-
+  // 判断文本是否超过7行
   let totalLines = 0
   for (const line of lines) {
     const lineText = line.trim()
     const lineCount = Math.ceil(lineText.length / maxCharsPerLine)
     totalLines += lineCount
   }
-
-  return totalLines > 7
+  return totalLines > 7 || picList.length > 1
 }
 
 /**

@@ -21,12 +21,7 @@
         <mp-html :copy-link="false" :content="props.item.retweeted_message" />
       </view>
       <template v-if="props.item.pic_list">
-        <image
-          class="content-img"
-          v-for="(img, index) in props.item.pic_list"
-          :key="index"
-          :src="img"
-        ></image>
+        <image class="content-img" :src="props.item.pic_list[0]"></image>
       </template>
     </view>
     <view v-if="props.item.needExpand" class="text-right"> 阅读全文 </view>
@@ -102,7 +97,6 @@ const toMessageDetail = () => {
 .message-content {
   margin: 8px 0;
   .content-img {
-    height: 100%;
     object-fit: contain;
   }
   .retweeted {
