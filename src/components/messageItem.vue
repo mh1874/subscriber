@@ -20,7 +20,7 @@
       <view v-if="props.item.retweeted_message" class="retweeted">
         <mp-html :copy-link="false" :content="props.item.retweeted_message" />
       </view>
-      <template v-if="props.item.pic_list">
+      <template v-if="props.item.pic_list.length">
         <image class="content-img" :src="props.item.pic_list[0]"></image>
       </template>
     </view>
