@@ -63,6 +63,8 @@
         mode="vertical"
         :duration="3000"
         type="warning"
+        more-icon
+        @getMore="toFeedback"
         :list="noticeList"
       ></u-notice-bar>
     </view>
@@ -227,7 +229,7 @@ const chooseFee = (item: MembershipFee): void => {
 }
 
 // 过期时间处理
-const expireDateHandler = (days: number) => {
+const expireDateHandler = (days: number): string => {
   return proxy.$dayjs().add(days, 'day').format('YYYY-MM-DD')
 }
 
@@ -236,7 +238,12 @@ const noticeList = [
   '会员到账需要几分钟的时间，请耐心等待~',
   '若超过半小时未到账，请向我们反馈，我们会尽快处理~'
 ]
+// 跳转反馈页面
+const toFeedback = (): void => {
+  uni.navigateTo({ url: '/pages/mine/detail/feedback' })
+}
 
+// 购买会员
 const buyMembership = (): void => {
   const params = {
     recharge_level: selectedTab.value === 'premium' ? 2 : 3,
