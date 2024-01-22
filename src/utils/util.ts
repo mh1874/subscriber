@@ -2,9 +2,10 @@
  * 判断消息内容是否需要做展开处理
  * 文本超过7行 或 图片超过1个
  * @param message
+ * @param picList
  * @returns boolean
  */
-export const estimateLineCount = (message: string, picList: string[]) => {
+export const shouldExpandContent = (message: string, picList: string[]) => {
   const maxCharsPerLine = 25
   // 移除 HTML 标签，只保留文本内容
   const textContent = message.replace(/<[^>]+>/g, '')

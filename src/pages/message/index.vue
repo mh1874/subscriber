@@ -21,8 +21,8 @@ import { ref, reactive } from 'vue'
 import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { messageApi } from '@/api'
+import { shouldExpandContent } from '@/utils/util'
 import MessageItem from '@/components/MessageItem'
-import { estimateLineCount } from '@/utils/util'
 
 const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onPageScroll,
@@ -36,6 +36,8 @@ const scrollOptions = reactive({
   down: { use: true }
 })
 
+let msgText = ''
+let picList = []
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
 const upCallback = async (mescroll) => {
   messageApi
@@ -47,11 +49,13 @@ const upCallback = async (mescroll) => {
       if (res.status !== 1) return
       const curPageData =
         res.data.map((it) => {
+          msgText = it.message + it.retweeted_message
+          picList =
+            (it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) || []
           return {
             ...it,
-            needExpand: estimateLineCount(it.message + it.retweeted_message),
-            pic_list:
-              (it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) || []
+            needExpand: shouldExpandContent(msgText, picList),
+            pic_list: picList
           }
         }) || [] // 当前页数据
       if (mescroll.num === 1) data.tableData = [] // 第一页需手动置空列表
