@@ -56,6 +56,16 @@
       </text>
       到期
     </view>
+    <!-- 滚动通知 -->
+    <view class="mb-3">
+      <u-notice-bar
+        font-size="20rpx"
+        mode="vertical"
+        :duration="3000"
+        type="warning"
+        :list="noticeList"
+      ></u-notice-bar>
+    </view>
     <!-- 会员权益 -->
     <view class="benefits">
       <text class="title block">会员权益</text>
@@ -220,6 +230,12 @@ const chooseFee = (item: MembershipFee): void => {
 const expireDateHandler = (days: number) => {
   return proxy.$dayjs().add(days, 'day').format('YYYY-MM-DD')
 }
+
+// 滚动通知列表
+const noticeList = [
+  '会员到账需要几分钟的时间，请耐心等待~',
+  '若超过半小时未到账，请向我们反馈，我们会尽快处理~'
+]
 
 const buyMembership = (): void => {
   const params = {

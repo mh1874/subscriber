@@ -19,6 +19,17 @@
         </text>
       </view>
     </view>
+    <view class="mb-5">
+      <u-notice-bar
+        font-size="20rpx"
+        mode="vertical"
+        :duration="3000"
+        type="warning"
+        more-icon
+        @getMore="toDetail('member')"
+        :list="noticeList"
+      ></u-notice-bar>
+    </view>
     <view class="setting">
       <u-cell-group>
         <u-cell-item
@@ -72,6 +83,8 @@ const getUserInfo = () => {
     userStore.setUserInfo(data.userInfo)
   })
 }
+// 滚动通知列表
+const noticeList = ['会员超值购！SVIP低价抢购中', '特惠！SVIP低至0.79元/天']
 
 const toDetail = (key: string) => {
   const url = `/pages/mine/detail/${key}`
@@ -105,7 +118,6 @@ onShow(() => {
 .personal {
   padding: 20px;
   background-color: #fff;
-  margin-bottom: 20px;
   display: flex;
   align-items: center;
 }
