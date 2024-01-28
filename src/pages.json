@@ -35,13 +35,7 @@
     {
       "path": "pages/mine/detail/reminder",
       "style": {
-        "navigationBarTitleText": "关注公众号"
-      }
-    },
-    {
-      "path": "pages/mine/detail/userLevel",
-      "style": {
-        "navigationBarTitleText": "我的分享"
+        "navigationBarTitleText": "提醒设置"
       }
     },
     {
@@ -60,6 +54,12 @@
       "path": "pages/mine/detail/problem",
       "style": {
         "navigationBarTitleText": "常见问题"
+      }
+    },
+    {
+      "path": "pages/mine/detail/webView",
+      "style": {
+        "navigationBarTitleText": "秒速球"
       }
     }
   ],

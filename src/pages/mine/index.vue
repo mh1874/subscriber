@@ -49,7 +49,13 @@
           :title="it.title"
           :class="{ 'vital-item': it.type ? 'red' : '' }"
           @click="toDetail(it.key)"
-        ></u-cell-item>
+        >
+          <view v-show="it.openType">
+            <template v-slot:label>
+              <button class="share-btn" plain open-type="share">去分享</button>
+            </template>
+          </view>
+        </u-cell-item>
       </u-cell-group>
     </view>
   </view>
@@ -95,10 +101,15 @@ const detailList = [
   {
     key: 'reminder',
     icon: 'bell',
-    title: '关注公众号（推送需要）',
+    title: '消息提醒设置（推送需要）',
     type: 'important'
   },
-  { key: 'userLevel', icon: 'share', title: '分享得推送次数' },
+  {
+    key: 'share',
+    icon: 'share',
+    title: '分享得推送次数',
+    openType: 'share'
+  },
   { key: 'member', icon: 'integral', title: '会员升级' },
   { key: 'problem', icon: 'question', title: '常见问题' },
   { key: 'feedback', icon: 'email', title: '反馈和建议' },
@@ -106,6 +117,8 @@ const detailList = [
 ]
 
 const toDetail = (key: string) => {
+  // 分享无需跳转详情
+  if (key === 'share') return
   const url = `/pages/mine/detail/${key}`
   uni.navigateTo({ url })
 }
@@ -115,8 +128,9 @@ onLoad(() => {
 })
 
 onShow(() => {
-  uni.$u.mpShare.path = ''
-  uni.$u.mpShare.imageUrl = ''
+  uni.$u.mpShare.path = '/pages/message/index'
+  uni.$u.mpShare.imageUrl =
+    'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/uni@2x.png'
 })
 </script>
 
@@ -151,6 +165,16 @@ onShow(() => {
 .vital-item {
   ::v-deep .u-cell {
     color: #f59e0b;
+  }
+}
+::v-deep .u-cell__value {
+  .share-btn {
+    padding: 0;
+    border: none;
+    line-height: 27px;
+    font-size: 13px;
+    color: #909399;
+    text-align: right;
   }
 }
 </style>

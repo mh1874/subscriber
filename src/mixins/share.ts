@@ -1,3 +1,5 @@
+import { mineApi } from '@/api'
+
 export default {
   onLoad() {
     // 设置默认的转发参数
@@ -11,8 +13,16 @@ export default {
     }
   },
   onShareAppMessage(): any {
-    // @ts-ignore
-    return uni.$u.mpShare
+    // todo 没办法得到分享成功的回调 还是得带参，判断是否有无新用户点击进来
+    mineApi.addNoticeNum().then((res) => {
+      if (res.status !== 1) return
+      uni.showToast({
+        title: res.msg,
+        icon: 'none'
+      })
+      // @ts-ignore
+      return uni.$u.mpShare
+    })
   },
   // #ifdef MP-WEIXIN
   onShareTimeline(): any {
