@@ -24,7 +24,13 @@
         <image class="content-img" :src="props.item.pic_list[0]"></image>
       </template>
     </view>
-    <view v-if="props.item.needExpand" class="text-right"> 阅读全文 </view>
+    <view
+      v-if="props.item.needExpand"
+      class="text-right"
+      @click="toMessageDetail"
+    >
+      阅读全文
+    </view>
   </view>
 </template>
 

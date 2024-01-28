@@ -33,6 +33,12 @@
       }
     },
     {
+      "path": "pages/mine/detail/reminder",
+      "style": {
+        "navigationBarTitleText": "关注公众号"
+      }
+    },
+    {
       "path": "pages/mine/detail/userLevel",
       "style": {
         "navigationBarTitleText": "我的分享"

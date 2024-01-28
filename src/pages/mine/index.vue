@@ -7,19 +7,29 @@
         mode="aspectFill"
       ></image>
       <view class="user-info">
-        <text> 用户ID：{{ data.userInfo.userId }} </text>
-        <text>
-          <text class="mr-2 text-orange-400">
-            {{ getUserLevel(data.userInfo.userLevel) }}
+        <view class="flex justify-between items-center">
+          <view class="flex items-center">
+            <text>用户ID：{{ data.userInfo.userId }}</text>
+            <image
+              class="member-icon ml-1.5"
+              :src="data.userInfo.memberIcon"
+              mode="aspectFill"
+            ></image>
+          </view>
+          <text class="text-slate-500 text-xs" v-if="data.userInfo.expireDate">
+            {{ data.userInfo.expireDate }}到期
           </text>
-          今日推送：<text class="text-orange-400">
+        </view>
+        <text>
+          今日剩余推送
+          <text class="text-orange-400">
             {{ data.userInfo.noticeNum }}
           </text>
           次
         </text>
       </view>
     </view>
-    <view class="mb-5">
+    <view class="mb-4">
       <u-notice-bar
         font-size="20rpx"
         mode="vertical"
@@ -33,27 +43,13 @@
     <view class="setting">
       <u-cell-group>
         <u-cell-item
-          icon="share-fill"
-          title="分享得推送次数"
-          @click="toDetail('userLevel')"
+          v-for="it in detailList"
+          :key="it.key"
+          :icon="it.icon"
+          :title="it.title"
+          :class="{ 'vital-item': it.type ? 'red' : '' }"
+          @click="toDetail(it.key)"
         ></u-cell-item>
-        <u-cell-item
-          icon="integral-fill"
-          title="会员升级"
-          @click="toDetail('member')"
-        ></u-cell-item>
-        <u-cell-item icon="bell-fill" title="提醒设置"></u-cell-item>
-        <u-cell-item
-          icon="question"
-          title="常见问题"
-          @click="toDetail('problem')"
-        ></u-cell-item>
-        <u-cell-item
-          icon="email-fill"
-          title="反馈和建议"
-          @click="toDetail('feedback')"
-        ></u-cell-item>
-        <u-cell-item icon="setting-fill" title="关于"></u-cell-item>
       </u-cell-group>
     </view>
   </view>
@@ -64,11 +60,17 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { reactive } from 'vue'
 import { mineApi } from '@/api'
 import defaultAvatar from '@/static/logo.png'
+import vipIcon from '@/static/member/vip.png'
+import svipIcon from '@/static/member/svip.png'
 import { useUserStore } from '@/store'
-import { getUserLevel } from '@/utils/util'
 
 const data = reactive({ userInfo: {} })
 const userStore = useUserStore()
+
+const userLevelEnum = {
+  2: vipIcon,
+  3: svipIcon
+}
 
 const getUserInfo = () => {
   mineApi.getUserInfo().then((res) => {
@@ -78,26 +80,33 @@ const getUserInfo = () => {
       userName: 'John Doe',
       userId: res.data.user_id,
       noticeNum: res.data.notice_num_free + res.data.notice_num_reward,
-      userLevel: res.data.user_level
+      userLevel: res.data.user_level,
+      memberIcon: userLevelEnum[res.data.user_level],
+      expireDate: res.data.user_level_expire_date
     }
     userStore.setUserInfo(data.userInfo)
   })
 }
+
 // 滚动通知列表
 const noticeList = ['会员超值购！SVIP低价抢购中', '特惠！SVIP低至0.79元/天']
 
+const detailList = [
+  {
+    key: 'reminder',
+    icon: 'bell',
+    title: '关注公众号（推送需要）',
+    type: 'important'
+  },
+  { key: 'userLevel', icon: 'share', title: '分享得推送次数' },
+  { key: 'member', icon: 'integral', title: '会员升级' },
+  { key: 'problem', icon: 'question', title: '常见问题' },
+  { key: 'feedback', icon: 'email', title: '反馈和建议' },
+  { key: 'about', icon: 'setting', title: '关于' }
+]
+
 const toDetail = (key: string) => {
   const url = `/pages/mine/detail/${key}`
-  // switch (key) {
-  //   case 'userLevel':
-  //     url = `/pages/mine/detail/${key}`
-  //     break
-  //   case 'member':
-  //     url = `/pages/mine/detail/${key}`
-  //     break
-  //   default:
-  //     break
-  // }
   uni.navigateTo({ url })
 }
 
@@ -111,7 +120,7 @@ onShow(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .mine-page {
   background-color: #f0f0f0;
 }
@@ -130,7 +139,18 @@ onShow(() => {
 }
 
 .user-info {
+  width: 100%;
   display: flex;
   flex-direction: column;
+  line-height: 30px;
+}
+.member-icon {
+  width: 30px;
+  height: 20px;
+}
+.vital-item {
+  ::v-deep .u-cell {
+    color: #f59e0b;
+  }
 }
 </style>
