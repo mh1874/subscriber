@@ -47,7 +47,7 @@
           :key="it.key"
           :icon="it.icon"
           :title="it.title"
-          :class="{ 'vital-item': it.type ? 'red' : '' }"
+          :class="{ 'vital-item': !!it.type }"
           @click="toDetail(it.key)"
         >
           <view v-show="it.openType">
