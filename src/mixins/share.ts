@@ -20,9 +20,9 @@ export default {
         title: res.msg,
         icon: 'none'
       })
-      // @ts-ignore
-      return uni.$u.mpShare
     })
+    // @ts-ignore
+    return uni.$u.mpShare
   },
   // #ifdef MP-WEIXIN
   onShareTimeline(): any {
