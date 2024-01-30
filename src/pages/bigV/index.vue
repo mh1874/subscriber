@@ -36,7 +36,9 @@
         <template v-else>
           <u-empty class="empty-tips" :text="emptyOptions.text" mode="data">
             <template v-if="emptyOptions.noData" v-slot:bottom>
-              <a class="feedback-btn" @click="handleFeedback">建议我们收录</a>
+              <a class="feedback-btn" @click="handleFeedback">
+                建议我们收录（优先处理会员建议）
+              </a>
             </template>
           </u-empty>
         </template>

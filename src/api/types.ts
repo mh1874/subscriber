@@ -20,7 +20,5 @@ export interface IBigVSearch {
 }
 
 export interface IPayment {
-  recharge_level: number
-  pay_money: number
-  recharge_days: number
+  pay_calss: number
 }

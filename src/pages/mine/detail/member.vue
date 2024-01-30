@@ -149,9 +149,9 @@ const tabs = [
 
 const premiumMembershipData: MembershipData = {
   fee: [
-    { id: 1, type: '年费VIP', price: 299, days: 375, extraDays: 10 },
-    { id: 2, type: '季费VIP', price: 99, days: 93, extraDays: 3 },
-    { id: 3, type: '月费VIP', price: 29, days: 30 }
+    { id: 1, type: '年费VIP', price: 199, days: 375, extraDays: 10 },
+    { id: 2, type: '季费VIP', price: 59, days: 93, extraDays: 3 },
+    { id: 3, type: '月费VIP', price: 25, days: 30 }
   ],
   benefit: [
     { name: '每天30条推送', icon: 'fifty' },
@@ -196,7 +196,7 @@ const selectedTab = ref<'premium' | 'super'>('premium')
 const selectedMembership = ref<SelectedMembership>({
   id: 1,
   type: '',
-  price: 299,
+  price: 199,
   days: 375,
   extraDays: 10
 })
@@ -246,9 +246,7 @@ const toFeedback = (): void => {
 // 购买会员
 const buyMembership = (): void => {
   const params = {
-    recharge_level: selectedTab.value === 'premium' ? 2 : 3,
-    pay_money: 1,
-    recharge_days: selectedMembership.value.days
+    pay_calss: selectedMembership.value.id
   }
   mineApi.payMiniProg(params).then(({ status, data }) => {
     if (status !== 1) return
