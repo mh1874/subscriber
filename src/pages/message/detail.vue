@@ -20,14 +20,13 @@
       <view v-if="data.item.retweeted_message" class="retweeted">
         <mp-html :copy-link="false" :content="data.item.retweeted_message" />
       </view>
-      <template v-if="data.item.pic_list.length">
+      <div class="content-img" v-if="data.item.pic_list.length">
         <image
-          class="content-img"
           v-for="(img, index) in data.item.pic_list"
           :key="index"
           :src="img"
         ></image>
-      </template>
+      </div>
     </view>
     <view class="copyright-tips">
       <view>本文内容版权归原作者或相关组织所有。</view>
@@ -116,7 +115,7 @@ onShow(() => {
 .message-content {
   margin: 8px 0;
   .content-img {
-    object-fit: contain;
+    background-size: contain;
   }
   .retweeted {
     padding: 15px 10px;

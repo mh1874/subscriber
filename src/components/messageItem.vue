@@ -20,10 +20,22 @@
       <view v-if="props.item.retweeted_message" class="retweeted">
         <mp-html :copy-link="false" :content="props.item.retweeted_message" />
       </view>
-      <template v-if="props.item.pic_list.length">
-        <image class="content-img" :src="props.item.pic_list[0]"></image>
-      </template>
     </view>
+    <template v-if="props.item.pic_list.length">
+      <div class="img-container">
+        <div
+          class="img-item"
+          v-for="(it, index) in props.item.pic_list"
+          :key="index"
+        >
+          <image
+            class="content-img"
+            :src="it"
+            @click="previewHandler(it)"
+          ></image>
+        </div>
+      </div>
+    </template>
     <view
       v-if="props.item.needExpand"
       class="text-right"
@@ -42,7 +54,10 @@ const { proxy } = getCurrentInstance()
 const props = defineProps({
   item: {
     type: Object,
-    required: true
+    required: true,
+    default: () => {
+      return { pic_list: [] }
+    }
   }
 })
 
@@ -71,6 +86,14 @@ const toMessageDetail = () => {
   if (!messageWhiteList.includes(currentPage)) return
   uni.navigateTo({
     url: `/pages/message/detail?id=${props.item.mes_id}`
+  })
+}
+
+// 图片预览方法
+const previewHandler = (url: string) => {
+  uni.previewImage({
+    current: url,
+    urls: props.item.pic_list
   })
 }
 </script>
@@ -102,12 +125,28 @@ const toMessageDetail = () => {
 
 .message-content {
   margin: 8px 0;
-  .content-img {
-    object-fit: contain;
-  }
   .retweeted {
     padding: 15px 10px;
     background-color: #f7f7f7;
+  }
+}
+.img-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  .img-item {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 100%;
+    .content-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: contain;
+    }
   }
 }
 </style>
