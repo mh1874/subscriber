@@ -36,6 +36,7 @@
         :duration="3000"
         type="warning"
         more-icon
+        @click="toDetail('member')"
         @getMore="toDetail('member')"
         :list="noticeList"
       ></u-notice-bar>
@@ -62,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad, onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app'
 import { reactive } from 'vue'
 import { mineApi } from '@/api'
 import defaultAvatar from '@/static/logo.png'
@@ -107,13 +108,13 @@ const detailList = [
   {
     key: 'share',
     icon: 'share',
-    title: '分享得推送次数',
+    title: '邀新得推送次数',
     openType: 'share'
   },
   { key: 'member', icon: 'integral', title: '会员升级' },
   { key: 'problem', icon: 'question', title: '常见问题' },
   { key: 'feedback', icon: 'email', title: '反馈和建议' },
-  { key: 'about', icon: 'setting', title: '关于' }
+  { key: 'about', icon: 'setting', title: '关于秒速球' }
 ]
 
 const toDetail = (key: string) => {
@@ -129,8 +130,14 @@ onLoad(() => {
 
 onShow(() => {
   uni.$u.mpShare.path = '/pages/message/index'
-  uni.$u.mpShare.imageUrl =
-    'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/uni@2x.png'
+  uni.$u.mpShare.imageUrl = defaultAvatar
+})
+
+onPullDownRefresh(async () => {
+  await getUserInfo()
+  setTimeout(() => {
+    uni.stopPullDownRefresh()
+  }, 500)
 })
 </script>
 

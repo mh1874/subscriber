@@ -22,3 +22,7 @@ export interface IBigVSearch {
 export interface IPayment {
   pay_calss: number
 }
+
+export interface IFeedBack {
+  content: string
+}

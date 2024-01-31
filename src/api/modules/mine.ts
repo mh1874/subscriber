@@ -1,5 +1,5 @@
 import request from '../request'
-import { IPayment } from '../types'
+import { IFeedBack } from '../types'
 
 export default {
   /**
@@ -21,13 +21,22 @@ export default {
     })
   },
   /**
-   * 下单接口
-   * @param pay_calss 支付类型
+   * 接收用户意见与反馈
+   * @param content 反馈内容
    */
-  payMiniProg(data: IPayment): Promise<any> {
-    return request('/pay/pay_miniprog/', {
+  submitFeedback(data: IFeedBack): Promise<any> {
+    return request('/user/feedback/', {
       method: 'POST',
       data
+    })
+  },
+  /**
+   * 获取常见问题
+   * @param content 反馈内容
+   */
+  getFaqData(): Promise<any> {
+    return request('/user/faq/', {
+      method: 'GET'
     })
   }
 }

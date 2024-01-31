@@ -36,9 +36,7 @@
         <template v-else>
           <u-empty class="empty-tips" :text="emptyOptions.text" mode="data">
             <template v-if="emptyOptions.noData" v-slot:bottom>
-              <a class="feedback-btn" @click="handleFeedback">
-                建议我们收录（优先处理会员建议）
-              </a>
+              <a class="feedback-btn" @click="handleFeedback"> 建议我们收录 </a>
             </template>
           </u-empty>
         </template>
@@ -69,6 +67,13 @@
         ></big-v>
       </view>
     </mescroll-uni>
+    <u-modal
+      v-model="followModalFlag"
+      :content="unFollowText"
+      confirm-text="去关注"
+      confirm-color="orange"
+      @confirm="toReminder"
+    ></u-modal>
   </view>
 </template>
 
@@ -256,26 +261,26 @@ const followAction = (type, item) => {
     })
 }
 
+const followModalFlag = ref(false)
+const unFollowText = '关注公众号，才能接收订阅消息~'
 // 牛人订阅or取消订阅
 const followHandler = (type, item) => {
-  if (!item.is_follow) {
-    // TODO: deadline 20240130 小程序审核通过后，更换为长期模板的id
-    // uni.requestSubscribeMessage({
-    //   tmplIds: ['9tsp0RZWS7Fq-K6tOuE7OTbJbDa9zjSUQtMErs_Tu9Y'],
-    //   success: () => {
-    followAction(type, item)
-    //   },
-    //   fail: () => {
-    //     console.log('request Subscribe error ==>')
-    //   }
-    // })
-  } else {
-    followAction(type, item)
-  }
+  bigVApi.isFollowGZH().then((res) => {
+    if (res.status !== 1) return
+    // status 0 未关注 status 1 已关注
+    if (res.data === 1) {
+      followAction(type, item)
+    } else {
+      followModalFlag.value = true
+    }
+  })
+}
+// 跳转我的-提醒设置
+const toReminder = () => {
+  uni.navigateTo({ url: '/pages/mine/detail/reminder' })
 }
 
 const canReset = ref(false)
-
 onLoad(() => {
   if (canReset.value) {
     changeTab()

@@ -12,7 +12,9 @@
         :maxlength="feedbackOptions.maxlength"
         :placeholder="feedbackOptions.placeholder"
       />
-      <view class="tips">反馈的内容我们会尽快处理，请耐心等待。</view>
+      <view class="tips">
+        反馈的内容我们会尽快处理，会优先处理会员建议，请耐心等待，如有必要，可以去“关于”页面添加微信联系我们~。
+      </view>
     </view>
     <u-button type="success" plain @click="submitFeedback"> 提交 </u-button>
   </view>
@@ -23,6 +25,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store'
+import { mineApi } from '@/api'
 
 const feedbackVal = ref('')
 const feedbackOptions = {
@@ -34,7 +37,19 @@ const feedbackOptions = {
 }
 
 const submitFeedback = (): void => {
-  console.log('feedbackVal.value ==>', feedbackVal.value)
+  const params = { content: feedbackVal.value }
+  mineApi
+    .submitFeedback(params)
+    .then(({ status, msg }) => {
+      if (status !== 1) return
+      uni.showToast({
+        title: msg,
+        icon: 'none'
+      })
+    })
+    .finally(() => {
+      feedbackVal.value = ''
+    })
 }
 
 onLoad(() => {})
@@ -45,7 +60,7 @@ onLoad(() => {})
   padding: 15px;
   .tips {
     color: #999;
-    font-size: 13px;
+    font-size: 12px;
     margin: 15px 0;
   }
 }

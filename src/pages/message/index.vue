@@ -7,6 +7,18 @@
     :down="scrollOptions.down"
   >
     <view class="message-list">
+      <view class="mb-2">
+        <u-notice-bar
+          font-size="20rpx"
+          mode="vertical"
+          :duration="3000"
+          type="warning"
+          more-icon
+          @click="toAbout"
+          @getMore="toAbout"
+          :list="noticeList"
+        ></u-notice-bar>
+      </view>
       <message-item
         v-for="item in data.tableData"
         :key="item.mes_id"
@@ -93,8 +105,14 @@ const upCallback = async (mescroll) => {
     })
 }
 
-const canReset = ref(false)
+// 滚动通知列表
+const noticeList = ['秒级响应、极速推送，关于秒速球']
+// 跳转我的-关于页面
+const toAbout = () => {
+  uni.navigateTo({ url: '/pages/mine/detail/about' })
+}
 
+const canReset = ref(false)
 onLoad(() => {
   if (canReset.value) {
     getMescroll().resetUpScroll() // 重置列表数据为第一页
@@ -109,9 +127,9 @@ onShow(() => {
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .message-list {
   background-color: #f0f0f0;
-  padding: 10px 0;
+  padding-bottom: 10px;
 }
 </style>

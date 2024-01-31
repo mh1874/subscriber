@@ -59,5 +59,14 @@ export default {
       method: 'GET',
       params
     })
+  },
+  /**
+   * 判断是否关注公众号: status=0表示未关注，status=1表示已关注
+   * @param none
+   */
+  isFollowGZH(): Promise<any> {
+    return request('/user/is_follow_gzh/', {
+      method: 'GET'
+    })
   }
 }
