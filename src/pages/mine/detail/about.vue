@@ -1,31 +1,24 @@
 <template>
   <view class="about-page">
     <view class="mb-10">
-      <view class="text-xl font-semibold mb-5">
-        秒级响应、极速推送，关于秒速球
-      </view>
-      <view class="description leading-6 mb-3">
-        秒速球是一个收集全网优质财经达人，并及时推送相关消息的小程序，设计理念是稳准狠您可以通过”牛人列表”，订阅感兴趣的牛人，既可收到消息推送。我们的优势包括:
+      <view class="leading-6 mb-3">
+        秒速球，聚焦优质财经达人。通过“牛人列表”订阅感兴趣的财经牛人，获取实时消息
       </view>
       <view class="content leading-6 mb-5">
         <view>
           1.
           <text class="keyword">速度快</text>
-          ，全部收录牛人，都可做到秒级消息推送，祝您快人一步!
+          秒级响应，极速推送，快人一步！
         </view>
         <view>
           2.
           <text class="keyword">信息全</text>
-          ，除正常消息外，牛人任何秒删帖，修改贴，秒速球都可捕获并推送，祝您运筹帷幄!
+          ，所有消息（含秒删帖，修改贴），秒速球都可捕获并推送，祝您运筹帷幄!
         </view>
         <view>
           3.
           <text class="keyword">成本低</text>，普通用户每日可享受5次推送次数，
-          <button
-            class="share-btn"
-            @click="toDetail('share')"
-            open-type="share"
-          >
+          <button class="share-btn" plain open-type="share">
             “分享小程序”
           </button>
           邀请新用户可获取额外奖励次数(每日不清零，长期有效)，还可通过
@@ -34,9 +27,9 @@
         </view>
       </view>
       <view class="leading-6 mb-5">
-        欢迎使用并推荐秒速球，如您有任何问题，都可通过
+        欢迎使用并推荐秒速球，任何问题都可通过
         <text class="link" @click="toDetail('feedback')"> “反馈和意见” </text>
-        告知我们，也可以添加微信与我们交流
+        告知我们，欢迎加V交流。
       </view>
       <view class="font-semibold mb-5">
         长按下方二维码，打开名片，加我为好友吧 ~
@@ -55,11 +48,19 @@
 
 <script setup lang="ts">
 import { onShow } from '@dcloudio/uni-app'
+import { getUserId } from '@/api/token'
 import qrcodeImg from '@/static/qrcode.png'
 import defaultAvatar from '@/static/logo.png'
 
+// 跳转详情
+const toDetail = (key: string) => {
+  const url = `/pages/mine/detail/${key}`
+  uni.navigateTo({ url })
+}
+
 onShow(() => {
-  uni.$u.mpShare.path = '/pages/message/index'
+  const userId = getUserId()
+  uni.$u.mpShare.path = `/pages/message/index?shareId=${userId}`
   uni.$u.mpShare.imageUrl = defaultAvatar
 })
 </script>

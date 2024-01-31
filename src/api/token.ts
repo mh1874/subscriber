@@ -3,6 +3,7 @@ import { defaultTimeout } from './enums'
 import { IWxInfo } from './types'
 
 export const ACCESS_TOKEN_KEY = 'token'
+export const USER_INFO_KEY = 'userInfo'
 
 export function setToken(token: string) {
   uni.setStorage({
@@ -15,6 +16,17 @@ export function removeToken() {
   uni.removeStorage({
     key: ACCESS_TOKEN_KEY
   })
+}
+
+export function setUserId(userId: number) {
+  uni.setStorage({
+    key: USER_INFO_KEY,
+    data: userId
+  })
+}
+
+export function getUserId() {
+  return uni.getStorageSync(USER_INFO_KEY)
 }
 
 // create an axios instance
@@ -100,6 +112,7 @@ export async function getToken() {
       if (status === 1) {
         token = data.token
         setToken(token)
+        setUserId(data.user_id)
         return token
       }
       return Promise.reject()

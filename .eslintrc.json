@@ -49,6 +49,7 @@
     "no-plusplus": "off",
     "consistent-return": "off",
     "no-unused-expressions": "off",
+    "guard-for-in": "off",
     "@typescript-eslint/no-unused-vars": "off"
   }
 }

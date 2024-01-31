@@ -37,12 +37,14 @@
 <script setup lang="ts">
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref, reactive, getCurrentInstance } from 'vue'
-import { messageApi } from '@/api'
+import { messageApi, mineApi } from '@/api'
+import { getUserId } from '@/api/token'
+import { getCurrentPageInfo, appendQueryParameters } from '@/utils/util'
 
 const { proxy } = getCurrentInstance()
 
 const messageId: number = ref(0)
-const data = reactive({ item: {} })
+const data = reactive({ item: { pic_list: [] } })
 
 const queryMessageDetail = () => {
   messageApi
@@ -67,13 +69,32 @@ const formatTime = (time: string) => {
   return proxy.$dayjs(time).fromNow()
 }
 
+// 接收分享参数相关
+const shareId = ref(null)
+const addNoticeNum = () => {
+  mineApi.addNoticeNum({ source_user_id: shareId.value })
+}
+
+// 设置分享链接
+const setShareUrl = () => {
+  const pageInfo = getCurrentPageInfo()
+  // 分享链接携带用户id
+  const queryVal = { ...pageInfo.curQuery, shareId: getUserId() }
+  const url = appendQueryParameters(pageInfo.curRoute, queryVal)
+  uni.$u.mpShare.path = url
+}
+
 onLoad((option) => {
   messageId.value = option.id && Number(option.id)
   queryMessageDetail()
+  if (option.shareId) {
+    shareId.value = option.shareId && Number(option.shareId)
+    addNoticeNum()
+  }
 })
 
 onShow(() => {
-  uni.$u.mpShare.path = ''
+  setShareUrl()
   uni.$u.mpShare.imageUrl = ''
 })
 </script>

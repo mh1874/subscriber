@@ -20,24 +20,31 @@
             {{ data.userInfo.expireDate }}到期
           </text>
         </view>
-        <text>
-          今日剩余推送
-          <text class="text-orange-400">
-            {{ data.userInfo.noticeNum }}
-          </text>
-          次
-        </text>
+        <view>
+          <view>
+            当日推送次数
+            <text class="text-orange-400">
+              {{ data.userInfo.freeNoticeNum }}
+            </text>
+            次
+          </view>
+          <view>
+            奖励推送次数
+            <text class="text-orange-400">
+              {{ data.userInfo.rewardNoticeNum }}
+            </text>
+            次
+          </view>
+        </view>
       </view>
     </view>
-    <view class="mb-4">
+    <view class="mb-4" @click="toDetail('member')">
       <u-notice-bar
         font-size="20rpx"
         mode="vertical"
         :duration="3000"
         type="warning"
         more-icon
-        @click="toDetail('member')"
-        @getMore="toDetail('member')"
         :list="noticeList"
       ></u-notice-bar>
     </view>
@@ -66,6 +73,7 @@
 import { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app'
 import { reactive } from 'vue'
 import { mineApi } from '@/api'
+import { getUserId } from '@/api/token'
 import defaultAvatar from '@/static/logo.png'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
@@ -84,9 +92,10 @@ const getUserInfo = () => {
     if (res.status !== 1) return
     data.userInfo = {
       avatar: defaultAvatar,
-      userName: 'John Doe',
+      userName: '秒速球',
       userId: res.data.user_id,
-      noticeNum: res.data.notice_num_free + res.data.notice_num_reward,
+      freeNoticeNum: res.data.notice_num_free,
+      rewardNoticeNum: res.data.notice_num_reward,
       userLevel: res.data.user_level,
       memberIcon: userLevelEnum[res.data.user_level],
       expireDate: res.data.user_level_expire_date
@@ -129,15 +138,15 @@ onLoad(() => {
 })
 
 onShow(() => {
-  uni.$u.mpShare.path = '/pages/message/index'
+  // 分享链接携带用户id
+  const userId = getUserId()
+  uni.$u.mpShare.path = `/pages/message/index?shareId=${userId}`
   uni.$u.mpShare.imageUrl = defaultAvatar
 })
 
 onPullDownRefresh(async () => {
   await getUserInfo()
-  setTimeout(() => {
-    uni.stopPullDownRefresh()
-  }, 500)
+  uni.stopPullDownRefresh()
 })
 </script>
 

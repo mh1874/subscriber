@@ -23,6 +23,10 @@ export interface IPayment {
   pay_calss: number
 }
 
+export interface INoticeNum {
+  source_user_id: number
+}
+
 export interface IFeedBack {
   content: string
 }

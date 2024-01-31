@@ -86,6 +86,21 @@ export const getCurrentPageInfo = () => {
 }
 
 /**
+ * 将query参数加到url上
+ */
+export const appendQueryParameters = (url: string, query?: any) => {
+  if (isEmpty(query)) {
+    return url
+  }
+  const queryString = Object.keys(query)
+    .map(
+      (key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`
+    )
+    .join('&')
+  return url + (url.includes('?') ? '&' : '?') + queryString
+}
+
+/**
  * 用户等级文案展示
  */
 const userLevelEnum: any = {

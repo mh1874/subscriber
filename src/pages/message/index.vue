@@ -7,15 +7,13 @@
     :down="scrollOptions.down"
   >
     <view class="message-list">
-      <view class="mb-2">
+      <view class="mb-2" @click="toAbout">
         <u-notice-bar
           font-size="20rpx"
           mode="vertical"
           :duration="3000"
           type="warning"
           more-icon
-          @click="toAbout"
-          @getMore="toAbout"
           :list="noticeList"
         ></u-notice-bar>
       </view>
@@ -32,7 +30,7 @@
 import { ref, reactive } from 'vue'
 import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
-import { messageApi } from '@/api'
+import { messageApi, mineApi } from '@/api'
 import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
 import MessageItem from '@/components/MessageItem'
 
@@ -112,13 +110,23 @@ const toAbout = () => {
   uni.navigateTo({ url: '/pages/mine/detail/about' })
 }
 
+// 接收分享参数相关
+const shareId = ref(null)
+const addNoticeNum = () => {
+  mineApi.addNoticeNum({ source_user_id: shareId.value })
+}
+
 const canReset = ref(false)
-onLoad(() => {
+onLoad((option) => {
   if (canReset.value) {
     getMescroll().resetUpScroll() // 重置列表数据为第一页
     getMescroll().scrollTo(0, 0)
   }
   canReset.value = true
+  if (option.shareId) {
+    shareId.value = option.shareId && Number(option.shareId)
+    addNoticeNum()
+  }
 })
 
 onShow(() => {

@@ -1,4 +1,8 @@
-import { mineApi } from '@/api'
+// import {
+//   isEmpty,
+//   getCurrentPageInfo,
+//   appendQueryParameters
+// } from '@/utils/util'
 
 export default {
   onLoad() {
@@ -13,14 +17,13 @@ export default {
     }
   },
   onShareAppMessage(): any {
-    // todo 没办法得到分享成功的回调 还是得带参，判断是否有无新用户点击进来
-    mineApi.addNoticeNum().then((res) => {
-      if (res.status !== 1) return
-      uni.showToast({
-        title: res.msg,
-        icon: 'none'
-      })
-    })
+    // const pageInfo = getCurrentPageInfo()
+    // let url = ''
+    // if (!isEmpty(pageInfo.curQuery)) {
+    //   url = appendQueryParameters(pageInfo.curRoute, pageInfo.curQuery)
+    // } else {
+    //   url = appendQueryParameters(pageInfo.curRoute)
+    // }
     // @ts-ignore
     return uni.$u.mpShare
   },

@@ -1,5 +1,5 @@
 import request from '../request'
-import { IFeedBack } from '../types'
+import { INoticeNum, IFeedBack } from '../types'
 
 export default {
   /**
@@ -15,9 +15,10 @@ export default {
    * 增加用户奖励通知次数
    * @param none
    */
-  addNoticeNum(): Promise<any> {
+  addNoticeNum(data: INoticeNum): Promise<any> {
     return request('/user/add_notice_num_reward/', {
-      method: 'POST'
+      method: 'POST',
+      data
     })
   },
   /**
