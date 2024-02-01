@@ -18,17 +18,21 @@
         <view>
           3.
           <text class="keyword">成本低</text>，普通用户每日可享受5次推送次数，
-          <button class="share-btn" plain open-type="share">
-            “分享小程序”
-          </button>
+          <u-button type="warning" size="mini" open-type="share">
+            分享小程序
+          </u-button>
           邀请新用户可获取额外奖励次数(每日不清零，长期有效)，还可通过
-          <text class="link" @click="toDetail('member')"> “升级会员” </text>
+          <u-button type="warning" size="mini" @click="toDetail('member')">
+            升级会员
+          </u-button>
           ，获取优先推送以及更多推送次数!
         </view>
       </view>
       <view class="leading-6 mb-5">
         欢迎使用并推荐秒速球，任何问题都可通过
-        <text class="link" @click="toDetail('feedback')"> “反馈和意见” </text>
+        <u-button type="warning" size="mini" @click="toDetail('feedback')">
+          反馈和意见
+        </u-button>
         告知我们，欢迎加V交流。
       </view>
       <view class="font-semibold mb-5">

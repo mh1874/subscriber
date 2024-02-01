@@ -1,5 +1,5 @@
 import request from '../request'
-import { INoticeNum, IFeedBack } from '../types'
+import { IPayment, INoticeNum, IFeedBack } from '../types'
 
 export default {
   /**
@@ -17,6 +17,16 @@ export default {
    */
   addNoticeNum(data: INoticeNum): Promise<any> {
     return request('/user/add_notice_num_reward/', {
+      method: 'POST',
+      data
+    })
+  },
+  /**
+   * 下单接口
+   * @param pay_calss 支付类型
+   */
+  payMiniProg(data: IPayment): Promise<any> {
+    return request('/pay/pay_miniprog/', {
       method: 'POST',
       data
     })

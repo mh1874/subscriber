@@ -58,9 +58,11 @@
           :class="{ 'vital-item': !!it.type }"
           @click="toDetail(it.key)"
         >
-          <view v-show="it.openType">
+          <view v-show="it.actionType">
             <template v-slot:label>
-              <button class="share-btn" plain open-type="share">去分享</button>
+              <button class="share-btn" plain open-type="share" ref="shareBtn">
+                去分享
+              </button>
             </template>
           </view>
         </u-cell-item>
@@ -71,7 +73,7 @@
 
 <script setup lang="ts">
 import { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
 import defaultAvatar from '@/static/logo.png'
@@ -118,13 +120,15 @@ const detailList = [
     key: 'share',
     icon: 'share',
     title: '邀新得推送次数',
-    openType: 'share'
+    actionType: 'share'
   },
   { key: 'member', icon: 'integral', title: '会员升级' },
   { key: 'problem', icon: 'question', title: '常见问题' },
   { key: 'feedback', icon: 'email', title: '反馈和建议' },
   { key: 'about', icon: 'setting', title: '关于秒速球' }
 ]
+
+// const shareBtn = ref<HTMLElement>(null)
 
 const toDetail = (key: string) => {
   // 分享无需跳转详情
