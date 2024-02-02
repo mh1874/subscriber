@@ -76,8 +76,6 @@ import { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app'
 import { reactive, ref } from 'vue'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
-import defaultAvatar from '@/static/logo.png'
-import shareImg from '@/static/share.png'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
 import { useUserStore } from '@/store'
@@ -94,7 +92,7 @@ const getUserInfo = () => {
   mineApi.getUserInfo().then((res) => {
     if (res.status !== 1) return
     data.userInfo = {
-      avatar: defaultAvatar,
+      avatar: 'https://www.lovecf.cn/app/logo.png',
       userName: '秒速球',
       userId: res.data.user_id,
       freeNoticeNum: res.data.notice_num_free,
@@ -146,7 +144,7 @@ onShow(() => {
   // 分享链接携带用户id
   const userId = getUserId()
   uni.$u.mpShare.path = `/pages/message/index?shareId=${userId}`
-  uni.$u.mpShare.imageUrl = shareImg
+  uni.$u.mpShare.imageUrl = 'https://www.lovecf.cn/app/share.png'
 })
 
 onPullDownRefresh(async () => {

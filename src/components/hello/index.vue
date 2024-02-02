@@ -1,6 +1,6 @@
 <template>
   <view class="hello">
-    <image class="logo" src="/static/logo.png" />
+    <image class="logo" src="https://www.lovecf.cn/app/logo.png" />
     <view class="text-area">
       <text class="title">{{ title }}</text>
     </view>

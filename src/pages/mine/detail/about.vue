@@ -8,7 +8,7 @@
         <view>
           1.
           <text class="keyword">速度快</text>
-          秒级响应，极速推送，快人一步！
+          ，秒级响应，极速推送，快人一步！
         </view>
         <view>
           2.
@@ -18,7 +18,7 @@
         <view>
           3.
           <text class="keyword">成本低</text>，普通用户每日可享受
-          <text color-orange>5</text> 次推送次数，
+          <text color-orange>8</text> 次推送次数，
           <u-button type="warning" size="mini" open-type="share">
             分享小程序
           </u-button>
@@ -41,8 +41,7 @@
       </view>
       <view class="qrcode">
         <image
-          class=""
-          :src="qrcodeImg"
+          src="https://www.lovecf.cn/app/qrcode.png"
           show-menu-by-longpress
           mode="aspectFill"
         ></image>
@@ -54,9 +53,6 @@
 <script setup lang="ts">
 import { onShow } from '@dcloudio/uni-app'
 import { getUserId } from '@/api/token'
-import qrcodeImg from '@/static/qrcode.png'
-import defaultAvatar from '@/static/logo.png'
-import shareImg from '@/static/share.png'
 
 // 跳转详情
 const toDetail = (key: string) => {
@@ -67,7 +63,7 @@ const toDetail = (key: string) => {
 onShow(() => {
   const userId = getUserId()
   uni.$u.mpShare.path = `/pages/message/index?shareId=${userId}`
-  uni.$u.mpShare.imageUrl = shareImg
+  uni.$u.mpShare.imageUrl = 'https://www.lovecf.cn/app/share.png'
 })
 </script>
 
