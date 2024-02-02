@@ -6,7 +6,7 @@
       <image class="avatar" :src="userInfo.avatar" mode="aspectFill"></image>
       <view class="info-text">
         <view class="font-bold user-name">{{ userInfo.userName }}</view>
-        <view class="user-level">{{ getUserLevel(userInfo.userLevel) }}</view>
+        <view class="user-level">会员享多重权限 ~ </view>
       </view>
     </view>
     <!-- 会员选择Tab -->
@@ -24,7 +24,7 @@
   </view>
 
   <view class="member-content">
-    <view class="tips">尊享不限推送次数、优先推送、秒级响应等多项特权</view>
+    <view class="tips">{{ getMembershipData.tips }}</view>
     <!-- 会员费用 -->
     <view class="fees">
       <view
@@ -106,7 +106,6 @@
 import { ref, computed, getCurrentInstance } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store'
-import { getUserLevel } from '@/utils/util'
 import { mineApi } from '@/api'
 import thirtyIcon from '@/static/member/thirty.png'
 import infinityIcon from '@/static/member/infinity.png'
@@ -148,6 +147,7 @@ const tabs = [
 ]
 
 const premiumMembershipData: MembershipData = {
+  tips: '尊享30条推送次数、优先推送、秒级响应等多项特权',
   fee: [
     { id: 1, type: '年费VIP', price: 199, days: 375, extraDays: 10 },
     { id: 2, type: '季费VIP', price: 59, days: 93, extraDays: 3 },
@@ -161,6 +161,7 @@ const premiumMembershipData: MembershipData = {
 }
 
 const superMembershipData: MembershipData = {
+  tips: '尊享不限推送次数、优先推送、秒级响应等多项特权',
   fee: [
     { id: 4, type: '年费SVIP', price: 499, days: 375, extraDays: 10 },
     { id: 5, type: '季费SVIP', price: 149, days: 93, extraDays: 3 },
@@ -298,9 +299,11 @@ page {
     .user-name {
       color: #b9b8b4;
       margin-bottom: 5px;
+      font-size: 17px;
     }
     .user-level {
       color: #8e8e8d;
+      font-size: 13px;
     }
   }
 }

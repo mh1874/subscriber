@@ -2,7 +2,7 @@
   <view class="about-page">
     <view class="mb-10">
       <view class="leading-6 mb-3">
-        秒速球，聚焦优质财经达人。通过“牛人列表”订阅感兴趣的财经牛人，获取实时消息
+        秒速球，聚焦优质财经达人。通过【牛人列表】订阅感兴趣的财经牛人，获取实时消息
       </view>
       <view class="content leading-6 mb-5">
         <view>
@@ -17,7 +17,8 @@
         </view>
         <view>
           3.
-          <text class="keyword">成本低</text>，普通用户每日可享受5次推送次数，
+          <text class="keyword">成本低</text>，普通用户每日可享受
+          <text color-orange>5</text> 次推送次数，
           <u-button type="warning" size="mini" open-type="share">
             分享小程序
           </u-button>
@@ -33,7 +34,7 @@
         <u-button type="warning" size="mini" @click="toDetail('feedback')">
           反馈和意见
         </u-button>
-        告知我们，欢迎加V交流。
+        告知我们
       </view>
       <view class="font-semibold mb-5">
         长按下方二维码，打开名片，加我为好友吧 ~
@@ -55,6 +56,7 @@ import { onShow } from '@dcloudio/uni-app'
 import { getUserId } from '@/api/token'
 import qrcodeImg from '@/static/qrcode.png'
 import defaultAvatar from '@/static/logo.png'
+import shareImg from '@/static/share.png'
 
 // 跳转详情
 const toDetail = (key: string) => {
@@ -65,7 +67,7 @@ const toDetail = (key: string) => {
 onShow(() => {
   const userId = getUserId()
   uni.$u.mpShare.path = `/pages/message/index?shareId=${userId}`
-  uni.$u.mpShare.imageUrl = defaultAvatar
+  uni.$u.mpShare.imageUrl = shareImg
 })
 </script>
 
@@ -76,7 +78,8 @@ onShow(() => {
     padding: 15px 10px;
     background-color: #f7f7f7;
     .keyword {
-      color: #3b82f6;
+      color: #22c55e;
+      font-weight: bold;
     }
   }
   .share-btn {

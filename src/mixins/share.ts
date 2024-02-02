@@ -1,9 +1,3 @@
-// import {
-//   isEmpty,
-//   getCurrentPageInfo,
-//   appendQueryParameters
-// } from '@/utils/util'
-
 export default {
   onLoad() {
     // 设置默认的转发参数
@@ -17,13 +11,6 @@ export default {
     }
   },
   onShareAppMessage(): any {
-    // const pageInfo = getCurrentPageInfo()
-    // let url = ''
-    // if (!isEmpty(pageInfo.curQuery)) {
-    //   url = appendQueryParameters(pageInfo.curRoute, pageInfo.curQuery)
-    // } else {
-    //   url = appendQueryParameters(pageInfo.curRoute)
-    // }
     // @ts-ignore
     return uni.$u.mpShare
   },

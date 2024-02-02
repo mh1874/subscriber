@@ -77,6 +77,7 @@ import { reactive, ref } from 'vue'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
 import defaultAvatar from '@/static/logo.png'
+import shareImg from '@/static/share.png'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
 import { useUserStore } from '@/store'
@@ -145,7 +146,7 @@ onShow(() => {
   // 分享链接携带用户id
   const userId = getUserId()
   uni.$u.mpShare.path = `/pages/message/index?shareId=${userId}`
-  uni.$u.mpShare.imageUrl = defaultAvatar
+  uni.$u.mpShare.imageUrl = shareImg
 })
 
 onPullDownRefresh(async () => {

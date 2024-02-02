@@ -99,15 +99,3 @@ export const appendQueryParameters = (url: string, query?: any) => {
     .join('&')
   return url + (url.includes('?') ? '&' : '?') + queryString
 }
-
-/**
- * 用户等级文案展示
- */
-const userLevelEnum: any = {
-  1: '您还不是会员~',
-  2: '高级会员VIP',
-  3: '超级会员SVIP'
-}
-export const getUserLevel = (level: number): string => {
-  return userLevelEnum[level]
-}
