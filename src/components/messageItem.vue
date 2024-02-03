@@ -6,8 +6,8 @@
         :src="props.item.bigv.avatar"
         mode="aspectFill"
       ></image>
-      <view class="info-text">
-        <view class="font-bold">{{ props.item.bigv.nick }}</view>
+      <view class="mr-2">
+        <view class="font-bold text-sm">{{ props.item.bigv.nick }}</view>
         <view class="time">
           {{ formatTime(props.item.source_created_time) }}
         </view>
@@ -15,10 +15,18 @@
     </view>
     <view class="message-content" @click="toMessageDetail">
       <view class="mb-1">
-        <mp-html :copy-link="false" :content="props.item.message" />
+        <mp-html
+          :copy-link="false"
+          :preview-img="false"
+          :content="props.item.message"
+        />
       </view>
       <view v-if="props.item.retweeted_message" class="retweeted">
-        <mp-html :copy-link="false" :content="props.item.retweeted_message" />
+        <mp-html
+          :copy-link="false"
+          :preview-img="false"
+          :content="props.item.retweeted_message"
+        />
       </view>
     </view>
     <template v-if="props.item.pic_list.length">
@@ -112,14 +120,11 @@ const previewHandler = (url: string) => {
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    margin-right: 5px;
-  }
-  .info-text {
-    margin-left: 10px;
-    font-size: 14px;
+    margin-right: 10px;
   }
   .time {
     color: #888;
+    font-size: 12px;
   }
 }
 

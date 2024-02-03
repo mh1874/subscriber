@@ -50,12 +50,13 @@
       @change="changeTab"
     ></u-tabs>
     <mescroll-uni
-      @init="mescrollInit"
-      @down="downCallback"
-      @up="upCallback"
       :top="180"
       :up="scrollOptions.up"
       :down="scrollOptions.down"
+      @init="mescrollInit"
+      @down="downCallback"
+      @up="upCallback"
+      @emptyclick="toFollow"
     >
       <view class="big-v-list">
         <big-v
@@ -93,7 +94,12 @@ const { mescrollInit, downCallback, getMescroll } = useMescroll(
 const data = reactive({ tableData: [], totalSize: 0, searchData: [] })
 
 const scrollOptions = reactive({
-  up: { use: true, offset: 50, textNoMore: '-- 到底了 --' },
+  up: {
+    use: true,
+    offset: 50,
+    textNoMore: '-- 到底了 --',
+    empty: { use: true, btnText: '去订阅 ~ ' }
+  },
   down: { use: true }
 })
 
@@ -160,7 +166,7 @@ const changeSearchVal = () => {
   searchTimer.value && clearTimeout(searchTimer.value)
   searchTimer.value = setTimeout(() => {
     bigVSearchHandler()
-  }, 300)
+  }, 100)
 }
 // 搜索框选中
 const searchFocus = () => {
@@ -231,6 +237,12 @@ const upCallback = async (mescroll, offsetVal) => {
     })
 }
 
+// 去关注
+const toFollow = () => {
+  currentTab.value = 1
+  changeTab()
+}
+
 const roundToNearestTen = (number) => {
   const base = 10
   return Math.floor(number / base) * base
@@ -282,13 +294,27 @@ const toReminder = () => {
 
 const canReset = ref(false)
 onLoad(() => {
-  if (canReset.value) {
-    changeTab()
+  // 跳转到指定tab
+  const tabVal = uni.getStorageSync('bigVTabVal')
+  if (tabVal) {
+    currentTab.value = tabVal
+    uni.removeStorage({
+      key: 'bigVTabVal'
+    })
   }
-  canReset.value = true
 })
 
 onShow(() => {
+  // 跳转到指定tab
+  const tabVal = uni.getStorageSync('bigVTabVal')
+  if (canReset.value && tabVal) {
+    currentTab.value = tabVal
+    changeTab()
+    uni.removeStorage({
+      key: 'bigVTabVal'
+    })
+  }
+  canReset.value = true
   uni.$u.mpShare.path = ''
   uni.$u.mpShare.imageUrl = ''
 })

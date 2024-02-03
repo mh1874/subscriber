@@ -8,7 +8,7 @@
           mode="aspectFill"
         ></image>
         <view class="info-text">
-          <view class="font-bold text-sm mb-1">{{ props.item.nick }}</view>
+          <view class="font-bold text-base mb-1">{{ props.item.nick }}</view>
           <view class="fans">
             <text class="mr-5 text-xs"> 粉丝：{{ props.item.fans_num }} </text>
             <text class="text-xs">订阅：{{ props.item.wx_fans_num }}</text>
@@ -30,11 +30,10 @@
     <u-button
       shape="circle"
       :type="props.item.is_follow ? 'info' : 'success'"
-      plain
       size="mini"
       @click="handleFollow"
     >
-      {{ props.item.is_follow ? '已订阅' : '订阅' }}
+      {{ props.item.is_follow ? '已订阅' : '+ 订阅' }}
     </u-button>
   </view>
 </template>

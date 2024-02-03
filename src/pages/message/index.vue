@@ -1,10 +1,11 @@
 <template>
   <mescroll-uni
+    :up="scrollOptions.up"
+    :down="scrollOptions.down"
     @init="mescrollInit"
     @down="downCallback"
     @up="upCallback"
-    :up="scrollOptions.up"
-    :down="scrollOptions.down"
+    @emptyclick="toBigV"
   >
     <view class="message-list">
       <view class="mb-2" @click="toAbout">
@@ -42,9 +43,23 @@ const { mescrollInit, downCallback, getMescroll } = useMescroll(
 const data = reactive({ tableData: [], totalSize: 0 })
 
 const scrollOptions = reactive({
-  up: { use: true, offset: 50, textNoMore: '-- 到底了 --' },
+  up: {
+    use: true,
+    offset: 50,
+    textNoMore: '-- 到底了 --',
+    empty: { use: true, btnText: '去订阅 ~ ' }
+  },
   down: { use: true }
 })
+
+// 去牛人页面关注
+const toBigV = () => {
+  uni.setStorage({
+    key: 'bigVTabVal',
+    data: 1
+  })
+  uni.switchTab({ url: '/pages/bigV/index' })
+}
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
 const upCallback = async (mescroll) => {
@@ -116,20 +131,21 @@ const addNoticeNum = () => {
   mineApi.addNoticeNum({ source_user_id: shareId.value })
 }
 
-const canReset = ref(false)
 onLoad((option) => {
-  if (canReset.value) {
-    getMescroll().resetUpScroll() // 重置列表数据为第一页
-    getMescroll().scrollTo(0, 0)
-  }
-  canReset.value = true
   if (option.shareId) {
     shareId.value = option.shareId && Number(option.shareId)
     addNoticeNum()
   }
 })
 
+const canReset = ref(false)
 onShow(() => {
+  // 返回刷新
+  if (canReset.value) {
+    getMescroll().resetUpScroll()
+    getMescroll().scrollTo(0, 0)
+  }
+  canReset.value = true
   uni.$u.mpShare.path = ''
   uni.$u.mpShare.imageUrl = ''
 })

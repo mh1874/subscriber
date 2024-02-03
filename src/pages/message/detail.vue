@@ -9,27 +9,44 @@
         }}</view>
       </view>
       <u-button type="success" plain size="mini" open-type="share">
-        分享信息
+        分享内容
       </u-button>
     </view>
     <view class="divider"></view>
     <view class="message-content">
       <view class="mb-1">
-        <mp-html :copy-link="false" :content="data.item.message" />
+        <mp-html
+          :copy-link="false"
+          :preview-img="false"
+          :content="data.item.message"
+        />
       </view>
       <view v-if="data.item.retweeted_message" class="retweeted">
-        <mp-html :copy-link="false" :content="data.item.retweeted_message" />
+        <mp-html
+          :copy-link="false"
+          :preview-img="false"
+          :content="data.item.retweeted_message"
+        />
       </view>
-      <div class="content-img" v-if="data.item.pic_list.length">
-        <image
-          v-for="(img, index) in data.item.pic_list"
-          :key="index"
-          :src="img"
-        ></image>
-      </div>
+      <template v-if="data.item.pic_list.length">
+        <div class="img-container">
+          <div
+            class="img-item"
+            v-for="(it, index) in data.item.pic_list"
+            :key="index"
+          >
+            <image
+              class="content-img"
+              :src="it"
+              @click="previewHandler(it)"
+            ></image>
+          </div>
+        </div>
+      </template>
     </view>
     <view class="copyright-tips">
-      <view>本文内容版权归原作者或相关组织所有。</view>
+      <text>内容版权归原作者或组织，</text>
+      <text class="font-medium">分享至新用户得推送次数。</text>
     </view>
   </view>
 </template>
@@ -39,7 +56,11 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref, reactive, getCurrentInstance } from 'vue'
 import { messageApi, mineApi } from '@/api'
 import { getUserId } from '@/api/token'
-import { getCurrentPageInfo, appendQueryParameters } from '@/utils/util'
+import {
+  getCurrentPageInfo,
+  appendQueryParameters,
+  extractImagesFromHTML
+} from '@/utils/util'
 
 const { proxy } = getCurrentInstance()
 
@@ -49,19 +70,39 @@ const data = reactive({ item: { pic_list: [] } })
 const queryMessageDetail = () => {
   messageApi
     .getMessageDetail(messageId.value)
-    .then((v) => {
+    .then((res) => {
+      const { message, retweeted_message, pic_list } = res.data
+      const { text: handledMessage, picList: messagePicList } =
+        extractImagesFromHTML(message)
+      const { text: handledRetweeted, picList: retweetedPicList } = res.data
+        .retweeted_message
+        ? extractImagesFromHTML(retweeted_message)
+        : { text: '', picList: [] }
+      const picList = [
+        ...((pic_list && JSON.parse(pic_list.replace(/'/g, '"'))) || []),
+        ...messagePicList,
+        ...retweetedPicList
+      ]
       // 处理返回数据
       data.item = {
-        ...v.data,
-        ...v.data.bigv,
-        pic_list:
-          (v.data.pic_list && JSON.parse(v.data.pic_list.replace(/'/g, '"'))) ||
-          []
+        ...res.data,
+        ...res.data.bigv,
+        message: handledMessage,
+        retweeted_message: handledRetweeted,
+        pic_list: picList
       }
     })
     .catch((err) => {
       console.log(err)
     })
+}
+
+// 图片预览方法
+const previewHandler = (url: string) => {
+  uni.previewImage({
+    current: url,
+    urls: data.item.pic_list
+  })
 }
 
 // 格式化时间的函数
@@ -135,8 +176,24 @@ onShow(() => {
 
 .message-content {
   margin: 8px 0;
-  .content-img {
-    background-size: contain;
+  .img-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    .img-item {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      padding-top: 100%;
+      .content-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: contain;
+      }
+    }
   }
   .retweeted {
     padding: 15px 10px;
@@ -148,6 +205,6 @@ onShow(() => {
   margin-top: 80px;
   text-align: left;
   font-size: 13px;
-  color: rgba(0, 0, 0, 0.6);
+  color: #333;
 }
 </style>
