@@ -7,7 +7,7 @@
           :src="props.item.avatar"
           mode="aspectFill"
         ></image>
-        <view class="info-text">
+        <view class="text-sm">
           <view class="font-bold text-base mb-1">{{ props.item.nick }}</view>
           <view class="fans">
             <text class="mr-5 text-xs"> 粉丝：{{ props.item.fans_num }} </text>
@@ -28,12 +28,22 @@
       </view>
     </template>
     <u-button
+      class="follow-btn"
       shape="circle"
       :type="props.item.is_follow ? 'info' : 'success'"
       size="mini"
       @click="handleFollow"
     >
-      {{ props.item.is_follow ? '已订阅' : '+ 订阅' }}
+      <view class="flex items-center">
+        <template v-if="props.item.is_follow">
+          <u-icon name="list" size="24" class="mr-1"></u-icon>
+          <text>已订阅</text>
+        </template>
+        <template v-else>
+          <u-icon name="plus" size="24" class="mr-1"></u-icon>
+          <text>订阅</text>
+        </template>
+      </view>
     </u-button>
   </view>
 </template>
@@ -100,16 +110,10 @@ const toBigVDetail = () => {
     border-radius: 50%;
     margin-right: 10px;
   }
-
-  .info-text {
-    font-size: 14px;
-  }
-
   .fans {
     color: #888;
     margin-bottom: 5px;
   }
-
   .intro {
     color: #666;
     margin-bottom: 5px;
@@ -128,6 +132,11 @@ const toBigVDetail = () => {
     height: 30px;
     border-radius: 50%;
     margin-right: 10px;
+  }
+}
+.follow-btn {
+  ::v-deep button {
+    width: 64px;
   }
 }
 </style>
