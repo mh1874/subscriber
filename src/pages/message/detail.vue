@@ -46,7 +46,7 @@
     </view>
     <view class="copyright-tips">
       <text>内容版权归原作者或组织，</text>
-      <text class="font-medium">分享至新用户得推送次数。</text>
+      <text class="font-bold">分享至新用户得推送次数。</text>
     </view>
   </view>
 </template>
@@ -152,19 +152,18 @@ onShow(() => {
   display: flex;
   align-items: center;
   .avatar {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     margin-right: 10px;
   }
-
   .info-text {
     flex: 1;
-    font-size: 14px;
+    font-size: 15px;
   }
-
   .time {
     color: #888;
+    font-size: 12px;
   }
 }
 

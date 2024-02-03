@@ -22,6 +22,7 @@
         v-for="item in data.tableData"
         :key="item.mes_id"
         :item="item"
+        @preview="previewHandler"
       ></message-item>
     </view>
   </mescroll-uni>
@@ -139,6 +140,11 @@ onLoad((option) => {
 })
 
 const canReset = ref(false)
+// 预览时无需触发onShow
+const previewHandler = () => {
+  canReset.value = false
+}
+
 onShow(() => {
   // 返回刷新
   if (canReset.value) {

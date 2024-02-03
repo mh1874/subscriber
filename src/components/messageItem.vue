@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, getCurrentInstance } from 'vue'
+import { defineProps, defineEmits, getCurrentInstance } from 'vue'
 
 const { proxy } = getCurrentInstance()
 
@@ -97,8 +97,11 @@ const toMessageDetail = () => {
   })
 }
 
+const emits = defineEmits(['preview'])
+
 // 图片预览方法
 const previewHandler = (url: string) => {
+  emits('preview')
   uni.previewImage({
     current: url,
     urls: props.item.pic_list
@@ -117,8 +120,8 @@ const previewHandler = (url: string) => {
     align-items: center;
   }
   .avatar {
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     margin-right: 10px;
   }
