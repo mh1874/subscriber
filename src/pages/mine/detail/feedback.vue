@@ -13,7 +13,7 @@
         :placeholder="feedbackOptions.placeholder"
       />
       <view class="tips">
-        反馈的内容我们会尽快处理，会优先处理会员建议，请耐心等待，如有必要，可以去“关于”页面添加微信联系我们~。
+        反馈的内容我们会尽快处理，会优先处理会员建议，请耐心等待。如有必要，可以去【关于秒速球】页面添加微信联系我们~。
       </view>
     </view>
     <u-button type="success" plain @click="submitFeedback"> 提交 </u-button>
@@ -37,6 +37,10 @@ const feedbackOptions = {
 }
 
 const submitFeedback = (): void => {
+  if (!feedbackVal.value) {
+    uni.showToast({ title: '请输入反馈内容', icon: 'none' })
+    return
+  }
   const params = { content: feedbackVal.value }
   mineApi
     .submitFeedback(params)

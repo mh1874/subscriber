@@ -8,7 +8,7 @@
           mode="aspectFill"
         ></image>
         <text>
-          秒速球，聚焦优质财经达人。通过【牛人列表】订阅感兴趣的财经牛人，获取实时消息
+          秒速球，聚焦优质财经达人。通过【牛人列表】订阅感兴趣的牛人，获取实时消息
         </text>
       </view>
       <view class="content leading-6 mb-3">

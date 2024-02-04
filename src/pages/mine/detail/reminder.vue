@@ -55,7 +55,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const followAccountUrl = 'https://mp.weixin.qq.com/s/OUR0W39-TJyOX0W45vmwmg'
+const followAccountUrl = 'https://mp.weixin.qq.com/s/M7k3GW7d9kzehok9Ut1Mag'
 const openRemindUrl = 'https://mp.weixin.qq.com/s/LD5LLSrqrGiyrMhsdkdswg'
 
 // 关注公众号
