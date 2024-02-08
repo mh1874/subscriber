@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app'
+import { onLaunch } from '@dcloudio/uni-app'
 
-onLoad((option) => {})
+onLaunch(() => {})
 </script>
 <style lang="scss">
 @import 'vk-uview-ui/index.scss';

@@ -60,9 +60,7 @@
         >
           <view v-show="it.actionType">
             <template v-slot:label>
-              <button class="share-btn" plain open-type="share" ref="shareBtn">
-                去分享
-              </button>
+              <button class="share-btn" plain open-type="share">去分享</button>
             </template>
           </view>
         </u-cell-item>
@@ -76,9 +74,9 @@ import { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app'
 import { reactive, ref } from 'vue'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
+import { useUserStore } from '@/store'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
-import { useUserStore } from '@/store'
 
 const data = reactive({ userInfo: {} })
 const userStore = useUserStore()
@@ -127,8 +125,6 @@ const detailList = [
   { key: 'about', icon: 'setting', title: '关于秒速球' }
 ]
 
-// const shareBtn = ref<HTMLElement>(null)
-
 const toDetail = (key: string) => {
   // 分享无需跳转详情
   if (key === 'share') return
@@ -137,7 +133,11 @@ const toDetail = (key: string) => {
 }
 
 onLoad(() => {
-  getUserInfo()
+  if (userStore.userInfo?.userId) {
+    data.userInfo = userStore.userInfo
+  } else {
+    getUserInfo()
+  }
 })
 
 onShow(() => {

@@ -1,31 +1,47 @@
 <template>
-  <mescroll-uni
-    :up="scrollOptions.up"
-    :down="scrollOptions.down"
-    @init="mescrollInit"
-    @down="downCallback"
-    @up="upCallback"
-    @emptyclick="toBigV"
-  >
-    <view class="message-list">
-      <view class="mb-2" @click="toAbout">
-        <u-notice-bar
-          font-size="20rpx"
-          mode="vertical"
-          :duration="3000"
-          type="warning"
-          more-icon
-          :list="noticeList"
-        ></u-notice-bar>
+  <view>
+    <mescroll-uni
+      :up="scrollOptions.up"
+      :down="scrollOptions.down"
+      @init="mescrollInit"
+      @down="downCallback"
+      @up="upCallback"
+      @emptyclick="toBigV"
+    >
+      <view class="message-list">
+        <view class="mb-2" @click="toAbout">
+          <u-notice-bar
+            font-size="20rpx"
+            mode="vertical"
+            :duration="3000"
+            type="warning"
+            more-icon
+            :list="noticeList"
+          ></u-notice-bar>
+        </view>
+        <message-item
+          v-for="item in data.tableData"
+          :key="item.mes_id"
+          :item="item"
+          @preview="previewHandler"
+        ></message-item>
       </view>
-      <message-item
-        v-for="item in data.tableData"
-        :key="item.mes_id"
-        :item="item"
-        @preview="previewHandler"
-      ></message-item>
-    </view>
-  </mescroll-uni>
+      <!-- 推送次数提示弹窗 -->
+      <u-modal
+        v-model="tipModalVisible"
+        :title="modalOptions.title"
+        :content="modalOptions.content"
+        :mask-close-able="true"
+      >
+        <template v-slot:confirm-button>
+          <view class="modal-btns">
+            <button class="share-btn" plain @click="toUpgrade">去升级</button>
+            <button class="share-btn" plain open-type="share">去分享</button>
+          </view>
+        </template>
+      </u-modal>
+    </mescroll-uni>
+  </view>
 </template>
 
 <script setup lang="ts">
@@ -35,12 +51,16 @@ import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { messageApi, mineApi } from '@/api'
 import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
 import MessageItem from '@/components/MessageItem'
+import { useUserStore } from '@/store'
+import vipIcon from '@/static/member/vip.png'
+import svipIcon from '@/static/member/svip.png'
 
 const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onPageScroll,
   onReachBottom
 )
 
+const userStore = useUserStore()
 const data = reactive({ tableData: [], totalSize: 0 })
 
 const scrollOptions = reactive({
@@ -132,11 +152,50 @@ const addNoticeNum = () => {
   mineApi.addNoticeNum({ source_user_id: shareId.value })
 }
 
-onLoad((option) => {
+// 用户信息请求 & 判断推送次数是否已用完
+const userLevelEnum = {
+  2: vipIcon,
+  3: svipIcon
+}
+const tipModalVisible = ref(false)
+const modalOptions = {
+  title: '温馨提示',
+  content: '今日推送次数已用完，分享、升级得推送次数。'
+}
+const getUserInfo = () => {
+  mineApi.getUserInfo().then(({ status, data: userData }) => {
+    if (status !== 1) return
+    const userInfo = {
+      avatar: 'https://www.lovecf.cn/app/logo.png',
+      userName: '秒速球',
+      userId: userData.user_id,
+      freeNoticeNum: userData.notice_num_free,
+      rewardNoticeNum: userData.notice_num_reward,
+      userLevel: userData.user_level,
+      memberIcon: userLevelEnum[userData.user_level],
+      expireDate: userData.user_level_expire_date
+    }
+    userStore.setUserInfo(userInfo)
+    if (userInfo.freeNoticeNum + userInfo.rewardNoticeNum === 0) {
+      tipModalVisible.value = true
+      // 分享链接携带用户id
+      uni.$u.mpShare.path = `/pages/message/index?shareId=${userInfo.userId}`
+      uni.$u.mpShare.imageUrl = 'https://www.lovecf.cn/app/share.png'
+    }
+  })
+}
+// 去升级
+const toUpgrade = () => {
+  uni.navigateTo({ url: '/pages/mine/detail/member' })
+}
+
+onLoad(async (option) => {
   if (option.shareId) {
     shareId.value = option.shareId && Number(option.shareId)
-    addNoticeNum()
+    await addNoticeNum()
   }
+  // 判断推送次数是否已用完
+  getUserInfo()
 })
 
 const canReset = ref(false)
@@ -161,5 +220,23 @@ onShow(() => {
 .message-list {
   background-color: #f0f0f0;
   padding-bottom: 10px;
+}
+.modal-btns {
+  display: flex;
+  height: 100%;
+  .share-btn {
+    flex: 1;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    line-height: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    color: $main-color;
+    text-align: center;
+  }
+  .share-btn:first-child {
+    border-right: 1px solid #e5e5e5;
+  }
 }
 </style>

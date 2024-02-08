@@ -4,8 +4,11 @@ interface IUserInfo {
   avatar: any
   userName: string
   userId: number
-  noticeNum: number
+  freeNoticeNum: number
+  rewardNoticeNum: number
   userLevel: number
+  memberIcon: any
+  expireDate: string
 }
 
 const useUserStore = defineStore('user', {
@@ -13,20 +16,8 @@ const useUserStore = defineStore('user', {
     userInfo: {}
   }),
   actions: {
-    isLogin() {
-      return new Promise((resolve) =>
-        uni.checkSession({
-          success: () => {
-            resolve(true)
-          },
-          fail: () => {
-            resolve(false)
-          }
-        })
-      )
-    },
     setUserInfo(userInfo: IUserInfo): void {
-      this.userInfo = userInfo
+      this.userInfo = { ...this.userInfo, ...userInfo }
     }
   }
 })
