@@ -30,19 +30,20 @@
       </view>
     </view>
     <template v-if="props.item.pic_list.length">
-      <div class="img-container">
-        <div
+      <view class="img-container">
+        <view
           class="img-item"
           v-for="(it, index) in props.item.pic_list"
           :key="index"
         >
           <image
-            class="content-img"
             :src="it"
+            mode="aspectFill"
+            class="content-img"
             @click="previewHandler(it)"
           ></image>
-        </div>
-      </div>
+        </view>
+      </view>
     </template>
     <view
       v-if="props.item.needExpand"
@@ -153,7 +154,6 @@ const previewHandler = (url: string) => {
       left: 0;
       width: 100%;
       height: 100%;
-      background-size: contain;
     }
   }
 }

@@ -29,19 +29,20 @@
         />
       </view>
       <template v-if="data.item.pic_list.length">
-        <div class="img-container">
-          <div
+        <view class="img-container">
+          <view
             class="img-item"
             v-for="(it, index) in data.item.pic_list"
             :key="index"
           >
             <image
-              class="content-img"
               :src="it"
+              mode="aspectFill"
+              class="content-img"
               @click="previewHandler(it)"
             ></image>
-          </div>
-        </div>
+          </view>
+        </view>
       </template>
     </view>
     <view class="copyright-tips">

@@ -192,7 +192,7 @@ onPullDownRefresh(async () => {
     border: none;
     line-height: 27px;
     font-size: 13px;
-    color: #909399;
+    color: #f59e0b;
     text-align: right;
   }
 }
