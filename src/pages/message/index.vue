@@ -189,7 +189,18 @@ const toUpgrade = () => {
   uni.navigateTo({ url: '/pages/mine/detail/member' })
 }
 
+const canReset = ref(false)
+// 预览时无需触发onShow
+const previewHandler = () => {
+  canReset.value = false
+}
+
 onLoad(async (option) => {
+  if (canReset.value) {
+    getMescroll().resetUpScroll()
+    getMescroll().scrollTo(0, 0)
+  }
+  canReset.value = true
   if (option.shareId) {
     shareId.value = option.shareId && Number(option.shareId)
     await addNoticeNum()
@@ -198,19 +209,7 @@ onLoad(async (option) => {
   getUserInfo()
 })
 
-const canReset = ref(false)
-// 预览时无需触发onShow
-const previewHandler = () => {
-  canReset.value = false
-}
-
 onShow(() => {
-  // 返回刷新
-  if (canReset.value) {
-    getMescroll().resetUpScroll()
-    getMescroll().scrollTo(0, 0)
-  }
-  canReset.value = true
   uni.$u.mpShare.path = ''
   uni.$u.mpShare.imageUrl = ''
 })

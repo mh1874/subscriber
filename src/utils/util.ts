@@ -2,7 +2,6 @@
  * 判断消息内容是否需要做展开处理
  * 文本超过7行 或 图片超过1个
  * @param message
- * @param picList
  * @returns boolean
  */
 export const shouldExpandContent = (message: string) => {
