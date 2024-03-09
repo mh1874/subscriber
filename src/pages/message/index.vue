@@ -140,10 +140,10 @@ const upCallback = async (mescroll) => {
 }
 
 // 滚动通知列表
-const noticeList = ['秒级响应、极速推送，关于秒速球']
-// 跳转我的-关于页面
+const noticeList = ['限时邀请新用户，送会员啦！']
+// 跳转我的-活动页面
 const toAbout = () => {
-  uni.navigateTo({ url: '/pages/mine/detail/about' })
+  uni.navigateTo({ url: '/pages/mine/detail/activity' })
 }
 
 // 接收分享参数相关

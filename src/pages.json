@@ -40,6 +40,12 @@
       }
     },
     {
+      "path": "pages/mine/detail/activity",
+      "style": {
+        "navigationBarTitleText": "会员限时送"
+      }
+    },
+    {
       "path": "pages/mine/detail/member",
       "style": {
         "navigationBarTitleText": "会员升级"

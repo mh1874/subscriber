@@ -113,10 +113,17 @@ const detailList = [
     title: '消息提醒设置（推送需要）',
     type: 'important'
   },
+  // {
+  //   key: 'activity',
+  //   icon: 'share',
+  //   title: '限时邀请新用户，送会员啦',
+  //   type: 'important'
+  // },
   {
     key: 'share',
     icon: 'share',
-    title: '邀新得推送次数',
+    title: '邀新限时送会员啦 🎉 ',
+    type: 'important',
     actionType: 'share'
   },
   { key: 'member', icon: 'integral', title: '会员升级' },
@@ -183,7 +190,7 @@ onPullDownRefresh(async () => {
 }
 .vital-item {
   ::v-deep .u-cell {
-    color: #f59e0b;
+    color: $title-color;
   }
 }
 ::v-deep .u-cell__value {
@@ -192,7 +199,7 @@ onPullDownRefresh(async () => {
     border: none;
     line-height: 27px;
     font-size: 13px;
-    color: #f59e0b;
+    color: $title-color;
     text-align: right;
   }
 }
