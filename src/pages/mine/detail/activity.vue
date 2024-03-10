@@ -11,25 +11,39 @@
         <text class="keyword ml-8">秒速球</text>
         <text> 上线一个月啦，为了感谢大家的支持，我们特别推出</text>
         <text class="keyword">“邀请好友，共享会员”</text>
-        <text>活动，活动详情如下：</text>
+        <text>活动!</text>
       </view>
-      <view class="section">
-        <text class="sub-title">1. 邀请奖励</text>
-        ：在活动期间，每邀请一位新用户注册并使用秒速球，将有机会获得
+      <u-divider
+        half-width="200"
+        border-color="#f59e0b"
+        bg-color="#f0fdfa"
+        color="#f59e0b"
+        margin-bottom="30"
+      >
+        活动详情
+      </u-divider>
+      <view class="section mb-1">
+        <view>
+          <u-icon
+            name="man-add"
+            size="30"
+            color="#f59e0b"
+            class="mr-1"
+          ></u-icon>
+          <text class="sub-title mr-1">邀请奖励</text>
+        </view>
+        在活动期间，每邀请一位新用户注册并使用秒速球，将有机会获得
         <text class="keyword">1 ~ 5 天</text>
         的超级会员体验（最多可累计至
         <text class="keyword">30 天</text>
         ）。超级会员享有无限消息推送的特权！
       </view>
-      <view class="section">
-        <text class="sub-title">2. 分享方式</text>
-        ：您可以通过下方图片中的多种渠道分享小程序，特别是那些人数众多的股票交流群，让更多朋友加入
-        <text class="keyword">秒速球</text>
-        的大家庭。
-      </view>
-      <view class="section">
-        <text class="sub-title">3. 已有会员</text>
-        ：对于已经加入
+      <view class="section mb-1">
+        <view>
+          <u-icon name="heart" size="30" color="#f59e0b" class="mr-1"></u-icon>
+          <text class="sub-title mr-1">已有会员</text>
+        </view>
+        对于已经加入
         <text class="keyword">秒速球</text>
         的高级会员，我们将直接为您升级至超级会员，已经是超级会员的用户将额外获得一个月的会员期限（自动生效）。
       </view>
@@ -39,13 +53,16 @@
         ，欢迎大家踊跃参与！
       </view>
       <view class="ending">
-        感谢大家对
-        <text class="keyword">秒速球</text>
-        的支持与推荐，我们期待与您一起在股市中共创辉煌！立即行动，
-        <u-button type="warning" size="mini" open-type="share">
-          邀请好友
-        </u-button>
-        享更多会员福利吧！
+        <view class="section">
+          感谢大家对
+          <text class="keyword">秒速球</text>
+          的支持与推荐，可以通过下方“邀请好友”按钮分享小程序（分享到活跃的股票交流群可以更快的获得奖励）。
+          期待与您一起在股市中共创辉煌！立刻行动，
+          <u-button type="error" size="mini" open-type="share">
+            邀请好友
+          </u-button>
+          享更多会员福利吧！
+        </view>
       </view>
     </view>
   </view>
@@ -86,10 +103,10 @@ onShow(() => {
   }
 
   .content {
-    line-height: 24px;
+    line-height: 28px;
     .description {
       font-size: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       position: relative;
       .logo {
         position: absolute;
