@@ -157,7 +157,7 @@ const userLevelEnum = {
   2: vipIcon,
   3: svipIcon
 }
-const tipModalVisible = ref(true)
+const tipModalVisible = ref(false)
 // 今日推送次数已用完，分享、升级得推送次数。
 const modalOptions = {
   title: '温馨提示',
