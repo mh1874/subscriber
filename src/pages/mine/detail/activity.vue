@@ -88,13 +88,13 @@ onShow(() => {
   .title {
     font-size: 16px;
     font-weight: bold;
-    color: $title-color;
+    color: $warning-color;
     margin-bottom: 20px;
   }
 
   .sub-title {
     font-weight: bold;
-    color: $title-color;
+    color: $warning-color;
   }
 
   .keyword {

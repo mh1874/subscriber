@@ -142,7 +142,7 @@ interface MembershipData {
 }
 
 const tabs = [
-  { label: '高级会员VIP', value: 'premium' },
+  // { label: '高级会员VIP', value: 'premium' },
   { label: '超级会员SVIP', value: 'super' }
 ]
 
@@ -192,12 +192,18 @@ const getIcon = (icon) => {
   }
 }
 
-const selectedTab = ref<'premium' | 'super'>('premium')
-
+const selectedTab = ref<'premium' | 'super'>('super')
+// {
+//   id: 1,
+//   type: '',
+//   price: 199,
+//   days: 375,
+//   extraDays: 10
+// }
 const selectedMembership = ref<SelectedMembership>({
-  id: 1,
+  id: 4,
   type: '',
-  price: 199,
+  price: 499,
   days: 375,
   extraDays: 10
 })
@@ -259,9 +265,17 @@ const buyMembership = (): void => {
       signType: data.signType,
       paySign: data.paySign,
       success(res) {
+        uni.showToast({
+          title: '支付成功',
+          icon: 'none'
+        })
         uni.switchTab({ url: '/pages/mine/index' })
       },
       fail(res) {
+        uni.showToast({
+          title: '支付失败',
+          icon: 'none'
+        })
         console.log('pay fail ==>', res)
       }
     })

@@ -27,7 +27,8 @@
           <u-button type="warning" size="mini" open-type="share">
             分享小程序
           </u-button>
-          邀请新用户可获取额外奖励次数(每日不清零，长期有效)，还可通过
+          <!-- 邀请新用户可获取额外奖励次数(每日不清零，长期有效)，还可通过 -->
+          邀请新用户限时送会员！，<br />也可以直接通过
           <u-button type="warning" size="mini" @click="toDetail('member')">
             升级会员
           </u-button>

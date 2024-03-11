@@ -14,7 +14,7 @@
             font-size="20rpx"
             mode="vertical"
             :duration="3000"
-            type="warning"
+            type="error"
             more-icon
             :list="noticeList"
           ></u-notice-bar>
@@ -157,10 +157,11 @@ const userLevelEnum = {
   2: vipIcon,
   3: svipIcon
 }
-const tipModalVisible = ref(false)
+const tipModalVisible = ref(true)
+// 今日推送次数已用完，分享、升级得推送次数。
 const modalOptions = {
   title: '温馨提示',
-  content: '今日推送次数已用完，分享、升级得推送次数。'
+  content: '今日推送次数已用完，分享、升级限时送会员！'
 }
 const getUserInfo = () => {
   mineApi.getUserInfo().then(({ status, data: userData }) => {

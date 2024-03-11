@@ -190,7 +190,7 @@ onPullDownRefresh(async () => {
 }
 .vital-item {
   ::v-deep .u-cell {
-    color: $title-color;
+    color: $danger-color;
   }
 }
 ::v-deep .u-cell__value {
@@ -198,8 +198,8 @@ onPullDownRefresh(async () => {
     padding: 0;
     border: none;
     line-height: 27px;
-    font-size: 13px;
-    color: $title-color;
+    font-size: 14px;
+    color: $danger-color;
     text-align: right;
   }
 }
