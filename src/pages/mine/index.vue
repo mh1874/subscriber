@@ -38,7 +38,7 @@
         </view>
       </view>
     </view>
-    <view class="mb-4" @click="toDetail('member')">
+    <view class="mb-4" @click="toDetail('about')">
       <u-notice-bar
         font-size="20rpx"
         mode="vertical"
@@ -104,7 +104,8 @@ const getUserInfo = () => {
 }
 
 // 滚动通知列表
-const noticeList = ['会员超值购！SVIP低价抢购中', '特惠！SVIP低至0.79元/天']
+// const noticeList = ['会员超值购！SVIP低价抢购中', '特惠！SVIP低至0.79元/天']
+const noticeList = ['对功能有疑问、建议，可随时联系我们！']
 
 const detailList = [
   {
