@@ -35,7 +35,7 @@
       >
         <template v-slot:confirm-button>
           <view class="modal-btns">
-            <button class="share-btn" plain @click="toUpgrade">去升级</button>
+            <button class="share-btn" plain @click="toUpgrade">取消</button>
             <button class="share-btn" plain open-type="share">去分享</button>
           </view>
         </template>
@@ -187,7 +187,8 @@ const getUserInfo = () => {
 }
 // 去升级
 const toUpgrade = () => {
-  uni.navigateTo({ url: '/pages/mine/detail/member' })
+  tipModalVisible.value = false
+  // uni.navigateTo({ url: '/pages/mine/detail/member' })
 }
 
 const canReset = ref(false)
