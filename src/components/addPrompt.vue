@@ -1,8 +1,9 @@
 <template>
   <view
     class="container"
-    v-if="show && showTip"
+    v-if="showTip"
     :style="{ top: position.top + 'px', right: position.right + 'px' }"
+    @click="closeTip"
   >
     <view class="arrow"></view>
     <view class="body">
@@ -18,10 +19,6 @@ import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 
 const props = defineProps({
-  show: {
-    type: Boolean,
-    default: true
-  },
   text: {
     type: String,
     default: '1. 点击上方【···】\n 2.【添加到我的小程序】，访问更方便！'
@@ -46,6 +43,11 @@ const initTip = () => {
   const storedTip = uni.getStorageSync('PROMPT_FLAG')
   showTip.value = typeof storedTip === 'boolean' ? storedTip : true
   updatePosition()
+}
+
+const closeTip = () => {
+  showTip.value = false
+  uni.setStorageSync('PROMPT_FLAG', false)
 }
 
 onShow(() => {

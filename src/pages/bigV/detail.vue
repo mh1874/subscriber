@@ -20,9 +20,9 @@
 import { ref, reactive } from 'vue'
 import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
+import MessageItem from '@/components/messageItem.vue'
 import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
 import { messageApi } from '@/api'
-import MessageItem from '@/components/MessageItem'
 
 const { mescrollInit, downCallback } = useMescroll(onPageScroll, onReachBottom)
 

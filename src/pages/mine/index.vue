@@ -115,7 +115,7 @@ const detailList = [
     type: 'important'
   },
   {
-    key: 'upgrade',
+    key: 'activity',
     icon: 'thumb-up',
     title: '获取更多推送次数 ~ ',
     type: 'important'
@@ -191,6 +191,7 @@ onPullDownRefresh(async () => {
 }
 .vital-item {
   ::v-deep .u-cell {
+    font-weight: 400;
     color: $warning-color;
   }
 }

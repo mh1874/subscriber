@@ -9,12 +9,12 @@
       @emptyclick="toBigV"
     >
       <view class="message-list">
-        <view class="mb-2" @click="toAbout">
+        <view class="mb-2" @click="toActivity">
           <u-notice-bar
             font-size="20rpx"
             mode="vertical"
             :duration="3000"
-            type="error"
+            type="warning"
             more-icon
             :list="noticeList"
           ></u-notice-bar>
@@ -34,13 +34,18 @@
       >
         <template v-slot:confirm-button>
           <view class="modal-btns">
-            <button class="share-btn" plain @click="toUpgrade">取消</button>
-            <button class="share-btn" plain open-type="share">去分享</button>
+            <button class="action-btn confirm" plain @click="toActivity">
+              去看看
+            </button>
+            <button class="action-btn cancel" plain @click="closeTipModal">
+              取消
+            </button>
           </view>
         </template>
       </u-modal>
     </mescroll-uni>
-    <add-tip />
+    <!-- 添加到我的小程序提示 -->
+    <add-prompt />
   </view>
 </template>
 
@@ -57,8 +62,8 @@ import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { messageApi, mineApi } from '@/api'
 import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
 import { useUserStore } from '@/store'
-import AddTip from '@/components/addTip.vue'
-import MessageItem from '@/components/MessageItem'
+import AddPrompt from '@/components/addPrompt.vue'
+import MessageItem from '@/components/messageItem.vue'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
 
@@ -147,9 +152,9 @@ const upCallback = async (mescroll: any) => {
 }
 
 // 滚动通知列表
-const noticeList = ['限时邀请新用户，送会员啦！']
-// 跳转我的-活动页面
-const toAbout = () => {
+const noticeList = ['多种方式享无限推送次数 🎉 🎉 🎉']
+// 跳转活动页面
+const toActivity = () => {
   uni.navigateTo({ url: '/pages/mine/detail/activity' })
 }
 
@@ -168,7 +173,7 @@ const tipModalVisible = ref(false)
 // 今日推送次数已用完，分享、升级得推送次数。
 const modalOptions = {
   title: '温馨提示',
-  content: '今日推送次数已用完，分享、升级限时送会员！'
+  content: '今日推送次数已用完，分享、观看广告、升级 限时送会员！'
 }
 const getUserInfo = () => {
   mineApi.getUserInfo().then(({ status, data: userData }) => {
@@ -192,10 +197,9 @@ const getUserInfo = () => {
     }
   })
 }
-// 去升级
-const toUpgrade = () => {
+// 关闭提示弹窗
+const closeTipModal = () => {
   tipModalVisible.value = false
-  // uni.navigateTo({ url: '/pages/mine/detail/member' })
 }
 
 const canReset = ref(false)
@@ -227,24 +231,28 @@ onShow(() => {
 <style lang="scss" scoped>
 .message-list {
   background-color: #f0f0f0;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 .modal-btns {
   display: flex;
   height: 100%;
-  .share-btn {
+  .action-btn {
     flex: 1;
     padding: 0;
     border: none;
     border-radius: 0;
     line-height: 50px;
     font-size: 15px;
-    font-weight: 700;
-    color: $main-color;
     text-align: center;
   }
-  .share-btn:first-child {
+  .confirm {
+    font-weight: 600;
+    color: $main-color;
     border-right: 1px solid #e5e5e5;
+  }
+  .cancel {
+    color: #606266;
+    font-weight: 500;
   }
 }
 </style>
