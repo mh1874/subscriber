@@ -114,19 +114,19 @@ const detailList = [
     title: '消息提醒设置（推送需要）',
     type: 'important'
   },
-  // {
-  //   key: 'activity',
-  //   icon: 'share',
-  //   title: '限时邀请新用户，送会员啦',
-  //   type: 'important'
-  // },
   {
-    key: 'share',
-    icon: 'share',
-    title: '邀新限时送会员啦 🎉 ',
-    type: 'important',
-    actionType: 'share'
+    key: 'upgrade',
+    icon: 'thumb-up',
+    title: '获取更多推送次数 ~ ',
+    type: 'important'
   },
+  // {
+  //   key: 'share',
+  //   icon: 'share',
+  //   title: '邀新限时送会员啦 🎉 ',
+  //   type: 'important',
+  //   actionType: 'share'
+  // },
   // { key: 'member', icon: 'integral', title: '会员升级' },
   { key: 'problem', icon: 'question', title: '常见问题' },
   { key: 'feedback', icon: 'email', title: '反馈和建议' },
@@ -191,7 +191,7 @@ onPullDownRefresh(async () => {
 }
 .vital-item {
   ::v-deep .u-cell {
-    color: $danger-color;
+    color: $warning-color;
   }
 }
 ::v-deep .u-cell__value {

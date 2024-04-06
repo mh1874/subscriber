@@ -175,7 +175,7 @@ const superMembershipData: MembershipData = {
   ]
 }
 
-const getIcon = (icon) => {
+const getIcon = (icon: string) => {
   switch (icon) {
     case 'fifty':
       return thirtyIcon

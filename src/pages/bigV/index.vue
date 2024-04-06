@@ -81,10 +81,10 @@
 <script setup lang="ts">
 import { ref, reactive, nextTick, watch } from 'vue'
 import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
-import { bigVApi } from '@/api'
-import BigV from '@/components/bigV.vue'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
+import { bigVApi } from '@/api'
 import { isEmpty } from '@/utils/util'
+import BigV from '@/components/bigV.vue'
 
 const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onPageScroll,

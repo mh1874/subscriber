@@ -46,6 +46,12 @@
       }
     },
     {
+      "path": "pages/mine/detail/upgrade",
+      "style": {
+        "navigationBarTitleText": "秒速球"
+      }
+    },
+    {
       "path": "pages/mine/detail/member",
       "style": {
         "navigationBarTitleText": "会员升级"

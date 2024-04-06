@@ -34,9 +34,7 @@
         </view>
         在活动期间，每邀请一位新用户注册并使用秒速球，将有机会获得
         <text class="keyword">1 ~ 5 天</text>
-        的超级会员体验（最多可累计至
-        <text class="keyword">30 天</text>
-        ）。超级会员享有无限消息推送的特权！
+        的超级会员体验。超级会员享有无限消息推送的特权！
       </view>
       <view class="section mb-1">
         <view>
