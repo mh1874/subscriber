@@ -26,7 +26,7 @@ import MessageItem from '@/components/MessageItem'
 
 const { mescrollInit, downCallback } = useMescroll(onPageScroll, onReachBottom)
 
-const bigVId: number = ref(0)
+const bigVId = ref<number>(0)
 const data = reactive({ tableData: [], totalSize: 0 })
 
 const scrollOptions = reactive({
@@ -35,7 +35,7 @@ const scrollOptions = reactive({
 })
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
-const upCallback = (mescroll) => {
+const upCallback = (mescroll: any) => {
   messageApi
     .getMessageListFromBigV({
       bigv_id: bigVId.value,
@@ -45,7 +45,7 @@ const upCallback = (mescroll) => {
     .then((res) => {
       if (res.status !== 1) return
       const curPageData =
-        res.data.map((it) => {
+        res.data.map((it: any) => {
           const { text: messageText, picList: messagePicList } =
             extractImagesFromHTML(it.message)
           const { text: retweetedText, picList: retweetedPicList } =
@@ -63,7 +63,7 @@ const upCallback = (mescroll) => {
             ...it,
             message: messageText,
             retweeted_message: retweetedText,
-            needExpand: shouldExpandContent(messageText, picList),
+            needExpand: shouldExpandContent(messageText),
             pic_list: picList
           }
         }) || [] // 当前页数据
@@ -79,7 +79,7 @@ const upCallback = (mescroll) => {
     })
 }
 
-onLoad((option) => {
+onLoad((option: any) => {
   bigVId.value = option.id && Number(option.id)
 })
 

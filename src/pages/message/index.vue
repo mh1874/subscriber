@@ -23,7 +23,6 @@
           v-for="item in data.tableData"
           :key="item.mes_id"
           :item="item"
-          @preview="previewHandler"
         ></message-item>
       </view>
       <!-- 推送次数提示弹窗 -->
@@ -41,17 +40,25 @@
         </template>
       </u-modal>
     </mescroll-uni>
+    <add-tip />
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
+import {
+  onPageScroll,
+  onReachBottom,
+  onLoad,
+  onHide,
+  onShow
+} from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { messageApi, mineApi } from '@/api'
 import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
-import MessageItem from '@/components/MessageItem'
 import { useUserStore } from '@/store'
+import AddTip from '@/components/addTip.vue'
+import MessageItem from '@/components/MessageItem'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
 
@@ -83,7 +90,7 @@ const toBigV = () => {
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
-const upCallback = async (mescroll) => {
+const upCallback = async (mescroll: any) => {
   messageApi
     .getMessageListFromUser({
       count: mescroll.size,
@@ -110,7 +117,7 @@ const upCallback = async (mescroll) => {
             ...it,
             message: messageText,
             retweeted_message: retweetedText,
-            needExpand: shouldExpandContent(messageText, picList),
+            needExpand: shouldExpandContent(messageText),
             pic_list: picList
           }
         }) || [] // 当前页数据
@@ -119,7 +126,7 @@ const upCallback = async (mescroll) => {
       for (let i = 0; i < curPageData.length; i++) {
         const newItem = curPageData[i]
         const existingItemIndex = data.tableData.findIndex(
-          (item) => item.mes_id === newItem.mes_id
+          (item: any) => item.mes_id === newItem.mes_id
         )
         if (existingItemIndex !== -1) {
           // 数据已存在，用新的数据替换旧的数据
@@ -192,12 +199,7 @@ const toUpgrade = () => {
 }
 
 const canReset = ref(false)
-// 预览时无需触发onShow
-const previewHandler = () => {
-  canReset.value = false
-}
-
-onLoad(async (option) => {
+onLoad(async (option: any) => {
   if (canReset.value) {
     getMescroll().resetUpScroll()
     getMescroll().scrollTo(0, 0)
@@ -209,6 +211,11 @@ onLoad(async (option) => {
   }
   // 判断推送次数是否已用完
   getUserInfo()
+})
+
+onHide(() => {
+  // 消息列表页面隐藏时关闭"添加我的小程序"提示
+  uni.setStorageSync('PROMPT_FLAG', false)
 })
 
 onShow(() => {
