@@ -23,7 +23,7 @@
         <view>
           <text class="keyword">成本低</text>
           普通用户每日可享受
-          <text color-orange>8</text> 次推送次数，
+          <text color-orange>6</text> 次推送次数，
           <u-button type="warning" size="mini" open-type="share">
             分享小程序
           </u-button>
