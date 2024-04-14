@@ -43,7 +43,7 @@ const upgradeModalRef = ref<HTMLElement | null>(null)
 const modalOptions = ref({
   title: '温馨提示',
   content:
-    '因作者精力有限=_=，暂只接受会员的收录建议，现可通过分享、观看广告、升级 成为我们的会员！'
+    '因作者精力有限=_=，暂只接受会员的收录建议，可以通过 分享、观看广告、升级 成为我们的会员！'
 })
 
 // 是否为普通用户
