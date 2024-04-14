@@ -25,25 +25,9 @@
           :item="item"
         ></message-item>
       </view>
-      <!-- 推送次数提示弹窗 -->
-      <u-modal
-        v-model="tipModalVisible"
-        :title="modalOptions.title"
-        :content="modalOptions.content"
-        :mask-close-able="true"
-      >
-        <template v-slot:confirm-button>
-          <view class="modal-btns">
-            <button class="action-btn confirm" plain @click="toActivity">
-              去看看
-            </button>
-            <button class="action-btn cancel" plain @click="closeTipModal">
-              取消
-            </button>
-          </view>
-        </template>
-      </u-modal>
     </mescroll-uni>
+    <!-- 推送次数提示弹窗 -->
+    <upgrade-modal ref="upgradeModalRef" :options="modalOptions" />
     <!-- 添加到我的小程序提示 -->
     <add-prompt />
   </view>
@@ -63,6 +47,7 @@ import { messageApi, mineApi } from '@/api'
 import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
 import { useUserStore } from '@/store'
 import AddPrompt from '@/components/addPrompt.vue'
+import UpgradeModal from '@/components/upgradeModal.vue'
 import MessageItem from '@/components/messageItem.vue'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
@@ -74,6 +59,11 @@ const { mescrollInit, downCallback, getMescroll } = useMescroll(
 
 const userStore = useUserStore()
 const data = reactive({ tableData: [], totalSize: 0 })
+const upgradeModalRef = ref<HTMLElement | null>(null)
+const modalOptions = ref({
+  title: '温馨提示',
+  content: '今日推送次数已用完，分享、观看广告、升级 限时送会员！'
+})
 
 const scrollOptions = reactive({
   up: {
@@ -169,12 +159,7 @@ const userLevelEnum = {
   2: vipIcon,
   3: svipIcon
 }
-const tipModalVisible = ref(false)
-// 今日推送次数已用完，分享、升级得推送次数。
-const modalOptions = {
-  title: '温馨提示',
-  content: '今日推送次数已用完，分享、观看广告、升级 限时送会员！'
-}
+
 const getUserInfo = () => {
   mineApi.getUserInfo().then(({ status, data: userData }) => {
     if (status !== 1) return
@@ -190,16 +175,9 @@ const getUserInfo = () => {
     }
     userStore.setUserInfo(userInfo)
     if (userInfo.freeNoticeNum + userInfo.rewardNoticeNum === 0) {
-      tipModalVisible.value = true
-      // 分享链接携带用户id
-      uni.$u.mpShare.path = `/pages/message/index?shareId=${userInfo.userId}`
-      uni.$u.mpShare.imageUrl = 'https://www.lovecf.cn/app/share.png'
+      upgradeModalRef.value && upgradeModalRef.value.openModal()
     }
   })
-}
-// 关闭提示弹窗
-const closeTipModal = () => {
-  tipModalVisible.value = false
 }
 
 const canReset = ref(false)
@@ -232,27 +210,5 @@ onShow(() => {
 .message-list {
   background-color: #f0f0f0;
   padding-bottom: 5px;
-}
-.modal-btns {
-  display: flex;
-  height: 100%;
-  .action-btn {
-    flex: 1;
-    padding: 0;
-    border: none;
-    border-radius: 0;
-    line-height: 50px;
-    font-size: 15px;
-    text-align: center;
-  }
-  .confirm {
-    font-weight: 600;
-    color: $main-color;
-    border-right: 1px solid #e5e5e5;
-  }
-  .cancel {
-    color: #606266;
-    font-weight: 500;
-  }
 }
 </style>

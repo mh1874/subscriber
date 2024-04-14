@@ -39,7 +39,7 @@
         <view class="leading-6 mb-3">
           欢迎使用并推荐秒速球，任何问题都可通过
           <u-button type="warning" size="mini" @click="toDetail('feedback')">
-            反馈和意见
+            收录建议
           </u-button>
           告知我们
         </view>

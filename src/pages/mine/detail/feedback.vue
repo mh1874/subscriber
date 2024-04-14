@@ -1,6 +1,6 @@
 <template>
   <view class="feedback-page">
-    <view class="text-base font-medium mb-3">反馈和建议</view>
+    <view class="text-base font-medium mb-3">还想关注其他牛人？</view>
     <view class="mb-7">
       <u-input
         trim
@@ -13,30 +13,48 @@
         :placeholder="feedbackOptions.placeholder"
       />
       <view class="tips">
-        反馈的内容我们会尽快处理，会优先处理会员建议，请耐心等待。如有必要，可以去【关于秒速球】页面添加微信联系我们~。
+        收录建议我们会尽快处理，请耐心等待。如有必要，可以通过
+        <text class="text-orange-400" @click="toAbout">【关于秒速球】</text>
+        页面的作者微信联系我们~。
       </view>
     </view>
     <u-button type="success" plain @click="submitFeedback"> 提交 </u-button>
+    <!-- 推送次数提示弹窗 -->
+    <upgrade-modal ref="upgradeModalRef" :options="modalOptions" />
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
-import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
 import { useUserStore } from '@/store'
 import { mineApi } from '@/api'
+import UpgradeModal from '@/components/upgradeModal.vue'
 
+const userStore = useUserStore()
 const feedbackVal = ref('')
 const feedbackOptions = {
   border: true,
   height: 200,
   autoHeight: true,
   maxlength: 500,
-  placeholder: '请输入您要反馈的问题或建议'
+  placeholder: '请输入想关注的牛人信息 ~ '
 }
+const upgradeModalRef = ref<HTMLElement | null>(null)
+const modalOptions = ref({
+  title: '温馨提示',
+  content:
+    '因作者精力有限=_=，暂只接受会员的收录建议，现可通过分享、观看广告、升级 成为我们的会员！'
+})
+
+// 是否为普通用户
+const isNormalUser = computed(() => userStore.userInfo?.userLevel === 1)
 
 const submitFeedback = (): void => {
+  // 暂只接受会员的收录建议
+  if (isNormalUser.value) {
+    upgradeModalRef.value && upgradeModalRef.value.openModal()
+    return
+  }
   if (!feedbackVal.value) {
     uni.showToast({ title: '请输入反馈内容', icon: 'none' })
     return
@@ -55,8 +73,10 @@ const submitFeedback = (): void => {
       feedbackVal.value = ''
     })
 }
-
-onLoad(() => {})
+// 跳转【关于秒速球】
+const toAbout = () => {
+  uni.navigateTo({ url: '/pages/mine/detail/about' })
+}
 </script>
 
 <style lang="scss" scoped>

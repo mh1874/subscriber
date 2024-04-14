@@ -54,7 +54,7 @@
     {
       "path": "pages/mine/detail/feedback",
       "style": {
-        "navigationBarTitleText": "反馈和建议"
+        "navigationBarTitleText": "收录建议"
       }
     },
     {

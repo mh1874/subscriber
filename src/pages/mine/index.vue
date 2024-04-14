@@ -129,7 +129,7 @@ const detailList = [
   // },
   // { key: 'member', icon: 'integral', title: '会员升级' },
   { key: 'problem', icon: 'question', title: '常见问题' },
-  { key: 'feedback', icon: 'email', title: '反馈和建议' },
+  { key: 'feedback', icon: 'email', title: '收录建议' },
   { key: 'about', icon: 'setting', title: '关于秒速球' }
 ]
 

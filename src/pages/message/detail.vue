@@ -47,7 +47,11 @@
     </view>
     <view class="copyright-tips">
       <text>内容版权归原作者或组织，</text>
-      <text class="font-bold">分享至新用户得推送次数。</text>
+      <text class="text-green-400 font-bold">分享至新用户得推送次数。</text>
+    </view>
+    <!-- 广告位 -->
+    <view class="my-5">
+      <ad unit-id="adunit-014fc7e4ff1c50dc"></ad>
     </view>
   </view>
 </template>
@@ -65,7 +69,7 @@ import {
 
 const { proxy } = getCurrentInstance()
 
-const messageId: number = ref(0)
+const messageId = ref<number>(0)
 const data = reactive({ item: { pic_list: [] } })
 
 const queryMessageDetail = () => {
@@ -126,7 +130,7 @@ const setShareUrl = () => {
   uni.$u.mpShare.path = url
 }
 
-onLoad((option) => {
+onLoad((option: any) => {
   messageId.value = option.id && Number(option.id)
   queryMessageDetail()
   if (option.shareId) {
@@ -201,7 +205,7 @@ onShow(() => {
 }
 
 .copyright-tips {
-  margin-top: 80px;
+  margin-top: 50px;
   text-align: left;
   font-size: 13px;
   color: #333;
