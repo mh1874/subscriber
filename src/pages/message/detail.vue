@@ -50,7 +50,7 @@
       <text class="text-green-400 font-bold">分享至新用户得推送次数。</text>
     </view>
     <!-- 广告位 -->
-    <view class="my-5">
+    <view class="my-10">
       <ad unit-id="adunit-014fc7e4ff1c50dc"></ad>
     </view>
   </view>
@@ -205,7 +205,7 @@ onShow(() => {
 }
 
 .copyright-tips {
-  margin-top: 50px;
+  margin-top: 80px;
   text-align: left;
   font-size: 13px;
   color: #333;
