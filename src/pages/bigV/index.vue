@@ -91,7 +91,11 @@ const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onReachBottom
 )
 
-const data = reactive({ tableData: [], totalSize: 0, searchData: [] })
+const data = reactive<{ tableData: any; totalSize: number; searchData: any }>({
+  tableData: [],
+  totalSize: 0,
+  searchData: []
+})
 
 const scrollOptions = reactive({
   up: {
@@ -231,6 +235,7 @@ const upCallback = async (mescroll, offsetVal) => {
       data.totalSize = res.total_size
       mescroll.endBySize(curPageData.length, data.totalSize) // 必传参数(当前页的数据个数, 总数据量)
       mescroll.endSuccess(curPageData.length) // 请求成功, 结束加载
+      console.log('data.tableData ==>', data.tableData)
     })
     .catch(() => {
       mescroll.endErr() // 请求失败, 结束加载
