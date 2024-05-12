@@ -28,13 +28,13 @@
             </text>
             次
           </view>
-          <view>
+          <!-- <view>
             奖励推送次数
             <text class="text-orange-400">
               {{ data.userInfo.rewardNoticeNum }}
             </text>
             次
-          </view>
+          </view> -->
         </view>
       </view>
     </view>
@@ -75,26 +75,36 @@ import { reactive, ref } from 'vue'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
 import { useUserStore } from '@/store'
+import { IUserInfo } from '@/types'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
 
-const data = reactive({ userInfo: {} })
+const data = reactive<{ userInfo: IUserInfo }>({
+  userInfo: {
+    avatar: 'https://www.lovecf.cn/app/logo.png',
+    userName: '秒速球',
+    userId: 0,
+    freeNoticeNum: 0,
+    userLevel: 0,
+    memberIcon: null,
+    expireDate: ''
+  }
+})
 const userStore = useUserStore()
 
-const userLevelEnum = {
+const userLevelEnum: any = {
   2: vipIcon,
   3: svipIcon
 }
 
 const getUserInfo = () => {
-  mineApi.getUserInfo().then((res) => {
+  mineApi.getUserInfo().then((res: any) => {
     if (res.status !== 1) return
     data.userInfo = {
-      avatar: 'https://www.lovecf.cn/app/logo.png',
-      userName: '秒速球',
+      ...data.userInfo,
       userId: res.data.user_id,
       freeNoticeNum: res.data.notice_num_free,
-      rewardNoticeNum: res.data.notice_num_reward,
+      // rewardNoticeNum: res.data.notice_num_reward,
       userLevel: res.data.user_level,
       memberIcon: userLevelEnum[res.data.user_level],
       expireDate: res.data.user_level_expire_date
@@ -140,12 +150,15 @@ const toDetail = (key: string) => {
   uni.navigateTo({ url })
 }
 
+// 初次onShow中不请求
+let isNotFirst = false
 onLoad(() => {
   if (userStore.userInfo?.userId) {
     data.userInfo = userStore.userInfo
   } else {
     getUserInfo()
   }
+  isNotFirst = true
 })
 
 onShow(() => {
@@ -153,6 +166,9 @@ onShow(() => {
   const userId = getUserId()
   uni.$u.mpShare.path = `/pages/message/index?shareId=${userId}`
   uni.$u.mpShare.imageUrl = 'https://www.lovecf.cn/app/share.png'
+  if (isNotFirst) {
+    getUserInfo()
+  }
 })
 
 onPullDownRefresh(async () => {

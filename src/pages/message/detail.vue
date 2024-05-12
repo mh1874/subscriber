@@ -51,7 +51,12 @@
     </view>
     <!-- 广告位 -->
     <view class="my-10">
-      <ad unit-id="adunit-014fc7e4ff1c50dc"></ad>
+      <!-- <ad unit-id="adunit-014fc7e4ff1c50dc"></ad> -->
+      <ad
+        unit-id="adunit-a14400ba0fcf7663"
+        ad-type="video"
+        ad-theme="white"
+      ></ad>
     </view>
   </view>
 </template>
@@ -98,7 +103,7 @@ const queryMessageDetail = () => {
       }
     })
     .catch((err) => {
-      console.log(err)
+      console.error(err)
     })
 }
 

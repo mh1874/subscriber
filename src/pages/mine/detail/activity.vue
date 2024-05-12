@@ -32,13 +32,12 @@
         <view class="desc"> 直接升级，立享超级会员体验。 </view>
       </view>
     </view>
-    <view class="post-script">PS：邀请新用户、观看视频广告 奖励可以叠加</view>
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { onLoad, onShow } from '@dcloudio/uni-app'
+import { onShow, onLoad } from '@dcloudio/uni-app'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
 
@@ -56,7 +55,7 @@ const toWatchAds = () => {
       videoAd.value
         .load()
         .then(() => videoAd.value.show())
-        .catch((err) => {
+        .catch(() => {
           uni.showToast({
             title: '视频广告显示失败，请重试',
             icon: 'none'

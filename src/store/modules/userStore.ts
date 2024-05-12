@@ -1,19 +1,17 @@
 import { defineStore } from 'pinia'
-
-interface IUserInfo {
-  avatar: any
-  userName: string
-  userId: number
-  freeNoticeNum: number
-  rewardNoticeNum: number
-  userLevel: number
-  memberIcon: any
-  expireDate: string
-}
+import { IUserInfo } from '@/types'
 
 const useUserStore = defineStore('user', {
   state: () => ({
-    userInfo: {}
+    userInfo: {
+      avatar: 'https://www.lovecf.cn/app/logo.png',
+      userName: '秒速球',
+      userId: 0,
+      freeNoticeNum: 0,
+      userLevel: 0,
+      memberIcon: null,
+      expireDate: ''
+    }
   }),
   actions: {
     setUserInfo(userInfo: IUserInfo): void {

@@ -19,11 +19,12 @@
             :list="noticeList"
           ></u-notice-bar>
         </view>
-        <message-item
-          v-for="item in data.tableData"
-          :key="item.mes_id"
-          :item="item"
-        ></message-item>
+        <view v-for="(item, index) in data.tableData" :key="item.mes_id">
+          <message-item :item="item"></message-item>
+          <view class="ads-content" v-if="isAdsHandler(index + 1)">
+            <ad-custom unit-id="adunit-16a6f5f1941e5437"></ad-custom>
+          </view>
+        </view>
       </view>
     </mescroll-uni>
     <!-- 推送次数提示弹窗 -->
@@ -58,7 +59,10 @@ const { mescrollInit, downCallback, getMescroll } = useMescroll(
 )
 
 const userStore = useUserStore()
-const data = reactive({ tableData: [], totalSize: 0 })
+const data = reactive<{ tableData: any; totalSize: number }>({
+  tableData: [],
+  totalSize: 0
+})
 const upgradeModalRef = ref<HTMLElement | null>(null)
 const modalOptions = ref({
   title: '温馨提示',
@@ -82,6 +86,11 @@ const toBigV = () => {
     data: 1
   })
   uni.switchTab({ url: '/pages/bigV/index' })
+}
+
+// 判断插入广告的位置 第二条之后每三条插入一次
+const isAdsHandler = (index: number) => {
+  return index === 2 || (index > 3 && (index - 2) % 3 === 0)
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
@@ -131,8 +140,9 @@ const upCallback = async (mescroll: any) => {
           data.tableData.push(newItem)
         }
       }
+      // insertAds()
+      // console.log('data.tableData ==>', data.tableData)
       data.totalSize = res.total_size
-
       mescroll.endBySize(curPageData.length, data.totalSize) // 必传参数(当前页的数据个数, 总数据量)
       mescroll.endSuccess(curPageData.length) // 请求成功, 结束加载
     })
@@ -210,5 +220,11 @@ onShow(() => {
 .message-list {
   background-color: #f0f0f0;
   padding-bottom: 5px;
+}
+.ads-content {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 </style>
