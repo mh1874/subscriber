@@ -32,6 +32,7 @@
         <view class="desc"> 直接升级，立享超级会员体验。 </view>
       </view>
     </view>
+    <view class="post-script">PS：邀请新用户、观看视频广告 奖励可以叠加</view>
   </view>
 </template>
 
