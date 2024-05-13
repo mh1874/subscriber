@@ -11,7 +11,7 @@ const useUserStore = defineStore('user', {
       userLevel: 0,
       memberIcon: null,
       expireDate: ''
-    }
+    } as IUserInfo
   }),
   actions: {
     setUserInfo(userInfo: IUserInfo): void {

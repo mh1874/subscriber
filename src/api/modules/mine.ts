@@ -43,10 +43,19 @@ export default {
   },
   /**
    * 获取常见问题
-   * @param content 反馈内容
+   * @param none
    */
   getFaqData(): Promise<any> {
     return request('/user/faq/', {
+      method: 'GET'
+    })
+  },
+  /**
+   * 获取支付页面开关
+   * @param none
+   */
+  getPaySwitch(): Promise<any> {
+    return request('/pay/pay_switch/', {
       method: 'GET'
     })
   }

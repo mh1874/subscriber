@@ -71,7 +71,7 @@
 
 <script setup lang="ts">
 import { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app'
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
 import { useUserStore } from '@/store'

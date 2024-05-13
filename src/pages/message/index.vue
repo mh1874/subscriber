@@ -22,7 +22,10 @@
         <view v-for="(item, index) in data.tableData" :key="item.mes_id">
           <message-item :item="item"></message-item>
           <view class="ads-content" v-if="isAdsHandler(index + 1)">
-            <ad-custom unit-id="adunit-16a6f5f1941e5437"></ad-custom>
+            <ad-custom
+              unit-id="adunit-16a6f5f1941e5437"
+              ad-intervals="30"
+            ></ad-custom>
           </view>
         </view>
       </view>

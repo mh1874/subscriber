@@ -22,7 +22,7 @@
           观看视频广告，即可获得 1 ~ 3 天超级会员体验。
         </view>
       </view>
-      <view class="item">
+      <view class="item" v-if="paySwitch">
         <view class="sub-title">
           <text class="mr-3">直接升级</text>
           <u-button type="warning" size="mini" @click="toUpgrade">
@@ -42,6 +42,7 @@ import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
 
 const videoAd = ref<any>(null)
+const paySwitch = ref<boolean>(false)
 
 const toUpgrade = () => {
   uni.navigateTo({ url: '/pages/mine/detail/member' })
@@ -65,7 +66,21 @@ const toWatchAds = () => {
   }
 }
 
+// 获取是否显示支付开关
+const getPaySwitch = () => {
+  mineApi
+    .getPaySwitch()
+    .then(({ status, data }) => {
+      if (status !== 1) return
+      paySwitch.value = data.pay_switch
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
 onLoad(() => {
+  getPaySwitch()
   // 在页面onLoad回调事件中创建激励视频广告实例
   if (wx.createRewardedVideoAd) {
     videoAd.value = wx.createRewardedVideoAd({
