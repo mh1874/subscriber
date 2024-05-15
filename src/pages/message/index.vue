@@ -99,12 +99,10 @@ const adsMap = [
   'adunit-833ea18507e27b30',
   'adunit-16a6f5f1941e5437'
 ]
-let adsCount = 0
-// 顺序插入广告
+// 乱序插入广告
 const showRandomAds = () => {
-  const ad = adsMap[adsCount]
-  adsCount = (adsCount + 1) % adsMap.length
-  return ad
+  const randomIndex = Math.floor(Math.random() * adsMap.length)
+  return adsMap[randomIndex]
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
