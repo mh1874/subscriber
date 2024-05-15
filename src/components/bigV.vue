@@ -31,7 +31,7 @@
       <u-button
         class="follow-btn mb-3"
         shape="circle"
-        :type="props.item.is_follow ? 'success' : 'warning'"
+        :type="props.item.is_follow ? 'info' : 'success'"
         size="mini"
         @click="handleFollow(1)"
       >
@@ -50,7 +50,7 @@
         <u-button
           class="follow-btn"
           shape="circle"
-          :type="props.item.is_follow_comment ? 'success' : 'warning'"
+          :type="props.item.is_follow_comment ? 'info' : 'success'"
           size="mini"
           @click="handleFollow(2)"
         >

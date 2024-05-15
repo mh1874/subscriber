@@ -22,10 +22,7 @@
         <view v-for="(item, index) in data.tableData" :key="item.mes_id">
           <message-item :item="item"></message-item>
           <view class="ads-content" v-if="isAdsHandler(index + 1)">
-            <ad-custom
-              unit-id="adunit-16a6f5f1941e5437"
-              ad-intervals="30"
-            ></ad-custom>
+            <ad-custom :unit-id="showRandomAds()" ad-intervals="30"></ad-custom>
           </view>
         </view>
       </view>
@@ -94,6 +91,20 @@ const toBigV = () => {
 // 判断插入广告的位置 第二条之后每三条插入一次
 const isAdsHandler = (index: number) => {
   return index === 2 || (index > 3 && (index - 2) % 3 === 0)
+}
+const adsMap = [
+  'adunit-b4d82eba4ee15afd',
+  'adunit-f334561c7129680f',
+  'adunit-e824aaeca0e5c667',
+  'adunit-833ea18507e27b30',
+  'adunit-16a6f5f1941e5437'
+]
+let adsCount = 0
+// 顺序插入广告
+const showRandomAds = () => {
+  const ad = adsMap[adsCount]
+  adsCount = (adsCount + 1) % adsMap.length
+  return ad
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
