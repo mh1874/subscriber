@@ -29,7 +29,6 @@
     </template>
     <div class="flex flex-col">
       <u-button
-        plain
         class="follow-btn mb-3"
         shape="circle"
         :type="props.item.is_follow ? 'success' : 'warning'"
@@ -47,25 +46,26 @@
           </template>
         </view>
       </u-button>
-      <u-button
-        plain
-        class="follow-btn"
-        shape="circle"
-        :type="props.item.is_follow_comment ? 'success' : 'warning'"
-        size="mini"
-        @click="handleFollow(2)"
-      >
-        <view class="flex items-center">
-          <template v-if="props.item.is_follow_comment">
-            <u-icon name="checkmark" size="24" class="mr-1"></u-icon>
-            <text>已订阅评论</text>
-          </template>
-          <template v-else>
-            <u-icon name="plus" size="24" class="mr-1"></u-icon>
-            <text>订阅评论</text>
-          </template>
-        </view>
-      </u-button>
+      <template v-if="props.item.is_follow_comment !== null">
+        <u-button
+          class="follow-btn"
+          shape="circle"
+          :type="props.item.is_follow_comment ? 'success' : 'warning'"
+          size="mini"
+          @click="handleFollow(2)"
+        >
+          <view class="flex items-center">
+            <template v-if="props.item.is_follow_comment">
+              <u-icon name="checkmark" size="24" class="mr-1"></u-icon>
+              <text>已订阅评论</text>
+            </template>
+            <template v-else>
+              <u-icon name="plus" size="24" class="mr-1"></u-icon>
+              <text>订阅评论</text>
+            </template>
+          </view>
+        </u-button>
+      </template>
     </div>
   </view>
 </template>
