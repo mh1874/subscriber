@@ -27,34 +27,51 @@
         <view class="font-bold text-sm">{{ props.item.nick }}</view>
       </view>
     </template>
-    <u-button
-      class="follow-btn"
-      shape="circle"
-      :type="props.item.is_follow ? 'info' : 'success'"
-      size="mini"
-      @click="handleFollow"
-    >
-      <view class="flex items-center">
-        <template v-if="props.item.is_follow">
-          <u-icon name="list" size="24" class="mr-1"></u-icon>
-          <text>已订阅</text>
-        </template>
-        <template v-else>
-          <u-icon name="plus" size="24" class="mr-1"></u-icon>
-          <text>订阅</text>
-        </template>
-      </view>
-    </u-button>
+    <div class="flex flex-col">
+      <u-button
+        plain
+        class="follow-btn mb-3"
+        shape="circle"
+        :type="props.item.is_follow ? 'success' : 'warning'"
+        size="mini"
+        @click="handleFollow(1)"
+      >
+        <view class="flex items-center">
+          <template v-if="props.item.is_follow">
+            <u-icon name="checkmark" size="24" class="mr-1"></u-icon>
+            <text>已订阅发帖</text>
+          </template>
+          <template v-else>
+            <u-icon name="plus" size="24" class="mr-1"></u-icon>
+            <text>订阅发帖</text>
+          </template>
+        </view>
+      </u-button>
+      <u-button
+        plain
+        class="follow-btn"
+        shape="circle"
+        :type="props.item.is_follow_comment ? 'success' : 'warning'"
+        size="mini"
+        @click="handleFollow(2)"
+      >
+        <view class="flex items-center">
+          <template v-if="props.item.is_follow_comment">
+            <u-icon name="checkmark" size="24" class="mr-1"></u-icon>
+            <text>已订阅评论</text>
+          </template>
+          <template v-else>
+            <u-icon name="plus" size="24" class="mr-1"></u-icon>
+            <text>订阅评论</text>
+          </template>
+        </view>
+      </u-button>
+    </div>
   </view>
 </template>
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
-
-interface IMode {
-  bigV?: string
-  search?: string
-}
 
 const props = defineProps({
   mode: {
@@ -75,8 +92,9 @@ const bigVWhiteList = ['pages/bigV/index']
 
 const emits = defineEmits(['follow'])
 
-const handleFollow = () => {
-  emits('follow', props.item)
+// type 关注发帖1、关注评论2
+const handleFollow = (type: number) => {
+  emits('follow', type, props.item)
 }
 
 // 跳转消息详情
@@ -136,7 +154,7 @@ const toBigVDetail = () => {
 }
 .follow-btn {
   ::v-deep button {
-    width: 64px;
+    width: 84px;
   }
 }
 </style>

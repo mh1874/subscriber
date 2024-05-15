@@ -1,5 +1,5 @@
 import request from '../request'
-import { IBigV, IPager, IBigVSearch } from '../types'
+import { IBigV, IPager, IBigVSearch, IBigVFollow } from '../types'
 
 export default {
   /**
@@ -28,12 +28,10 @@ export default {
    * 牛人关注
    * @param bigv_id 牛人id
    */
-  bigvFollow(bigv_id: number): Promise<any> {
+  bigvFollow(data: IBigVFollow): Promise<any> {
     return request('/user/follow/', {
       method: 'POST',
-      data: {
-        bigv_id
-      }
+      data
     })
   },
   /**
@@ -41,12 +39,10 @@ export default {
    * @param bigv_id 牛人id
    * @param params 分页信息
    */
-  bigvUnFollow(bigv_id: number): Promise<any> {
+  bigvUnFollow(data: IBigVFollow): Promise<any> {
     return request('/user/unfollow/', {
       method: 'POST',
-      data: {
-        bigv_id
-      }
+      data
     })
   },
   /**

@@ -9,7 +9,9 @@
             去邀请
           </u-button>
         </view>
-        <view class="desc"> 邀请新用户，即可获得 1 ~ 5 天超级会员体验。 </view>
+        <view class="desc">
+          每邀请一个新用户，即可获得 1 ~ 5 天超级会员体验。
+        </view>
       </view>
       <view class="item">
         <view class="sub-title">
@@ -18,9 +20,7 @@
             去观看
           </u-button>
         </view>
-        <view class="desc">
-          观看视频广告，即可获得 1 ~ 3 天超级会员体验。
-        </view>
+        <view class="desc"> 观看视频广告，即可获得 1 天超级会员体验。 </view>
       </view>
       <view class="item" v-if="paySwitch">
         <view class="sub-title">

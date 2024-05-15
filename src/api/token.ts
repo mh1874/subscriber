@@ -31,7 +31,7 @@ export function getUserId() {
 
 // create an axios instance
 const service = axios.create({
-  baseURL: 'https://www.lovecf.cn/api',
+  baseURL: 'https://www.lovecf.cn/test-api',
   withCredentials: true, // send cookies when cross-domain requests
   timeout: defaultTimeout, // request timeout
   headers: {

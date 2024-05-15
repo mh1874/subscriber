@@ -14,6 +14,11 @@ export interface IBigV extends IPager {
   source_platform?: string
 }
 
+export interface IBigVFollow {
+  bigv_id: number
+  type: number
+}
+
 export interface IBigVSearch {
   nick: string
   count?: number

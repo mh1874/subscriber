@@ -30,7 +30,7 @@
             v-for="item in data.searchData"
             :key="item.bigv_id"
             :item="item"
-            @follow="(it) => followHandler('search', it)"
+            @follow="(type, it) => followHandler('search', type, it)"
           ></big-v>
         </template>
         <template v-else>
@@ -64,7 +64,7 @@
           v-for="item in data.tableData"
           :key="item.bigv_id"
           :item="item"
-          @follow="(it) => followHandler('list', it)"
+          @follow="(type, it) => followHandler('list', type, it)"
         ></big-v>
       </view>
     </mescroll-uni>
@@ -85,6 +85,7 @@ import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { bigVApi } from '@/api'
 import { isEmpty } from '@/utils/util'
 import BigV from '@/components/bigV.vue'
+import { Nullable, TimeoutHandle } from '@/types'
 
 const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onPageScroll,
@@ -108,20 +109,12 @@ const scrollOptions = reactive({
 })
 
 // tab部分
-const currentTab = ref(0)
+const currentTab = ref<number>(0)
 const tabList = reactive([
-  {
-    name: '我的订阅'
-  },
-  {
-    name: '球球'
-  },
-  {
-    name: '围脖'
-  },
-  {
-    name: '冬菜'
-  }
+  { name: '我的订阅' },
+  { name: '球球' },
+  { name: '围脖' },
+  { name: '冬菜' }
 ])
 
 const changeTab = () => {
@@ -130,9 +123,9 @@ const changeTab = () => {
 }
 
 // 搜索部分
-const searchVal = ref('')
-const searchTimer = ref(null)
-const searchAreaVisible = ref(false)
+const searchVal = ref<string>('')
+const searchTimer = ref<Nullable<TimeoutHandle>>(null)
+const searchAreaVisible = ref<boolean>(false)
 const emptyOptions = reactive({
   noData: false,
   text: '请输入昵称搜索'
@@ -202,7 +195,7 @@ const platformEnum = {
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
-const upCallback = async (mescroll, offsetVal) => {
+const upCallback = async (mescroll: any, offsetVal: any) => {
   await nextTick()
   const apiFunc =
     currentTab.value === 0 ? bigVApi.getFollowedBigVList : bigVApi.getBigVList
@@ -222,7 +215,7 @@ const upCallback = async (mescroll, offsetVal) => {
       for (let i = 0; i < curPageData.length; i++) {
         const newItem = curPageData[i]
         const existingItemIndex = data.tableData.findIndex(
-          (item) => item.bigv_id === newItem.bigv_id
+          (item: any) => item.bigv_id === newItem.bigv_id
         )
         if (existingItemIndex !== -1) {
           // 数据已存在，用新的数据替换旧的数据
@@ -235,7 +228,6 @@ const upCallback = async (mescroll, offsetVal) => {
       data.totalSize = res.total_size
       mescroll.endBySize(curPageData.length, data.totalSize) // 必传参数(当前页的数据个数, 总数据量)
       mescroll.endSuccess(curPageData.length) // 请求成功, 结束加载
-      console.log('data.tableData ==>', data.tableData)
     })
     .catch(() => {
       mescroll.endErr() // 请求失败, 结束加载
@@ -248,24 +240,34 @@ const toFollow = () => {
   changeTab()
 }
 
-const roundToNearestTen = (number) => {
+const roundToNearestTen = (value: number) => {
   const base = 10
-  return Math.floor(number / base) * base
+  return Math.floor(value / base) * base
 }
 
-// type list 列表关注 search 搜索关注
-const followAction = (type, item) => {
-  const apiFunc = item.is_follow ? bigVApi.bigvUnFollow : bigVApi.bigvFollow
-  apiFunc(item.bigv_id)
+/**
+ * 牛人订阅or取消订阅
+ * @param position 搜索search、列表list
+ * @param type 关注发帖1、关注评论2
+ * @param item 牛人信息
+ */
+const followAction = (position: string, type: number, item: any) => {
+  const isFollow = type === 1 ? item.is_follow : item.is_follow_comment
+  const apiFunc = isFollow ? bigVApi.bigvUnFollow : bigVApi.bigvFollow
+  const params = {
+    bigv_id: item.bigv_id,
+    type
+  }
+  apiFunc(params)
     .then((res) => {
       if (res.status !== 1) return
       uni.showToast({
         title: res.msg,
         icon: 'none'
       })
-      if (type === 'list') {
+      if (position === 'list') {
         const itemIndex = data.tableData.findIndex(
-          (it) => it.bigv_id === item.bigv_id
+          (it: any) => it.bigv_id === item.bigv_id
         )
         const offsetVal = roundToNearestTen(itemIndex)
         upCallback(getMescroll(), offsetVal)
@@ -278,19 +280,30 @@ const followAction = (type, item) => {
     })
 }
 
-const followModalFlag = ref(false)
+const isFollowGZH = ref<number>(0)
+const followModalFlag = ref<boolean>(false)
 const unFollowText = '关注公众号，才能接收订阅消息~'
-// 牛人订阅or取消订阅
-const followHandler = (type, item) => {
-  bigVApi.isFollowGZH().then((res) => {
-    if (res.status !== 1) return
-    // status 0 未关注 status 1 已关注
-    if (res.data === 1) {
-      followAction(type, item)
-    } else {
-      followModalFlag.value = true
-    }
-  })
+/**
+ * 牛人订阅or取消订阅
+ * @param position 搜索search、列表list
+ * @param type 关注发帖1、关注评论2
+ * @param item 牛人信息
+ */
+const followHandler = (position: string, type: number, item: any) => {
+  if (!isFollowGZH.value) {
+    bigVApi.isFollowGZH().then((res) => {
+      if (res.status !== 1) return
+      // status 0 未关注 status 1 已关注
+      if (res.data === 1) {
+        isFollowGZH.value = 1
+        followAction(position, type, item)
+      } else {
+        followModalFlag.value = true
+      }
+    })
+  } else {
+    followAction(position, type, item)
+  }
 }
 // 跳转我的-提醒设置
 const toReminder = () => {
