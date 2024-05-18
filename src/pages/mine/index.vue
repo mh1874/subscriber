@@ -28,13 +28,6 @@
             </text>
             次
           </view>
-          <!-- <view>
-            奖励推送次数
-            <text class="text-orange-400">
-              {{ data.userInfo.rewardNoticeNum }}
-            </text>
-            次
-          </view> -->
         </view>
       </view>
     </view>

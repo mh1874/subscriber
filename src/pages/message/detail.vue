@@ -50,14 +50,20 @@
       <text class="text-green-400 font-bold">分享至新用户得推送次数。</text>
     </view>
     <!-- 广告位 -->
-    <view class="my-10">
-      <!-- <ad unit-id="adunit-014fc7e4ff1c50dc"></ad> -->
+    <view class="video-ads">
       <ad
         unit-id="adunit-a14400ba0fcf7663"
         ad-type="video"
         ad-theme="white"
+        object-fit="contain"
       ></ad>
     </view>
+    <view class="back-container">
+      <u-button class="back-btn" type="success" size="default" @click="toHome">
+        返回主页
+      </u-button>
+    </view>
+    <!-- <UpgradeModal @register="register" :options="modalOptions" /> -->
   </view>
 </template>
 
@@ -66,6 +72,8 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref, reactive, getCurrentInstance } from 'vue'
 import { messageApi, mineApi } from '@/api'
 import { getUserId } from '@/api/token'
+// import { useCountModal } from '@/hooks/useCountModal'
+// import UpgradeModal from '@/components/upgradeModal.vue'
 import {
   getCurrentPageInfo,
   appendQueryParameters,
@@ -76,6 +84,8 @@ const { proxy } = getCurrentInstance()
 
 const messageId = ref<number>(0)
 const data = reactive({ item: { pic_list: [] } })
+
+// const [register, { modalOptions, getUserInfo }] = useCountModal()
 
 const queryMessageDetail = () => {
   messageApi
@@ -120,6 +130,11 @@ const formatTime = (time: string) => {
   return proxy.$dayjs(time).fromNow()
 }
 
+// 返回主页
+const toHome = () => {
+  uni.switchTab({ url: '/pages/message/index' })
+}
+
 // 接收分享参数相关
 const shareId = ref(null)
 const addNoticeNum = () => {
@@ -135,13 +150,15 @@ const setShareUrl = () => {
   uni.$u.mpShare.path = url
 }
 
-onLoad((option: any) => {
+onLoad(async (option: any) => {
   messageId.value = option.id && Number(option.id)
   queryMessageDetail()
   if (option.shareId) {
     shareId.value = option.shareId && Number(option.shareId)
     addNoticeNum()
   }
+  // 判断推送次数是否已用完
+  getUserInfo()
 })
 
 onShow(() => {
@@ -152,6 +169,7 @@ onShow(() => {
 
 <style lang="scss" scoped>
 .message-detail {
+  position: relative;
   background-color: #fff;
   border-radius: 8px;
   padding: 10px;
@@ -214,5 +232,42 @@ onShow(() => {
   text-align: left;
   font-size: 13px;
   color: #333;
+}
+
+.video-ads {
+  margin: 50px 0;
+}
+
+.back-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.6)
+  );
+  animation: gradientAnimation 10s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  .back-btn {
+    width: 80%;
+    z-index: 999;
+    box-shadow: 0 0 15px 0 rgba(4, 80, 43, 0.6);
+    border-radius: 5px;
+  }
+}
+@keyframes gradientAnimation {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
 }
 </style>

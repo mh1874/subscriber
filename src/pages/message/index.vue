@@ -95,7 +95,6 @@ const isAdsHandler = (index: number) => {
 const adsMap = [
   'adunit-b4d82eba4ee15afd',
   'adunit-f334561c7129680f',
-  'adunit-e824aaeca0e5c667',
   'adunit-833ea18507e27b30',
   'adunit-16a6f5f1941e5437'
 ]
@@ -152,8 +151,6 @@ const upCallback = async (mescroll: any) => {
           data.tableData.push(newItem)
         }
       }
-      // insertAds()
-      // console.log('data.tableData ==>', data.tableData)
       data.totalSize = res.total_size
       mescroll.endBySize(curPageData.length, data.totalSize) // 必传参数(当前页的数据个数, 总数据量)
       mescroll.endSuccess(curPageData.length) // 请求成功, 结束加载

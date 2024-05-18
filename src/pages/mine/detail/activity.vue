@@ -2,34 +2,57 @@
   <view class="upgrade-page">
     <view class="title">获取更多推送次数 ~</view>
     <view class="content">
-      <view class="item">
-        <view class="sub-title">
-          <text class="mr-3">邀请新用户</text>
-          <u-button type="warning" size="mini" open-type="share">
-            去邀请
-          </u-button>
-        </view>
-        <view class="desc">
+      <view class="item invite">
+        <text class="sub-title">分享到群聊</text>
+        <text class="desc">
           每邀请一个新用户，即可获得 1 ~ 5 天超级会员体验。
-        </view>
+        </text>
+        <u-button
+          type="primary"
+          size="mini"
+          plain
+          shape="circle"
+          open-type="share"
+        >
+          <view class="flex items-center">
+            <text>去邀请</text>
+            <u-icon name="arrow-rightward" class="ml-1" size="24"></u-icon>
+          </view>
+        </u-button>
       </view>
-      <view class="item">
-        <view class="sub-title">
-          <text class="mr-3">观看视频广告</text>
-          <u-button type="warning" size="mini" @click="toWatchAds">
-            去观看
-          </u-button>
-        </view>
-        <view class="desc"> 观看视频广告，即可获得 1 天超级会员体验。 </view>
+      <view class="item watch-ads">
+        <text class="sub-title">观看视频广告</text>
+        <text class="desc">
+          每邀请一个新用户，即可获得 1 ~ 5 天超级会员体验。
+        </text>
+        <u-button
+          type="warning"
+          size="mini"
+          plain
+          shape="circle"
+          @click="toWatchAds"
+        >
+          <view class="flex items-center">
+            <text>去观看</text>
+            <u-icon name="arrow-rightward" class="ml-1" size="24"></u-icon>
+          </view>
+        </u-button>
       </view>
-      <view class="item" v-if="paySwitch">
-        <view class="sub-title">
-          <text class="mr-3">直接升级</text>
-          <u-button type="warning" size="mini" @click="toUpgrade">
-            去升级
-          </u-button>
-        </view>
-        <view class="desc"> 直接升级，立享超级会员体验。 </view>
+      <view class="item upgrade" v-if="paySwitch">
+        <text class="sub-title">直接升级</text>
+        <text class="desc"> 直接升级，立享超级会员体验。 </text>
+        <u-button
+          type="success"
+          size="mini"
+          plain
+          shape="circle"
+          @click="toUpgrade"
+        >
+          <view class="flex items-center">
+            <text>去升级</text>
+            <u-icon name="arrow-rightward" class="ml-1" size="24"></u-icon>
+          </view>
+        </u-button>
       </view>
     </view>
     <view class="post-script">PS：邀请新用户、观看视频广告 奖励可以叠加</view>
@@ -128,42 +151,58 @@ onShow(() => {
 .upgrade-page {
   padding: 15px;
   padding-bottom: 100px;
-  background-color: #f0fdfa;
-
   .title {
     font-size: 16px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: $warning-color;
   }
   .content {
-    padding-left: 15px;
     .item {
       margin-bottom: 20px;
-    }
-    .sub-title {
-      position: relative;
+      height: 130px;
+      padding: 15px;
       display: flex;
-      align-items: center;
-      font-weight: bold;
+      flex-direction: column;
+      background-position: center center;
+      background-size: cover;
+      border-radius: 5px;
+      .sub-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .desc {
+        font-size: 13px;
+        margin-bottom: 20px;
+      }
     }
-    .sub-title::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: -12px;
-      transform: translateY(-50%);
-      width: 6px;
-      height: 6px;
-      background-color: #000;
-      border-radius: 50%;
+    .invite {
+      background-image: url('~@/static/invite.jpg');
+      .sub-title {
+        color: #355993;
+      }
+      .desc {
+        color: #0369a1;
+      }
     }
-    .desc {
-      font-size: 13px;
-      color: #333;
-      margin-top: 5px;
-      line-height: 24px;
+    .watch-ads {
+      background-image: url('~@/static/watch-ads.jpg');
+      .sub-title {
+        color: #bf772a;
+      }
+      .desc {
+        color: $warning-color;
+      }
+    }
+    .upgrade {
+      background-image: url('~@/static/upgrade.jpg');
+      .sub-title {
+        color: #5e9a5f;
+      }
+      .desc {
+        color: #16a34a;
+      }
     }
   }
   .post-script {

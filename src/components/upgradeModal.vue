@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, getCurrentInstance, defineEmits, watch, onMounted } from 'vue'
 import type { PropType } from 'vue'
 
 interface IOptions {
@@ -27,7 +27,7 @@ interface IOptions {
   content: string
 }
 
-const props = defineProps({
+defineProps({
   options: {
     type: Object as PropType<IOptions>,
     default: () => {
@@ -35,7 +35,7 @@ const props = defineProps({
     }
   }
 })
-const modalVisible = ref(false)
+const modalVisible = ref<boolean>(false)
 
 // 打开提示弹窗
 const openModal = () => {
@@ -51,6 +51,13 @@ const toActivity = () => {
 const closeModal = () => {
   modalVisible.value = false
 }
+
+const instance = getCurrentInstance()
+const emit = defineEmits(['register'])
+onMounted(() => {
+  const modalInstance = { openModal }
+  instance && emit('register', modalInstance, getCurrentInstance()?.uid)
+})
 
 defineExpose({
   openModal
