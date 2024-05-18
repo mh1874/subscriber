@@ -111,7 +111,7 @@ const toBigVDetail = () => {
 .big-v-item {
   background-color: #fff;
   border-radius: 8px;
-  padding: 10px;
+  padding: 15px 10px;
   padding-right: 20px;
   border: 1px solid #eee;
   display: flex;
@@ -154,7 +154,7 @@ const toBigVDetail = () => {
 }
 .follow-btn {
   ::v-deep button {
-    width: 84px;
+    width: 90px;
   }
 }
 </style>

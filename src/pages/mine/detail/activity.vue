@@ -5,7 +5,7 @@
       <view class="item invite">
         <text class="sub-title">分享到群聊</text>
         <text class="desc">
-          每邀请一个新用户，即可获得 1 ~ 5 天超级会员体验。
+          每邀请一个新用户，即可获得 1 ~ 5 天超级会员。
         </text>
         <u-button
           type="primary"
@@ -22,9 +22,7 @@
       </view>
       <view class="item watch-ads">
         <text class="sub-title">观看视频广告</text>
-        <text class="desc">
-          每邀请一个新用户，即可获得 1 ~ 5 天超级会员体验。
-        </text>
+        <text class="desc"> 观看视频广告，即可获得 1 天超级会员。 </text>
         <u-button
           type="warning"
           size="mini"
@@ -154,7 +152,7 @@ onShow(() => {
   .title {
     font-size: 16px;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     color: $warning-color;
   }
   .content {

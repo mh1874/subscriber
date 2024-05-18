@@ -111,10 +111,10 @@ const scrollOptions = reactive({
 // tab部分
 const currentTab = ref<number>(0)
 const tabList = reactive([
-  { name: '我的订阅' },
   { name: '球球' },
   { name: '围脖' },
-  { name: '冬菜' }
+  { name: '冬菜' },
+  { name: '我的订阅' }
 ])
 
 const changeTab = () => {
@@ -189,16 +189,16 @@ watch(searchAreaVisible, (value) => {
 
 // 平台枚举
 const platformEnum = {
-  1: 'xueqiu',
-  2: 'weibo',
-  3: 'dongcai'
+  0: 'xueqiu',
+  1: 'weibo',
+  2: 'dongcai'
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
 const upCallback = async (mescroll: any, offsetVal: any) => {
   await nextTick()
   const apiFunc =
-    currentTab.value === 0 ? bigVApi.getFollowedBigVList : bigVApi.getBigVList
+    currentTab.value === 3 ? bigVApi.getFollowedBigVList : bigVApi.getBigVList
   const params = {
     count: mescroll.size,
     offset: isEmpty(offsetVal) ? (mescroll.num - 1) * 10 : offsetVal
