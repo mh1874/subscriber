@@ -47,7 +47,7 @@
     </view>
     <view class="copyright-tips">
       <text>内容版权归原作者或组织，</text>
-      <text class="text-green-400 font-bold">分享至新用户得推送次数。</text>
+      <text class="text-green-400 font-bold">分享至新用户得会员。</text>
     </view>
     <!-- 广告位 -->
     <view class="video-ads">
@@ -63,20 +63,20 @@
         返回主页
       </u-button>
     </view>
-    <!-- <UpgradeModal @register="register" :options="modalOptions" /> -->
+    <UpgradeModal @register="register" :options="modalOptions" />
   </view>
 </template>
 
 <script setup lang="ts">
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref, reactive, getCurrentInstance } from 'vue'
-import { messageApi, mineApi } from '@/api'
+import { messageApi } from '@/api'
 import { getUserId } from '@/api/token'
-// import { useCountModal } from '@/hooks/useCountModal'
-// import UpgradeModal from '@/components/upgradeModal.vue'
+import { useUpgradeModal } from '@/hooks/useUpgradeModal'
+import UpgradeModal from '@/components/upgradeModal.vue'
 import {
   getCurrentPageInfo,
-  appendQueryParameters,
+  appendQueryParams,
   extractImagesFromHTML
 } from '@/utils/util'
 
@@ -85,7 +85,9 @@ const { proxy } = getCurrentInstance()
 const messageId = ref<number>(0)
 const data = reactive({ item: { pic_list: [] } })
 
-// const [register, { modalOptions, getUserInfo }] = useCountModal()
+// 判断推送次数是否已用完 & 分享增加会员天数
+const [register, { modalOptions, getUserInfo, addMemberDays }] =
+  useUpgradeModal()
 
 const queryMessageDetail = () => {
   messageApi
@@ -125,7 +127,7 @@ const previewHandler = (url: string) => {
   })
 }
 
-// 格式化时间的函数
+// 获取相对时间
 const formatTime = (time: string) => {
   return proxy.$dayjs(time).fromNow()
 }
@@ -135,18 +137,12 @@ const toHome = () => {
   uni.switchTab({ url: '/pages/message/index' })
 }
 
-// 接收分享参数相关
-const shareId = ref(null)
-const addNoticeNum = () => {
-  mineApi.addNoticeNum({ source_user_id: shareId.value })
-}
-
 // 设置分享链接
 const setShareUrl = () => {
   const pageInfo = getCurrentPageInfo()
   // 分享链接携带用户id
   const queryVal = { ...pageInfo.curQuery, shareId: getUserId() }
-  const url = appendQueryParameters(pageInfo.curRoute, queryVal)
+  const url = appendQueryParams(pageInfo.curRoute, queryVal)
   uni.$u.mpShare.path = url
 }
 
@@ -154,8 +150,7 @@ onLoad(async (option: any) => {
   messageId.value = option.id && Number(option.id)
   queryMessageDetail()
   if (option.shareId) {
-    shareId.value = option.shareId && Number(option.shareId)
-    addNoticeNum()
+    addMemberDays(option.shareId)
   }
   // 判断推送次数是否已用完
   getUserInfo()

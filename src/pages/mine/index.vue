@@ -20,15 +20,18 @@
             {{ data.userInfo.expireDate }}到期
           </text>
         </view>
-        <view>
-          <view>
+        <template v-if="data.userInfo.freeNoticeNum < 9000">
+          <text>
             当日推送次数
             <text class="text-orange-400">
               {{ data.userInfo.freeNoticeNum }}
             </text>
             次
-          </view>
-        </view>
+          </text>
+        </template>
+        <template v-else>
+          <text>超级会员尊享无限次推送 ~ </text>
+        </template>
       </view>
     </view>
     <view class="mb-4" @click="toDetail('about')">

@@ -28,7 +28,7 @@
       </view>
     </mescroll-uni>
     <!-- 推送次数提示弹窗 -->
-    <upgrade-modal ref="upgradeModalRef" :options="modalOptions" />
+    <upgrade-modal @register="register" :options="modalOptions" />
     <!-- 添加到我的小程序提示 -->
     <add-prompt />
   </view>
@@ -44,29 +44,21 @@ import {
   onShow
 } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
-import { messageApi, mineApi } from '@/api'
+import { messageApi } from '@/api'
 import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
-import { useUserStore } from '@/store'
 import AddPrompt from '@/components/addPrompt.vue'
+import { useUpgradeModal } from '@/hooks/useUpgradeModal'
 import UpgradeModal from '@/components/upgradeModal.vue'
 import MessageItem from '@/components/messageItem.vue'
-import vipIcon from '@/static/member/vip.png'
-import svipIcon from '@/static/member/svip.png'
 
 const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onPageScroll,
   onReachBottom
 )
 
-const userStore = useUserStore()
 const data = reactive<{ tableData: any; totalSize: number }>({
   tableData: [],
   totalSize: 0
-})
-const upgradeModalRef = ref<HTMLElement | null>(null)
-const modalOptions = ref({
-  title: '温馨提示',
-  content: '今日推送次数已用完，分享、观看广告、升级 限时送会员！'
 })
 
 const scrollOptions = reactive({
@@ -79,11 +71,15 @@ const scrollOptions = reactive({
   down: { use: true }
 })
 
+// 判断推送次数是否已用完 & 分享增加会员天数
+const [register, { modalOptions, getUserInfo, addMemberDays }] =
+  useUpgradeModal()
+
 // 去牛人页面关注
 const toBigV = () => {
   uni.setStorage({
     key: 'bigVTabVal',
-    data: 1
+    data: 0
   })
   uni.switchTab({ url: '/pages/bigV/index' })
 }
@@ -167,38 +163,6 @@ const toActivity = () => {
   uni.navigateTo({ url: '/pages/mine/detail/activity' })
 }
 
-// 接收分享参数相关
-const shareId = ref(null)
-const addNoticeNum = () => {
-  mineApi.addNoticeNum({ source_user_id: shareId.value })
-}
-
-// 用户信息请求 & 判断推送次数是否已用完
-const userLevelEnum = {
-  2: vipIcon,
-  3: svipIcon
-}
-
-const getUserInfo = () => {
-  mineApi.getUserInfo().then(({ status, data: userData }) => {
-    if (status !== 1) return
-    const userInfo = {
-      avatar: 'https://www.lovecf.cn/app/logo.png',
-      userName: '秒速球',
-      userId: userData.user_id,
-      freeNoticeNum: userData.notice_num_free,
-      rewardNoticeNum: userData.notice_num_reward,
-      userLevel: userData.user_level,
-      memberIcon: userLevelEnum[userData.user_level],
-      expireDate: userData.user_level_expire_date
-    }
-    userStore.setUserInfo(userInfo)
-    if (userInfo.freeNoticeNum + userInfo.rewardNoticeNum === 0) {
-      upgradeModalRef.value && upgradeModalRef.value.openModal()
-    }
-  })
-}
-
 const canReset = ref(false)
 onLoad(async (option: any) => {
   if (canReset.value) {
@@ -207,8 +171,7 @@ onLoad(async (option: any) => {
   }
   canReset.value = true
   if (option.shareId) {
-    shareId.value = option.shareId && Number(option.shareId)
-    await addNoticeNum()
+    await addMemberDays(option.shareId)
   }
   // 判断推送次数是否已用完
   getUserInfo()

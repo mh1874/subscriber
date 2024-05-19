@@ -157,7 +157,7 @@ onShow(() => {
   }
   .content {
     .item {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       height: 130px;
       padding: 15px;
       display: flex;

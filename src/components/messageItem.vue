@@ -70,7 +70,7 @@ const props = defineProps({
   }
 })
 
-// 格式化时间的函数
+// 获取相对时间
 const formatTime = (time: string) => {
   return proxy.$dayjs(time).fromNow()
 }

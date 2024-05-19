@@ -4,23 +4,23 @@ import { useUserStore } from '@/store'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
 
-export function useCountModal() {
+export function useUpgradeModal(): any {
   const currentInstance = getCurrentInstance()
   const uidRef = ref<number>(0)
   const modalInstanceRef = ref<any>(null)
   const userStore = useUserStore()
   const modalOptions = ref({
     title: '温馨提示',
-    content: '今日推送次数已用完，分享、观看广告、升级 限时送会员！'
+    content: '今日推送次数已用完，分享、观看广告 限时送会员！'
   })
-  const userLevelEnum = {
+  const userLevelEnum: any = {
     2: vipIcon,
     3: svipIcon
   }
   const getInstance = () => {
     const instance = unref(modalInstanceRef)
     if (!instance) {
-      console.error('useDrawerInner instance is undefined!')
+      console.error('useCountModal instance is undefined!')
       return
     }
     return instance
@@ -47,16 +47,18 @@ export function useCountModal() {
         expireDate: userData.user_level_expire_date
       }
       userStore.setUserInfo(userInfo)
-      if (userInfo.freeNoticeNum + userInfo.rewardNoticeNum) {
-        if (getInstance()?.openModal) {
+      // 判断推送次数是否已用完
+      if (userInfo.freeNoticeNum + userInfo.rewardNoticeNum === 0) {
+        setTimeout(() => {
           getInstance()?.openModal()
-        }
+        }, 300)
       }
     })
   }
-  const addNoticeNum = (shareId: number) => {
+  // 分享增加会员天数
+  const addMemberDays = (shareId: number | string) => {
     if (shareId) {
-      mineApi.addNoticeNum({ source_user_id: shareId })
+      mineApi.addNoticeNum({ source_user_id: Number(shareId) })
     }
   }
   return [
@@ -65,7 +67,7 @@ export function useCountModal() {
       getInstance,
       modalOptions,
       getUserInfo,
-      addNoticeNum
+      addMemberDays
     }
   ]
 }

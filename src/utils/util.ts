@@ -87,7 +87,7 @@ export const getCurrentPageInfo = () => {
 /**
  * 将query参数加到url上
  */
-export const appendQueryParameters = (url: string, query?: any) => {
+export const appendQueryParams = (url: string, query?: any) => {
   if (isEmpty(query)) {
     return url
   }
