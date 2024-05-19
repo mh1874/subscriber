@@ -9,7 +9,7 @@
       <view class="user-info">
         <view class="flex justify-between items-center">
           <view class="flex items-center">
-            <text>用户ID：{{ data.userInfo.userId }}</text>
+            <text user-select>用户ID：{{ data.userInfo.userId }}</text>
             <image
               class="member-icon ml-1.5"
               :src="data.userInfo.memberIcon"
@@ -20,7 +20,11 @@
             {{ data.userInfo.expireDate }}到期
           </text>
         </view>
-        <template v-if="data.userInfo.freeNoticeNum < 9000">
+        <!-- 非会员显示剩余推送次数 -->
+        <template v-if="data.userInfo.expireDate">
+          <text>超级会员尊享无限次推送 ~ </text>
+        </template>
+        <template v-else>
           <text>
             当日推送次数
             <text class="text-orange-400">
@@ -28,9 +32,6 @@
             </text>
             次
           </text>
-        </template>
-        <template v-else>
-          <text>超级会员尊享无限次推送 ~ </text>
         </template>
       </view>
     </view>
