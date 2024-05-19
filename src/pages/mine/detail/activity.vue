@@ -62,9 +62,12 @@ import { ref } from 'vue'
 import { onShow, onLoad } from '@dcloudio/uni-app'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
+import { usePaySwitch } from '@/hooks/usePaySwitch'
 
 const videoAd = ref<any>(null)
-const paySwitch = ref<boolean>(false)
+
+// 获取是否显示支付开关
+const { paySwitch, getPaySwitch } = usePaySwitch()
 
 const toUpgrade = () => {
   uni.navigateTo({ url: '/pages/mine/detail/member' })
@@ -86,19 +89,6 @@ const toWatchAds = () => {
         })
     })
   }
-}
-
-// 获取是否显示支付开关
-const getPaySwitch = () => {
-  mineApi
-    .getPaySwitch()
-    .then(({ status, data }) => {
-      if (status !== 1) return
-      paySwitch.value = data.pay_switch
-    })
-    .catch((err) => {
-      console.log(err)
-    })
 }
 
 onLoad(() => {

@@ -27,11 +27,14 @@
           <u-button type="warning" size="mini" open-type="share">
             分享小程序
           </u-button>
-          邀请新用户限时送会员！<br />也可以直接通过
-          <u-button type="warning" size="mini" @click="toDetail('member')">
-            升级会员
-          </u-button>
-          ，获取优先推送以及更多推送次数!
+          邀请新用户限时送会员！<br />
+          <template v-if="paySwitch">
+            也可以直接通过
+            <u-button type="warning" size="mini" @click="toDetail('member')">
+              升级会员
+            </u-button>
+            ，获取优先推送以及更多推送次数!
+          </template>
         </view>
       </view>
       <view class="contact">
@@ -58,14 +61,22 @@
 </template>
 
 <script setup lang="ts">
-import { onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { getUserId } from '@/api/token'
+import { usePaySwitch } from '@/hooks/usePaySwitch'
+
+// 获取是否显示支付开关
+const { paySwitch, getPaySwitch } = usePaySwitch()
 
 // 跳转详情
 const toDetail = (key: string) => {
   const url = `/pages/mine/detail/${key}`
   uni.navigateTo({ url })
 }
+
+onLoad(() => {
+  getPaySwitch()
+})
 
 onShow(() => {
   const userId = getUserId()
