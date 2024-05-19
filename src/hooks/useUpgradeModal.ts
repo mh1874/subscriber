@@ -1,6 +1,7 @@
 import { ref, unref, getCurrentInstance, onUnmounted } from 'vue'
 import { mineApi } from '@/api'
 import { useUserStore } from '@/store'
+import { getStorage } from '@/utils/storage'
 import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
 
@@ -49,7 +50,7 @@ export function useUpgradeModal(): any {
         expireDate: userData.user_level_expire_date
       }
       userStore.setUserInfo(userInfo)
-      const storedFlag = uni.getStorageSync('UPGRADE_SHOWN')
+      const storedFlag = getStorage('UPGRADE_SHOWN')
       hasShown.value = typeof storedFlag === 'boolean' ? storedFlag : false
       // 判断推送次数是否已用完
       if (

@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
+import { setStorage, getStorage } from '@/utils/storage'
 
 const props = defineProps({
   text: {
@@ -40,14 +41,14 @@ const updatePosition = () => {
 }
 
 const initTip = () => {
-  const storedTip = uni.getStorageSync('PROMPT_FLAG')
+  const storedTip = getStorage('PROMPT_FLAG')
   showTip.value = typeof storedTip === 'boolean' ? storedTip : true
   updatePosition()
 }
 
 const closeTip = () => {
   showTip.value = false
-  uni.setStorageSync('PROMPT_FLAG', false)
+  setStorage('PROMPT_FLAG', false)
 }
 
 onShow(() => {

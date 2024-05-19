@@ -46,6 +46,7 @@ import {
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { messageApi } from '@/api'
 import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
+import { setStorage } from '@/utils/storage'
 import AddPrompt from '@/components/addPrompt.vue'
 import { useUpgradeModal } from '@/hooks/useUpgradeModal'
 import UpgradeModal from '@/components/upgradeModal.vue'
@@ -179,7 +180,7 @@ onLoad(async (option: any) => {
 
 onHide(() => {
   // 消息列表页面隐藏时关闭"添加我的小程序"提示
-  uni.setStorageSync('PROMPT_FLAG', false)
+  setStorage('PROMPT_FLAG', false)
 })
 
 onShow(() => {

@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import { ref, getCurrentInstance, defineEmits, watch, onMounted } from 'vue'
 import type { PropType } from 'vue'
+import { setStorage } from '@/utils/storage'
 
 interface IOptions {
   title: string
@@ -45,13 +46,13 @@ const openModal = () => {
 // 跳转活动页面
 const toActivity = () => {
   uni.navigateTo({ url: '/pages/mine/detail/activity' })
-  uni.setStorageSync('UPGRADE_SHOWN', true)
+  setStorage('UPGRADE_SHOWN', true)
 }
 
 // 关闭提示弹窗
 const closeModal = () => {
   modalVisible.value = false
-  uni.setStorageSync('UPGRADE_SHOWN', true)
+  setStorage('UPGRADE_SHOWN', true)
 }
 
 const instance = getCurrentInstance()
