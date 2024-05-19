@@ -6,9 +6,9 @@ import svipIcon from '@/static/member/svip.png'
 
 export function useUpgradeModal(): any {
   const currentInstance = getCurrentInstance()
+  const userStore = useUserStore()
   const uidRef = ref<number>(0)
   const modalInstanceRef = ref<any>(null)
-  const userStore = useUserStore()
   const modalOptions = ref({
     title: '温馨提示',
     content: '今日推送次数已用完，分享、观看广告 限时送会员！'
@@ -17,6 +17,8 @@ export function useUpgradeModal(): any {
     2: vipIcon,
     3: svipIcon
   }
+  const hasShown = ref<boolean>(false) // 是否已显示过弹窗
+
   const getInstance = () => {
     const instance = unref(modalInstanceRef)
     if (!instance) {
@@ -47,8 +49,13 @@ export function useUpgradeModal(): any {
         expireDate: userData.user_level_expire_date
       }
       userStore.setUserInfo(userInfo)
+      const storedFlag = uni.getStorageSync('UPGRADE_SHOWN')
+      hasShown.value = typeof storedFlag === 'boolean' ? storedFlag : false
       // 判断推送次数是否已用完
-      if (userInfo.freeNoticeNum + userInfo.rewardNoticeNum === 0) {
+      if (
+        !hasShown.value &&
+        userInfo.freeNoticeNum + userInfo.rewardNoticeNum === 0
+      ) {
         setTimeout(() => {
           getInstance()?.openModal()
         }, 300)

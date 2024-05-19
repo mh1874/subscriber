@@ -45,11 +45,13 @@ const openModal = () => {
 // 跳转活动页面
 const toActivity = () => {
   uni.navigateTo({ url: '/pages/mine/detail/activity' })
+  uni.setStorageSync('UPGRADE_SHOWN', true)
 }
 
 // 关闭提示弹窗
 const closeModal = () => {
   modalVisible.value = false
+  uni.setStorageSync('UPGRADE_SHOWN', true)
 }
 
 const instance = getCurrentInstance()
