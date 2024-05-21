@@ -194,7 +194,7 @@ const platformEnum = {
   2: 'dongcai'
 }
 
-// 是否为我的订阅
+// 是否为 “我的订阅” Tab
 const isMineTab = computed(() => currentTab.value === 3)
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10

@@ -8,8 +8,15 @@
           formatTime(data.item.source_created_time)
         }}</view>
       </view>
-      <u-button type="success" plain size="mini" open-type="share">
-        分享得会员
+      <u-button
+        class="font-bold"
+        type="warning"
+        plain
+        size="mini"
+        open-type="share"
+      >
+        <text>分享内容得会员</text>
+        <u-icon name="arrow-rightward" size="24" class="ml-1"></u-icon>
       </u-button>
     </view>
     <view class="divider"></view>
