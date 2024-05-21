@@ -18,7 +18,7 @@
         </view>
         <view class="mb-1">
           <text class="keyword">信息全</text>
-          所有消息（含秒删帖，修改贴），秒速球都可捕获并推送，祝您运筹帷幄!
+          所有消息（含秒删帖，修改贴，评论），秒速球都可捕获并推送，祝您运筹帷幄!
         </view>
         <view>
           <text class="keyword">成本低</text>
