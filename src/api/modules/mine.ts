@@ -51,10 +51,10 @@ export default {
     })
   },
   /**
-   * 获取支付页面开关
+   * 获取激励广告、支付功能开关
    * @param none
    */
-  getPaySwitch(): Promise<any> {
+  getActivitySwitch(): Promise<any> {
     return request('/pay/pay_switch/', {
       method: 'GET'
     })

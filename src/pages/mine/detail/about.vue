@@ -63,10 +63,10 @@
 <script setup lang="ts">
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { getUserId } from '@/api/token'
-import { usePaySwitch } from '@/hooks/usePaySwitch'
+import { useActivitySwitch } from '@/hooks/useActivitySwitch'
 
 // 获取是否显示支付开关
-const { paySwitch, getPaySwitch } = usePaySwitch()
+const { paySwitch, getActivitySwitch } = useActivitySwitch()
 
 // 跳转详情
 const toDetail = (key: string) => {
@@ -75,7 +75,7 @@ const toDetail = (key: string) => {
 }
 
 onLoad(() => {
-  getPaySwitch()
+  getActivitySwitch()
 })
 
 onShow(() => {

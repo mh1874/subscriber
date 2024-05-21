@@ -8,12 +8,12 @@
           mode="aspectFill"
         ></image>
         <view class="text-sm">
-          <view class="font-bold text-base mb-1">{{ props.item.nick }}</view>
+          <view class="nick-name">{{ props.item.nick }}</view>
           <view class="fans">
-            <text class="mr-5 text-xs"> 粉丝：{{ props.item.fans_num }} </text>
-            <text class="text-xs">订阅：{{ props.item.wx_fans_num }}</text>
+            <text class="mr-5"> 粉丝：{{ props.item.fans_num }} </text>
+            <text>订阅：{{ props.item.wx_fans_num }}</text>
           </view>
-          <view class="intro text-xs">{{ props.item.intro }}</view>
+          <view class="intro">{{ props.item.intro }}</view>
         </view>
       </view>
     </template>
@@ -128,11 +128,19 @@ const toBigVDetail = () => {
     border-radius: 50%;
     margin-right: 10px;
   }
-  .fans {
-    color: #888;
+  .nick-name {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
     margin-bottom: 5px;
   }
+  .fans {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 6px;
+  }
   .intro {
+    font-size: 12px;
     color: #666;
     margin-bottom: 5px;
     width: 200px;

@@ -20,7 +20,7 @@
           </view>
         </u-button>
       </view>
-      <view class="item watch-ads">
+      <view class="item watch-ads" v-if="videoSwitch">
         <text class="sub-title">观看视频广告</text>
         <text class="desc"> 观看视频广告，即可获得 1 天超级会员。 </text>
         <u-button
@@ -62,12 +62,12 @@ import { ref } from 'vue'
 import { onShow, onLoad } from '@dcloudio/uni-app'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
-import { usePaySwitch } from '@/hooks/usePaySwitch'
+import { useActivitySwitch } from '@/hooks/useActivitySwitch'
 
 const videoAd = ref<any>(null)
 
-// 获取是否显示支付开关
-const { paySwitch, getPaySwitch } = usePaySwitch()
+// 获取是否显示广告、支付开关
+const { videoSwitch, paySwitch, getActivitySwitch } = useActivitySwitch()
 
 const toUpgrade = () => {
   uni.navigateTo({ url: '/pages/mine/detail/member' })
@@ -92,7 +92,7 @@ const toWatchAds = () => {
 }
 
 onLoad(() => {
-  getPaySwitch()
+  getActivitySwitch()
   // 在页面onLoad回调事件中创建激励视频广告实例
   if (wx.createRewardedVideoAd) {
     videoAd.value = wx.createRewardedVideoAd({

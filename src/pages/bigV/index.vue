@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, nextTick, watch } from 'vue'
+import { ref, reactive, nextTick, watch, computed } from 'vue'
 import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { bigVApi } from '@/api'
@@ -187,23 +187,27 @@ watch(searchAreaVisible, (value) => {
   if (!value) changeTab()
 })
 
-// 平台枚举
+// 平台参数枚举
 const platformEnum = {
   0: 'xueqiu',
   1: 'weibo',
   2: 'dongcai'
 }
 
+// 是否为我的订阅
+const isMineTab = computed(() => currentTab.value === 3)
+
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
 const upCallback = async (mescroll: any, offsetVal: any) => {
   await nextTick()
-  const apiFunc =
-    currentTab.value === 3 ? bigVApi.getFollowedBigVList : bigVApi.getBigVList
+  const apiFunc = isMineTab.value
+    ? bigVApi.getFollowedBigVList
+    : bigVApi.getBigVList
   const params = {
     count: mescroll.size,
     offset: isEmpty(offsetVal) ? (mescroll.num - 1) * 10 : offsetVal
-  }
-  if (currentTab.value !== 0) {
+  } as any
+  if (!isMineTab.value) {
     params.source_platform = platformEnum[currentTab.value]
   }
   apiFunc(params)

@@ -9,7 +9,7 @@
         }}</view>
       </view>
       <u-button type="success" plain size="mini" open-type="share">
-        分享内容
+        分享得会员
       </u-button>
     </view>
     <view class="divider"></view>
