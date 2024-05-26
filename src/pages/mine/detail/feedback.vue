@@ -84,7 +84,7 @@ const toAbout = () => {
   padding: 15px;
   .tips {
     color: #999;
-    font-size: 12px;
+    font-size: 14px;
     margin: 15px 0;
   }
 }

@@ -11,17 +11,18 @@
           <view class="flex items-center">
             <text user-select>用户ID：{{ data.userInfo.userId }}</text>
             <image
+              v-if="isMember"
               class="member-icon"
               :src="data.userInfo.memberIcon"
               mode="aspectFill"
             ></image>
           </view>
-          <text class="expire-date" v-if="data.userInfo.expireDate">
+          <text class="expire-date" v-if="isMember">
             {{ data.userInfo.expireDate }}到期
           </text>
         </view>
         <!-- 非会员显示剩余推送次数 -->
-        <template v-if="data.userInfo.expireDate">
+        <template v-if="isMember">
           <text>超级会员尊享无限次推送 ~ </text>
         </template>
         <template v-else>
@@ -74,7 +75,7 @@
 
 <script setup lang="ts">
 import { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app'
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
 import { useUserStore } from '@/store'
@@ -117,6 +118,9 @@ const getUserInfo = () => {
     userStore.setUserInfo(data.userInfo)
   })
 }
+
+// 当前用户是否为会员
+const isMember = computed(() => data.userInfo.expireDate)
 
 // 滚动通知列表
 // const noticeList = ['会员超值购！SVIP低价抢购中', '特惠！SVIP低至0.79元/天']

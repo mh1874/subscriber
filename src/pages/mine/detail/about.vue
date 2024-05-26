@@ -18,7 +18,7 @@
         </view>
         <view class="mb-1">
           <text class="keyword">信息全</text>
-          所有消息（含秒删帖，修改贴，评论），秒速球都可实时捕获并推送到微信，让您快人一步，运筹帷幄!
+          所有消息（含秒删帖，修改贴，评论），秒速球都可实时捕获并推送到微信，让您运筹帷幄!
         </view>
         <view>
           <text class="keyword">成本低</text>
