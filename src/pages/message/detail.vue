@@ -206,7 +206,8 @@ onShow(() => {
 
 .message-content {
   margin: 8px 0;
-  font-size: 15px;
+  font-size: 16px;
+  line-height: 26px;
   .img-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

@@ -11,12 +11,12 @@
           <view class="flex items-center">
             <text user-select>用户ID：{{ data.userInfo.userId }}</text>
             <image
-              class="member-icon ml-1.5"
+              class="member-icon"
               :src="data.userInfo.memberIcon"
               mode="aspectFill"
             ></image>
           </view>
-          <text class="text-slate-500 text-xs" v-if="data.userInfo.expireDate">
+          <text class="expire-date" v-if="data.userInfo.expireDate">
             {{ data.userInfo.expireDate }}到期
           </text>
         </view>
@@ -32,12 +32,18 @@
             </text>
             次
           </text>
+          <text>
+            奖励推送次数
+            <text class="text-orange-400">
+              {{ data.userInfo.rewardNoticeNum }}
+            </text>
+            次
+          </text>
         </template>
       </view>
     </view>
     <view class="mb-4" @click="toDetail('about')">
       <u-notice-bar
-        font-size="26"
         mode="vertical"
         :duration="3000"
         type="warning"
@@ -55,11 +61,11 @@
           :class="{ 'vital-item': !!it.type }"
           @click="toDetail(it.key)"
         >
-          <view v-show="it.actionType">
+          <!-- <view v-show="it.actionType">
             <template v-slot:label>
               <button class="share-btn" plain open-type="share">去分享</button>
             </template>
-          </view>
+          </view> -->
         </u-cell-item>
       </u-cell-group>
     </view>
@@ -73,7 +79,7 @@ import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
 import { useUserStore } from '@/store'
 import { IUserInfo } from '@/types'
-import vipIcon from '@/static/member/vip.png'
+// import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
 
 const data = reactive<{ userInfo: IUserInfo }>({
@@ -82,6 +88,7 @@ const data = reactive<{ userInfo: IUserInfo }>({
     userName: '秒速球',
     userId: 0,
     freeNoticeNum: 0,
+    rewardNoticeNum: 0,
     userLevel: 0,
     memberIcon: null,
     expireDate: ''
@@ -89,10 +96,10 @@ const data = reactive<{ userInfo: IUserInfo }>({
 })
 const userStore = useUserStore()
 
-const userLevelEnum: any = {
-  2: vipIcon,
-  3: svipIcon
-}
+// const userLevelEnum: any = {
+//   2: vipIcon,
+//   3: svipIcon
+// }
 
 const getUserInfo = () => {
   mineApi.getUserInfo().then((res: any) => {
@@ -101,9 +108,10 @@ const getUserInfo = () => {
       ...data.userInfo,
       userId: res.data.user_id,
       freeNoticeNum: res.data.notice_num_free,
-      // rewardNoticeNum: res.data.notice_num_reward,
+      rewardNoticeNum: res.data.notice_num_reward,
       userLevel: res.data.user_level,
-      memberIcon: userLevelEnum[res.data.user_level],
+      // memberIcon: userLevelEnum[res.data.user_level],
+      memberIcon: svipIcon,
       expireDate: res.data.user_level_expire_date
     }
     userStore.setUserInfo(data.userInfo)
@@ -127,14 +135,6 @@ const detailList = [
     title: '获取更多推送次数 ~ ',
     type: 'important'
   },
-  // {
-  //   key: 'share',
-  //   icon: 'share',
-  //   title: '邀新限时送会员啦 🎉 ',
-  //   type: 'important',
-  //   actionType: 'share'
-  // },
-  // { key: 'member', icon: 'integral', title: '会员升级' },
   { key: 'problem', icon: 'question', title: '常见问题' },
   { key: 'feedback', icon: 'email', title: '收录建议' },
   { key: 'about', icon: 'setting', title: '关于秒速球' }
@@ -175,11 +175,13 @@ onPullDownRefresh(async () => {
 </script>
 
 <style lang="scss" scoped>
+$normal-font-size: 15px;
+
 .mine-page {
   background-color: #f0f0f0;
 }
 .personal {
-  padding: 20px;
+  padding: 20px 18px;
   background-color: #fff;
   display: flex;
   align-items: center;
@@ -189,7 +191,7 @@ onPullDownRefresh(async () => {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-right: 18px;
 }
 
 .user-info {
@@ -197,25 +199,35 @@ onPullDownRefresh(async () => {
   display: flex;
   flex-direction: column;
   line-height: 30px;
+  font-size: $normal-font-size;
 }
 .member-icon {
-  width: 30px;
+  width: 32px;
   height: 20px;
+  margin-left: 8px;
 }
+.expire-date {
+  color: #64748b;
+  font-size: 13px;
+}
+
 .vital-item {
   ::v-deep .u-cell {
     font-weight: 400;
     color: $warning-color;
   }
 }
-::v-deep .u-cell__value {
-  .share-btn {
-    padding: 0;
-    border: none;
-    line-height: 27px;
-    font-size: 14px;
-    color: $danger-color;
-    text-align: right;
-  }
+::v-deep .u-cell_title {
+  font-size: $normal-font-size !important;
 }
+// ::v-deep .u-cell__value {
+//   .share-btn {
+//     padding: 0;
+//     border: none;
+//     line-height: 27px;
+//     font-size: 14px;
+//     color: $danger-color;
+//     text-align: right;
+//   }
+// }
 </style>

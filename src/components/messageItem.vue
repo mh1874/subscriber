@@ -139,6 +139,8 @@ const previewHandler = (url: string) => {
 
 .message-content {
   margin: 8px 0;
+  font-size: 16px;
+  line-height: 26px;
   .retweeted {
     padding: 15px 10px;
     background-color: #f7f7f7;

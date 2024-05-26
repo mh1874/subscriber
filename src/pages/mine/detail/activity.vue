@@ -114,7 +114,8 @@ onLoad(() => {
         if (status === 1) {
           uni.showToast({
             title: msg,
-            icon: 'none'
+            icon: 'none',
+            duration: 3000
           })
         }
       } else {

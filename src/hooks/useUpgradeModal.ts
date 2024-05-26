@@ -2,7 +2,7 @@ import { ref, unref, getCurrentInstance, onUnmounted } from 'vue'
 import { mineApi } from '@/api'
 import { useUserStore } from '@/store'
 import { getStorage } from '@/utils/storage'
-import vipIcon from '@/static/member/vip.png'
+// import vipIcon from '@/static/member/vip.png'
 import svipIcon from '@/static/member/svip.png'
 
 export function useUpgradeModal(): any {
@@ -14,10 +14,10 @@ export function useUpgradeModal(): any {
     title: '温馨提示',
     content: '今日推送次数已用完，分享、观看广告 限时送会员！'
   })
-  const userLevelEnum: any = {
-    2: vipIcon,
-    3: svipIcon
-  }
+  // const userLevelEnum: any = {
+  //   2: vipIcon,
+  //   3: svipIcon
+  // }
   const hasShown = ref<boolean>(false) // 是否已显示过弹窗
 
   const getInstance = () => {
@@ -46,7 +46,8 @@ export function useUpgradeModal(): any {
         freeNoticeNum: userData.notice_num_free,
         rewardNoticeNum: userData.notice_num_reward,
         userLevel: userData.user_level,
-        memberIcon: userLevelEnum[userData.user_level],
+        // memberIcon: userLevelEnum[userData.user_level],
+        memberIcon: svipIcon,
         expireDate: userData.user_level_expire_date
       }
       userStore.setUserInfo(userInfo)

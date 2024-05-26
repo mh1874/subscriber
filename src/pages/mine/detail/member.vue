@@ -59,7 +59,6 @@
     <!-- 滚动通知 -->
     <view class="mb-3">
       <u-notice-bar
-        font-size="26"
         mode="vertical"
         :duration="3000"
         type="warning"
@@ -122,7 +121,9 @@ const { userInfo } = storeToRefs(userStore)
 interface MembershipFee {
   id: number
   type: string
-  price: string
+  price: number
+  days: number
+  extraDays?: number
 }
 
 interface MembershipBenefit {
@@ -130,13 +131,8 @@ interface MembershipBenefit {
   icon: string
 }
 
-interface SelectedMembership {
-  id: number
-  type: string
-  price: string
-}
-
 interface MembershipData {
+  tips: string
   fee: MembershipFee[]
   benefit: MembershipBenefit[]
 }
@@ -200,7 +196,7 @@ const selectedTab = ref<'premium' | 'super'>('super')
 //   days: 375,
 //   extraDays: 10
 // }
-const selectedMembership = ref<SelectedMembership>({
+const selectedMembership = ref<MembershipFee>({
   id: 4,
   type: '',
   price: 499,
@@ -267,7 +263,8 @@ const buyMembership = (): void => {
       success(res) {
         uni.showToast({
           title: '支付成功',
-          icon: 'none'
+          icon: 'none',
+          duration: 3000
         })
         uni.switchTab({ url: '/pages/mine/index' })
       },

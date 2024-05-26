@@ -11,7 +11,6 @@
       <view class="message-list">
         <view class="mb-2" @click="toActivity">
           <u-notice-bar
-            font-size="26"
             mode="vertical"
             :duration="3000"
             type="warning"
@@ -203,5 +202,10 @@ onShow(() => {
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
+}
+::v-deep .u-notice-bar {
+  .u-swiper {
+    height: 18px;
+  }
 }
 </style>
