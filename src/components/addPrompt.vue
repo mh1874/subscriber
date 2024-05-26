@@ -65,7 +65,7 @@ $text-color: #fff;
   top: 0px;
   right: 0;
   z-index: 10001;
-  width: 240px;
+  width: 250px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -89,7 +89,7 @@ $text-color: #fff;
   border-radius: 8px;
   background-color: $background-color;
   .text {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 400;
     color: $text-color;
   }

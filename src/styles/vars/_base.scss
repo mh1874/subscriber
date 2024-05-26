@@ -9,8 +9,9 @@ $danger-color: #fa3534;
     word-break: break-all;
     -webkit-box-orient: vertical;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 5;
     text-overflow: ellipsis;
+    font-size: 15px;
     ._img {
       width: 15px !important;
       height: 15px !important;
@@ -26,11 +27,17 @@ $danger-color: #fa3534;
   }
 }
 .mescroll-uni-content {
-  .mescroll-empty .empty-btn {
-    color: $main-color;
-    border-color: $main-color;
-    font-size: 12px;
-    padding: 5px;
-    min-width: 90px;
-  }
+  .mescroll-empty {
+    .empty-tip {
+      font-size: 13px !important;
+    }
+    .empty-btn {
+      color: $main-color;
+      border-color: $main-color;
+      font-size: 13px;
+      padding: 5px;
+      // min-width: 90px;
+      line-height: 20px;
+    }
+  } 
 }

@@ -2,15 +2,15 @@
   <view class="message-detail">
     <view class="user-info">
       <image class="avatar" :src="data.item.avatar" mode="aspectFill"></image>
-      <view class="info-text">
-        <view class="font-bold">{{ data.item.nick }}</view>
+      <view class="flex-1">
+        <view class="nick-name">{{ data.item.nick }}</view>
         <view class="time">{{
           formatTime(data.item.source_created_time)
         }}</view>
       </view>
       <u-button
         class="font-bold"
-        type="warning"
+        type="success"
         plain
         size="mini"
         open-type="share"
@@ -182,18 +182,19 @@ onShow(() => {
   display: flex;
   align-items: center;
   .avatar {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     margin-right: 10px;
   }
-  .info-text {
-    flex: 1;
+  .nick-name {
+    font-weight: bold;
     font-size: 15px;
+    margin-bottom: 2px;
   }
   .time {
     color: #888;
-    font-size: 12px;
+    font-size: 13px;
   }
 }
 
@@ -205,6 +206,7 @@ onShow(() => {
 
 .message-content {
   margin: 8px 0;
+  font-size: 15px;
   .img-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -232,7 +234,7 @@ onShow(() => {
 .copyright-tips {
   margin-top: 80px;
   text-align: left;
-  font-size: 13px;
+  font-size: 14px;
   color: #333;
 }
 

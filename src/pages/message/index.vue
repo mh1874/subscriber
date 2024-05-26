@@ -11,7 +11,7 @@
       <view class="message-list">
         <view class="mb-2" @click="toActivity">
           <u-notice-bar
-            font-size="20rpx"
+            font-size="26"
             mode="vertical"
             :duration="3000"
             type="warning"
@@ -67,7 +67,11 @@ const scrollOptions = reactive({
     use: true,
     offset: 50,
     textNoMore: '-- 到底了 --',
-    empty: { use: true, btnText: '去订阅 ~ ' }
+    empty: {
+      use: true,
+      tip: '点击下方“订阅”按钮，关注喜欢的牛人，即可在微信上实时收取牛人发帖、评论。',
+      btnText: ' + 去订阅'
+    }
   },
   down: { use: true }
 })

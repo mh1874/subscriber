@@ -16,7 +16,7 @@ export const shouldExpandContent = (message: string) => {
     const lineCount = Math.ceil(lineText.length / maxCharsPerLine)
     totalLines += lineCount
   }
-  return totalLines > 7
+  return totalLines > 5
 }
 
 const excludeStrings = ['2018new', 'emoji', '_org', '_small']

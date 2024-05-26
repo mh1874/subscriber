@@ -1,7 +1,7 @@
 <template>
   <view class="about-page">
     <view class="mb-10">
-      <view class="description leading-6 mb-3">
+      <view class="description leading-7 mb-3">
         <image
           class="logo"
           src="https://www.lovecf.cn/app/logo.png"
@@ -11,14 +11,14 @@
           秒速球，聚焦优质财经达人。通过【牛人列表】订阅感兴趣的牛人，获取实时消息
         </text>
       </view>
-      <view class="content leading-6 mb-3">
+      <view class="content leading-7 mb-3">
         <view class="mb-1">
           <text class="keyword">速度快</text>
           秒级响应，极速推送，快人一步！
         </view>
         <view class="mb-1">
           <text class="keyword">信息全</text>
-          所有消息（含秒删帖，修改贴，评论），秒速球都可捕获并推送，祝您运筹帷幄!
+          所有消息（含秒删帖，修改贴，评论），秒速球都可实时捕获并推送到微信，让您快人一步，运筹帷幄!
         </view>
         <view>
           <text class="keyword">成本低</text>
@@ -38,7 +38,7 @@
         </view>
       </view>
       <view class="contact">
-        <view class="leading-6 mb-3">
+        <view class="leading-7 mb-3">
           欢迎使用并推荐秒速球，任何问题都可通过
           <u-button type="warning" size="mini" @click="toDetail('feedback')">
             收录建议
@@ -89,6 +89,7 @@ onShow(() => {
 .about-page {
   padding: 15px;
   background-color: #f0fdfa;
+  font-size: 15px;
   .card {
     padding: 15px;
     background-color: #fff;

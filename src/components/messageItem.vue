@@ -7,7 +7,7 @@
         mode="aspectFill"
       ></image>
       <view class="mr-2">
-        <view class="font-bold text-sm">{{ props.item.bigv.nick }}</view>
+        <view class="nick-name">{{ props.item.bigv.nick }}</view>
         <view class="time">
           {{ formatTime(props.item.source_created_time) }}
         </view>
@@ -121,14 +121,19 @@ const previewHandler = (url: string) => {
     align-items: center;
   }
   .avatar {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     margin-right: 10px;
   }
+  .nick-name {
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
   .time {
     color: #888;
-    font-size: 12px;
+    font-size: 13px;
   }
 }
 

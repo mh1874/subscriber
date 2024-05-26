@@ -22,7 +22,7 @@
       </view>
       <view class="item watch-ads" v-if="videoSwitch">
         <text class="sub-title">观看视频广告</text>
-        <text class="desc"> 观看视频广告，即可获得 1 天超级会员。 </text>
+        <text class="desc"> 观看视频广告，即可获得 3 ~ 5 次推送次数。 </text>
         <u-button
           type="warning"
           size="mini"
@@ -161,7 +161,7 @@ onShow(() => {
         margin-bottom: 10px;
       }
       .desc {
-        font-size: 13px;
+        font-size: 14px;
         margin-bottom: 20px;
       }
     }

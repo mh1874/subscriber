@@ -59,7 +59,7 @@
     <!-- 滚动通知 -->
     <view class="mb-3">
       <u-notice-bar
-        font-size="20rpx"
+        font-size="26"
         mode="vertical"
         :duration="3000"
         type="warning"

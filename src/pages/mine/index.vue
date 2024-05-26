@@ -37,7 +37,7 @@
     </view>
     <view class="mb-4" @click="toDetail('about')">
       <u-notice-bar
-        font-size="20rpx"
+        font-size="26"
         mode="vertical"
         :duration="3000"
         type="warning"

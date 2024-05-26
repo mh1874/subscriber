@@ -5,7 +5,7 @@ export default {
     uni.$u.mpShare = {
       type: '2',
       mpId: 'wxad8965a1951dd4ae',
-      title: '来订阅你喜欢的牛人吧~', // 默认为小程序名称
+      title: '微信推送牛人最新消息~', // 默认为小程序名称
       path: '', // 默认为当前页面路径
       imageUrl: '' // 默认为当前页面的截图
     }

@@ -135,12 +135,12 @@ const toBigVDetail = () => {
     margin-bottom: 5px;
   }
   .fans {
-    font-size: 12px;
+    font-size: 13px;
     color: #888;
     margin-bottom: 6px;
   }
   .intro {
-    font-size: 12px;
+    font-size: 13px;
     color: #666;
     margin-bottom: 5px;
     width: 200px;
