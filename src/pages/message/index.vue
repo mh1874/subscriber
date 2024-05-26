@@ -161,7 +161,7 @@ const upCallback = async (mescroll: any) => {
 }
 
 // 滚动通知列表
-const noticeList = ['多种方式享无限推送次数 🎉 🎉 🎉']
+const noticeList = ['多种方式享无限推送次数 ~ ']
 // 跳转活动页面
 const toActivity = () => {
   uni.navigateTo({ url: '/pages/mine/detail/activity' })
@@ -202,10 +202,5 @@ onShow(() => {
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
-}
-::v-deep .u-notice-bar {
-  .u-swiper {
-    height: 18px;
-  }
 }
 </style>

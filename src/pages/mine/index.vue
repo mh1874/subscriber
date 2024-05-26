@@ -43,7 +43,7 @@
         </template>
       </view>
     </view>
-    <view class="mb-4" @click="toDetail('about')">
+    <view class="mb-3" @click="toDetail('about')">
       <u-notice-bar
         mode="vertical"
         :duration="3000"
