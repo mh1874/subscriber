@@ -55,16 +55,18 @@
     </view>
     <view class="post-script">PS：邀请新用户、观看视频广告 奖励可以叠加</view>
   </view>
+  <u-toast ref="uToastRef" />
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, unref } from 'vue'
 import { onShow, onLoad } from '@dcloudio/uni-app'
 import { mineApi } from '@/api'
 import { getUserId } from '@/api/token'
 import { useActivitySwitch } from '@/hooks/useActivitySwitch'
 
 const videoAd = ref<any>(null)
+const uToastRef = ref<HTMLElement | null>(null)
 
 // 获取是否显示广告、支付开关
 const { videoSwitch, paySwitch, getActivitySwitch } = useActivitySwitch()
@@ -112,10 +114,9 @@ onLoad(() => {
           source_user_id: 888888
         })
         if (status === 1) {
-          uni.showToast({
+          uToastRef.value?.show({
             title: msg,
-            icon: 'none',
-            duration: 3000
+            duration: 4000
           })
         }
       } else {

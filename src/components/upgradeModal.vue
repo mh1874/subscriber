@@ -46,13 +46,13 @@ const openModal = () => {
 // 跳转活动页面
 const toActivity = () => {
   uni.navigateTo({ url: '/pages/mine/detail/activity' })
-  setStorage('UPGRADE_SHOWN', true)
+  setStorage('UPGRADE_SHOWN', true, 0.1)
 }
 
 // 关闭提示弹窗
 const closeModal = () => {
   modalVisible.value = false
-  setStorage('UPGRADE_SHOWN', true)
+  setStorage('UPGRADE_SHOWN', true, 0.1)
 }
 
 const instance = getCurrentInstance()
