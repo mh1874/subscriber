@@ -159,11 +159,11 @@ onLoad(async (option: any) => {
   if (option.shareId) {
     addMemberDays(option.shareId)
   }
-  // 判断推送次数是否已用完
-  getUserInfo()
 })
 
 onShow(() => {
+  // 判断推送次数是否已用完
+  getUserInfo()
   setShareUrl()
   uni.$u.mpShare.imageUrl = ''
 })
