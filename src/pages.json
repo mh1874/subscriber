@@ -86,21 +86,18 @@
         "pagePath": "pages/message/index",
         "iconPath": "static/tabbar/home.png",
         "selectedIconPath": "static/tabbar/home-active.png",
-        "selectedColor": "#59c272",
         "text": "消息"
       },
       {
         "pagePath": "pages/bigV/index",
         "iconPath": "static/tabbar/search.png",
         "selectedIconPath": "static/tabbar/search-active.png",
-        "selectedColor": "#59c272",
         "text": "牛人"
       },
       {
         "pagePath": "pages/mine/index",
         "iconPath": "static/tabbar/mine.png",
         "selectedIconPath": "static/tabbar/mine-active.png",
-        "selectedColor": "#59c272",
         "text": "我的"
       }
     ]

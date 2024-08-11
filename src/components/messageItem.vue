@@ -18,6 +18,7 @@
         <mp-html
           :copy-link="false"
           :preview-img="false"
+          @linktap="copyLink"
           :content="props.item.message"
         />
       </view>
@@ -25,7 +26,8 @@
         <mp-html
           :copy-link="false"
           :preview-img="false"
-          :content="props.item.retweeted_message"
+          @linktap="copyLink"
+          :content="handledRetweeted"
         />
       </view>
     </view>
@@ -56,7 +58,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, getCurrentInstance } from 'vue'
+import { computed, defineProps, defineEmits, getCurrentInstance } from 'vue'
+import { useCopyLink } from '@/hooks/useCopyLink'
 
 const { proxy } = getCurrentInstance()
 
@@ -69,6 +72,14 @@ const props = defineProps({
     }
   }
 })
+
+// 用于判断是否为外部链接 & 点击链接复制
+const { isHttpUrl, copyLink } = useCopyLink()
+const handledRetweeted = computed(() =>
+  isHttpUrl(props.item.retweeted_message)
+    ? `<a>${props.item.retweeted_message}</a>`
+    : props.item.retweeted_message
+)
 
 // 获取相对时间
 const formatTime = (time: string) => {

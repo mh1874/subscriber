@@ -114,8 +114,19 @@ const tabList = reactive([
   { name: '球球' },
   { name: '围脖' },
   { name: '冬菜' },
-  { name: '我的订阅' }
+  { name: '破整' },
+  { name: '我的' }
 ])
+// 平台参数枚举
+const platformEnum = {
+  0: 'xueqiu',
+  1: 'weibo',
+  2: 'dongcai',
+  3: 'pozhengwang'
+}
+
+// 是否为 “我的订阅” Tab
+const isMineTab = computed(() => currentTab.value === 4)
 
 const changeTab = () => {
   getMescroll().resetUpScroll()
@@ -186,16 +197,6 @@ const closeSearchArea = () => {
 watch(searchAreaVisible, (value) => {
   if (!value) changeTab()
 })
-
-// 平台参数枚举
-const platformEnum = {
-  0: 'xueqiu',
-  1: 'weibo',
-  2: 'dongcai'
-}
-
-// 是否为 “我的订阅” Tab
-const isMineTab = computed(() => currentTab.value === 3)
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
 const upCallback = async (mescroll: any, offsetVal: any) => {

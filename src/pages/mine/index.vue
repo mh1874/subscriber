@@ -9,7 +9,7 @@
       <view class="user-info">
         <view class="flex justify-between items-center">
           <view class="flex items-center">
-            <text user-select>用户ID：{{ data.userInfo.userId }}</text>
+            <text @click="copyUserId">用户ID：{{ data.userInfo.userId }}</text>
             <image
               v-if="isMember"
               class="member-icon"
@@ -116,6 +116,19 @@ const getUserInfo = () => {
       expireDate: res.data.user_level_expire_date
     }
     userStore.setUserInfo(data.userInfo)
+  })
+}
+
+// 复制用户id
+const copyUserId = () => {
+  uni.setClipboardData({
+    data: data.userInfo.userId.toString(),
+    success() {
+      uni.showToast({
+        title: '用户ID已复制',
+        icon: 'none'
+      })
+    }
   })
 }
 

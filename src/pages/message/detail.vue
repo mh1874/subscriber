@@ -25,6 +25,7 @@
         <mp-html
           :copy-link="false"
           :preview-img="false"
+          @linktap="copyLink"
           :content="data.item.message"
         />
       </view>
@@ -32,6 +33,7 @@
         <mp-html
           :copy-link="false"
           :preview-img="false"
+          @linktap="copyLink"
           :content="data.item.retweeted_message"
         />
       </view>
@@ -80,6 +82,7 @@ import { ref, reactive, getCurrentInstance } from 'vue'
 import { messageApi } from '@/api'
 import { getUserId } from '@/api/token'
 import { useUpgradeModal } from '@/hooks/useUpgradeModal'
+import { useCopyLink } from '@/hooks/useCopyLink'
 import UpgradeModal from '@/components/upgradeModal.vue'
 import {
   getCurrentPageInfo,
@@ -95,6 +98,9 @@ const data = reactive({ item: { pic_list: [] } })
 // 判断推送次数是否已用完 & 分享增加会员天数
 const [register, { modalOptions, getUserInfo, addMemberDays }] =
   useUpgradeModal()
+
+// 用于判断是否为外部链接 & 点击链接复制
+const { isHttpUrl, copyLink } = useCopyLink()
 
 const queryMessageDetail = () => {
   messageApi
@@ -112,12 +118,16 @@ const queryMessageDetail = () => {
         ...messagePicList,
         ...retweetedPicList
       ]
+      // 判断引用内容是否为http链接
+      const retweetedMsg = isHttpUrl(handledRetweeted)
+        ? `<a>${handledRetweeted}</a>`
+        : handledRetweeted
       // 处理返回数据
       data.item = {
         ...res.data,
         ...res.data.bigv,
         message: handledMessage,
-        retweeted_message: handledRetweeted,
+        retweeted_message: retweetedMsg,
         pic_list: picList
       }
     })

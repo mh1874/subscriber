@@ -38,7 +38,7 @@ export const extractImagesFromHTML = (html: string) => {
   const imgRegex = /<img\s+[^>]*src\s*=\s*["']?([^"'>]+)["']?[^>]*>/g
 
   const picList: any = []
-  const text = html.replace(imgRegex, (match, imgSrc) => {
+  let text = html.replace(imgRegex, (match, imgSrc) => {
     // 如果图片的 src 属性包含排除字符串，不在 text 中排除，不在 picList 中返回
     if (excludeRegex.test(imgSrc)) {
       return match
@@ -47,6 +47,9 @@ export const extractImagesFromHTML = (html: string) => {
     picList.push(imgSrc)
     return ''
   })
+
+  // 处理文本中的换行符
+  text = text.replace(/(\n+|↵+)/g, '<br>')
 
   return { text, picList }
 }
