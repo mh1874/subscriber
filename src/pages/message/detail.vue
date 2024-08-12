@@ -82,7 +82,7 @@ import { ref, reactive, getCurrentInstance } from 'vue'
 import { messageApi } from '@/api'
 import { getUserId } from '@/api/token'
 import { useUpgradeModal } from '@/hooks/useUpgradeModal'
-import { useCopyLink } from '@/hooks/useCopyLink'
+import { usePoZheng } from '@/hooks/usePoZheng'
 import UpgradeModal from '@/components/upgradeModal.vue'
 import {
   getCurrentPageInfo,
@@ -100,13 +100,13 @@ const [register, { modalOptions, getUserInfo, addMemberDays }] =
   useUpgradeModal()
 
 // 用于判断是否为外部链接 & 点击链接复制
-const { isHttpUrl, copyLink } = useCopyLink()
+const { isPoZheng, processText, copyLink } = usePoZheng()
 
 const queryMessageDetail = () => {
   messageApi
     .getMessageDetail(messageId.value)
     .then((res) => {
-      const { message, retweeted_message, pic_list } = res.data
+      const { message, retweeted_message, pic_list, source_platform } = res.data
       const { text: handledMessage, picList: messagePicList } =
         extractImagesFromHTML(message)
       const { text: handledRetweeted, picList: retweetedPicList } = res.data
@@ -118,16 +118,21 @@ const queryMessageDetail = () => {
         ...messagePicList,
         ...retweetedPicList
       ]
-      // 判断引用内容是否为http链接
-      const retweetedMsg = isHttpUrl(handledRetweeted)
-        ? `<a>${handledRetweeted}</a>`
-        : handledRetweeted
+      // 判断内容是否来自破整网
+      let messageResult = handledMessage
+      let retweetedResult = handledRetweeted
+      if (isPoZheng(source_platform)) {
+        messageResult = processText(handledMessage)
+        retweetedResult = `<span>原文链接（点击复制）: 
+            <a style="color: #366092;">${handledRetweeted}</a>
+           </span>`
+      }
       // 处理返回数据
       data.item = {
         ...res.data,
         ...res.data.bigv,
-        message: handledMessage,
-        retweeted_message: retweetedMsg,
+        message: messageResult,
+        retweeted_message: retweetedResult,
         pic_list: picList
       }
     })

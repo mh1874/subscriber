@@ -47,7 +47,6 @@ export const extractImagesFromHTML = (html: string) => {
     picList.push(imgSrc)
     return ''
   })
-
   // 处理文本中的换行符
   text = text.replace(/(\n+|↵+)/g, '<br>')
 

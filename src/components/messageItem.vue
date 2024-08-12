@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { computed, defineProps, defineEmits, getCurrentInstance } from 'vue'
-import { useCopyLink } from '@/hooks/useCopyLink'
+import { usePoZheng } from '@/hooks/usePoZheng'
 
 const { proxy } = getCurrentInstance()
 
@@ -74,10 +74,12 @@ const props = defineProps({
 })
 
 // 用于判断是否为外部链接 & 点击链接复制
-const { isHttpUrl, copyLink } = useCopyLink()
+const { isPoZheng, copyLink } = usePoZheng()
 const handledRetweeted = computed(() =>
-  isHttpUrl(props.item.retweeted_message)
-    ? `<a>${props.item.retweeted_message}</a>`
+  isPoZheng(props.item.source_platform)
+    ? `<span>原文链接（点击复制）: 
+        <a style="color: #366092;">${props.item.retweeted_message}</a>
+       </span>`
     : props.item.retweeted_message
 )
 

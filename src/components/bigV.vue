@@ -18,7 +18,7 @@
       </view>
     </template>
     <template v-else>
-      <view class="search-user-info">
+      <view class="search-user-info" @click="toBigVDetail">
         <image
           class="avatar"
           :src="props.item.avatar"
