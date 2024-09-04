@@ -9,7 +9,9 @@
       <view class="user-info">
         <view class="flex justify-between items-center">
           <view class="flex items-center">
-            <text @click="copyUserId">用户ID：{{ data.userInfo.userId }}</text>
+            <text class="whitespace-nowrap" @click="copyUserId">
+              用户ID：{{ data.userInfo.userId }}
+            </text>
             <image
               v-if="isMember"
               class="member-icon"
@@ -17,7 +19,7 @@
               mode="aspectFill"
             ></image>
           </view>
-          <text class="expire-date" v-if="isMember">
+          <text class="expire-date whitespace-nowrap" v-if="isMember">
             {{ data.userInfo.expireDate }}到期
           </text>
         </view>
@@ -221,7 +223,7 @@ $normal-font-size: 15px;
 .member-icon {
   width: 32px;
   height: 20px;
-  margin-left: 8px;
+  margin: 0 5px;
 }
 .expire-date {
   color: #64748b;

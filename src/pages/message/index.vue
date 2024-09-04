@@ -21,7 +21,12 @@
         <view v-for="(item, index) in data.tableData" :key="item.mes_id">
           <message-item :item="item"></message-item>
           <view class="ads-content" v-if="isAdsHandler(index + 1)">
-            <ad-custom :unit-id="showRandomAds()" ad-intervals="30"></ad-custom>
+            <ad
+              unit-id="adunit-a14400ba0fcf7663"
+              ad-type="video"
+              ad-theme="white"
+              object-fit="contain"
+            ></ad>
           </view>
         </view>
       </view>
@@ -88,20 +93,9 @@ const toBigV = () => {
   uni.switchTab({ url: '/pages/bigV/index' })
 }
 
-// 判断插入广告的位置 第二条之后每三条插入一次
+// 判断插入广告的位置 第三条之后每五条插入一次
 const isAdsHandler = (index: number) => {
-  return index === 2 || (index > 3 && (index - 2) % 3 === 0)
-}
-const adsMap = [
-  'adunit-b4d82eba4ee15afd',
-  'adunit-f334561c7129680f',
-  'adunit-833ea18507e27b30',
-  'adunit-16a6f5f1941e5437'
-]
-// 乱序插入广告
-const showRandomAds = () => {
-  const randomIndex = Math.floor(Math.random() * adsMap.length)
-  return adsMap[randomIndex]
+  return index === 2 || (index > 3 && (index - 2) % 5 === 0)
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
