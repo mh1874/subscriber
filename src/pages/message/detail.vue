@@ -263,7 +263,7 @@ onShow(() => {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 120px;
+  height: 140px;
   background: linear-gradient(
     to top,
     rgba(255, 255, 255, 0.8),

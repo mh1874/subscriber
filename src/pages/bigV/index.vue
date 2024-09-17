@@ -20,7 +20,7 @@
       mode="top"
       z-index="1999"
       height="280px"
-      duration="150"
+      duration="200"
       border-radius="14"
       v-model="searchAreaVisible"
       @close="closeSearchArea"
