@@ -273,7 +273,7 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 99;
+  z-index: 999;
   .back-btn {
     width: 80%;
     z-index: 999;

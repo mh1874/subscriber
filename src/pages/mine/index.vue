@@ -20,7 +20,7 @@
             ></image>
           </view>
           <text class="expire-date whitespace-nowrap" v-if="isMember">
-            {{ data.userInfo.expireDate }}到期
+            {{ data.userInfo.expireDate }} 到期
           </text>
         </view>
         <!-- 非会员显示剩余推送次数 -->
