@@ -11,11 +11,16 @@ const useUserStore = defineStore('user', {
       userLevel: 0,
       memberIcon: null,
       expireDate: ''
-    } as IUserInfo
+    } as IUserInfo,
+    isFollowGZH: false,
+    unFollowText: '关注公众号，才能接收订阅消息~'
   }),
   actions: {
     setUserInfo(userInfo: IUserInfo): void {
       this.userInfo = { ...this.userInfo, ...userInfo }
+    },
+    setFollowState(state: boolean): void {
+      this.isFollowGZH = state
     }
   }
 })

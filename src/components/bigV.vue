@@ -1,6 +1,6 @@
 <template>
   <view class="big-v-item">
-    <template v-if="mode === 'bigV'">
+    <template v-if="isNormalMode">
       <view class="user-info" @click="toBigVDetail">
         <image
           class="avatar"
@@ -10,7 +10,9 @@
         <view class="text-sm">
           <view class="nick-name">{{ props.item.nick }}</view>
           <view class="fans">
-            <text class="mr-5"> 粉丝：{{ props.item.fans_num }} </text>
+            <text class="mr-5" v-if="mode === 'bigV'">
+              粉丝：{{ props.item.fans_num }}
+            </text>
             <text>订阅：{{ props.item.wx_fans_num }}</text>
           </view>
           <view class="intro">{{ props.item.intro }}</view>
@@ -71,14 +73,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   mode: {
     type: String,
     default: 'bigV',
     required: true,
-    validator: (value: string) => ['bigV', 'search'].includes(value)
+    validator: (value: string) => ['bigV', 'search', 'pccz'].includes(value)
   },
   item: {
     type: Object,
@@ -91,6 +93,9 @@ const currentPage = pageList[pageList.length - 1]?.route
 const bigVWhiteList = ['pages/bigV/index']
 
 const emits = defineEmits(['follow'])
+
+// 常规展示
+const isNormalMode = computed(() => ['bigV', 'pccz'].includes(props.mode))
 
 // type 关注发帖1、关注评论2
 const handleFollow = (type: number) => {

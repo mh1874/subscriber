@@ -34,6 +34,18 @@
       }
     },
     {
+      "path": "pages/functions/pccz",
+      "style": {
+        "navigationBarTitleText": "破产重整"
+      }
+    },
+    {
+      "path": "pages/functions/optional",
+      "style": {
+        "navigationBarTitleText": "自选股"
+      }
+    },
+    {
       "path": "pages/mine/detail/reminder",
       "style": {
         "navigationBarTitleText": "提醒设置"

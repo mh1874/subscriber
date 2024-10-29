@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmits, getCurrentInstance } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 import { usePoZheng } from '@/hooks/usePoZheng'
 
 const { proxy } = getCurrentInstance()

@@ -3,6 +3,7 @@
     <view class="title">获取更多推送次数 ~</view>
     <view class="content">
       <view class="item invite">
+        <button class="invite-btn" open-type="share"></button>
         <text class="sub-title">分享到群聊</text>
         <text class="desc">
           每邀请一个新用户，即可获得 1 ~ 5 天超级会员。
@@ -20,9 +21,9 @@
           </view>
         </u-button>
       </view>
-      <view class="item watch-ads" v-if="videoSwitch">
+      <view class="item watch-ads" @click="toWatchAds" v-if="videoSwitch">
         <text class="sub-title">观看视频广告</text>
-        <text class="desc"> 观看视频广告，即可获得 3 ~ 5 次推送次数。 </text>
+        <text class="desc"> 观看视频广告，即可获得 1 ~ 5 次推送次数。 </text>
         <u-button
           type="warning"
           size="mini"
@@ -36,7 +37,7 @@
           </view>
         </u-button>
       </view>
-      <view class="item upgrade" v-if="paySwitch">
+      <view class="item upgrade" @click="toUpgrade" v-if="paySwitch">
         <text class="sub-title">直接升级</text>
         <text class="desc"> 直接升级，立享超级会员体验。 </text>
         <u-button
@@ -168,12 +169,21 @@ onShow(() => {
       }
     }
     .invite {
+      position: relative;
       background-image: url('~@/static/invite.jpg');
       .sub-title {
         color: #355993;
       }
       .desc {
         color: #0369a1;
+      }
+      .invite-btn {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        opacity: 0;
+        left: 0;
+        top: 0;
       }
     }
     .watch-ads {

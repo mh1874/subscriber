@@ -44,6 +44,8 @@
         </template>
       </scroll-view>
     </u-popup>
+    <!-- 常用功能 -->
+    <common-functions />
     <u-tabs
       :list="tabList"
       :is-scroll="false"
@@ -52,7 +54,7 @@
       @change="changeTab"
     ></u-tabs>
     <mescroll-uni
-      :top="180"
+      :top="360"
       :up="scrollOptions.up"
       :down="scrollOptions.down"
       @init="mescrollInit"
@@ -85,10 +87,13 @@ import { ref, reactive, nextTick, watch, computed } from 'vue'
 import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { bigVApi } from '@/api'
+import { useUserStore } from '@/store'
 import { isEmpty } from '@/utils/util'
-import BigV from '@/components/bigV.vue'
 import { Nullable, TimeoutHandle } from '@/types'
+import BigV from '@/components/bigV.vue'
+import CommonFunctions from './commonFunctions.vue'
 
+const userStore = useUserStore()
 const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onPageScroll,
   onReachBottom
@@ -116,19 +121,17 @@ const tabList = reactive([
   { name: '球球' },
   { name: '围脖' },
   { name: '冬菜' },
-  { name: '破整' },
   { name: '我的' }
 ])
 // 平台参数枚举
 const platformEnum = {
   0: 'xueqiu',
   1: 'weibo',
-  2: 'dongcai',
-  3: 'pozhengwang'
+  2: 'dongcai'
 }
 
 // 是否为 “我的订阅” Tab
-const isMineTab = computed(() => currentTab.value === 4)
+const isMineTab = computed(() => currentTab.value === 3)
 
 const changeTab = () => {
   getMescroll().resetUpScroll()
@@ -287,9 +290,8 @@ const followAction = (position: string, type: number, item: any) => {
     })
 }
 
-const isFollowGZH = ref<number>(0)
 const followModalFlag = ref<boolean>(false)
-const unFollowText = '关注公众号，才能接收订阅消息~'
+const unFollowText = computed(() => userStore.unFollowText)
 /**
  * 牛人订阅or取消订阅
  * @param position 搜索search、列表list
@@ -297,12 +299,12 @@ const unFollowText = '关注公众号，才能接收订阅消息~'
  * @param item 牛人信息
  */
 const followHandler = (position: string, type: number, item: any) => {
-  if (!isFollowGZH.value) {
+  if (!userStore.isFollowGZH) {
     bigVApi.isFollowGZH().then((res) => {
       if (res.status !== 1) return
       // status 0 未关注 status 1 已关注
       if (res.data === 1) {
-        isFollowGZH.value = 1
+        userStore.setFollowState(true)
         followAction(position, type, item)
       } else {
         followModalFlag.value = true
