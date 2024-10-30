@@ -44,17 +44,8 @@
         </template>
       </scroll-view>
     </u-popup>
-    <!-- 常用功能 -->
-    <common-functions />
-    <u-tabs
-      :list="tabList"
-      :is-scroll="false"
-      active-color="#59c272"
-      v-model="currentTab"
-      @change="changeTab"
-    ></u-tabs>
     <mescroll-uni
-      :top="360"
+      :top="80"
       :up="scrollOptions.up"
       :down="scrollOptions.down"
       @init="mescrollInit"
@@ -62,6 +53,17 @@
       @up="upCallback"
       @emptyclick="toFollow"
     >
+      <!-- 常用功能 -->
+      <common-functions />
+      <view class="sticky-tabs">
+        <u-tabs
+          :list="tabList"
+          :is-scroll="false"
+          active-color="#59c272"
+          v-model="currentTab"
+          @change="changeTab"
+        ></u-tabs>
+      </view>
       <view class="big-v-list">
         <big-v
           mode="bigV"
@@ -376,5 +378,13 @@ onShow(() => {
   .u-mask {
     top: 45px;
   }
+}
+
+.sticky-tabs {
+  z-index: 990;
+  position: sticky;
+  top: -1px;
+  background-color: #fff;
+  margin-bottom: 5px;
 }
 </style>

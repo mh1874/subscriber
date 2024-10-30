@@ -10,9 +10,7 @@
         <view class="text-sm">
           <view class="nick-name">{{ props.item.nick }}</view>
           <view class="fans">
-            <text class="mr-5" v-if="mode === 'bigV'">
-              粉丝：{{ props.item.fans_num }}
-            </text>
+            <text class="mr-5"> 粉丝：{{ props.item.fans_num }} </text>
             <text>订阅：{{ props.item.wx_fans_num }}</text>
           </view>
           <view class="intro">{{ props.item.intro }}</view>
@@ -80,7 +78,7 @@ const props = defineProps({
     type: String,
     default: 'bigV',
     required: true,
-    validator: (value: string) => ['bigV', 'search', 'pccz'].includes(value)
+    validator: (value: string) => ['bigV', 'search'].includes(value)
   },
   item: {
     type: Object,
@@ -95,7 +93,7 @@ const bigVWhiteList = ['pages/bigV/index']
 const emits = defineEmits(['follow'])
 
 // 常规展示
-const isNormalMode = computed(() => ['bigV', 'pccz'].includes(props.mode))
+const isNormalMode = computed(() => props.mode === 'bigV')
 
 // type 关注发帖1、关注评论2
 const handleFollow = (type: number) => {

@@ -18,7 +18,7 @@
           ></u-notice-bar>
         </view>
         <big-v
-          mode="pccz"
+          mode="search"
           v-for="item in data.tableData"
           :key="item.bigv_id"
           :item="item"

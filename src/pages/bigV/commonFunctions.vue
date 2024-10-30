@@ -42,6 +42,7 @@ const toActivity = () => {
 
 <style lang="scss" scoped>
 .common-functions {
+  padding: 5px 0;
   .grid-text {
     color: #2d515e;
     margin-top: 6px;

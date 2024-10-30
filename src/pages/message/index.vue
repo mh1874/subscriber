@@ -93,9 +93,9 @@ const toBigV = () => {
   uni.switchTab({ url: '/pages/bigV/index' })
 }
 
-// 判断插入广告的位置 第三条之后每五条插入一次
+// 判断插入广告的位置 第四条之后每五条插入一次
 const isAdsHandler = (index: number) => {
-  return index === 2 || (index > 3 && (index - 2) % 5 === 0)
+  return index === 3 || (index > 3 && (index - 3) % 5 === 0)
 }
 
 // 上拉加载的回调: 其中num:当前页 从1开始, size:每页数据条数,默认10
