@@ -3,6 +3,7 @@ import * as Pinia from 'pinia'
 // @ts-ignore
 import uView from 'vk-uview-ui'
 import dayjs from 'dayjs'
+import isToday from 'dayjs/plugin/isToday'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 import mpShare from '@/mixins/share'
@@ -12,6 +13,7 @@ import App from './App.vue'
 // unocss
 import 'uno.css'
 
+dayjs.extend(isToday)
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
 

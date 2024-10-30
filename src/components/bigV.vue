@@ -1,6 +1,6 @@
 <template>
   <view class="big-v-item">
-    <template v-if="isNormalMode">
+    <template v-if="isBigVMode">
       <view class="user-info" @click="toBigVDetail">
         <image
           class="avatar"
@@ -28,25 +28,27 @@
       </view>
     </template>
     <div class="flex flex-col">
-      <u-button
-        class="follow-btn mb-3"
-        shape="circle"
-        :type="props.item.is_follow ? 'info' : 'success'"
-        size="mini"
-        @click="handleFollow(1)"
-      >
-        <view class="flex items-center">
-          <template v-if="props.item.is_follow">
-            <u-icon name="checkmark" size="24" class="mr-1"></u-icon>
-            <text>已订阅发帖</text>
-          </template>
-          <template v-else>
-            <u-icon name="plus" size="24" class="mr-1"></u-icon>
-            <text>订阅发帖</text>
-          </template>
-        </view>
-      </u-button>
-      <template v-if="props.item.is_follow_comment !== null">
+      <template v-if="hasPost">
+        <u-button
+          class="follow-btn mb-3"
+          shape="circle"
+          :type="props.item.is_follow ? 'info' : 'success'"
+          size="mini"
+          @click="handleFollow(1)"
+        >
+          <view class="flex items-center">
+            <template v-if="props.item.is_follow">
+              <u-icon name="checkmark" size="24" class="mr-1"></u-icon>
+              <text>已订阅发帖</text>
+            </template>
+            <template v-else>
+              <u-icon name="plus" size="24" class="mr-1"></u-icon>
+              <text>订阅发帖</text>
+            </template>
+          </view>
+        </u-button>
+      </template>
+      <template v-if="hasComment">
         <u-button
           class="follow-btn"
           shape="circle"
@@ -66,12 +68,33 @@
           </view>
         </u-button>
       </template>
+      <template v-if="hasOptional">
+        <u-button
+          class="follow-btn"
+          shape="circle"
+          :type="props.item.is_follow_portfolio ? 'info' : 'success'"
+          size="mini"
+          @click="handleFollow(3)"
+        >
+          <view class="flex items-center">
+            <template v-if="props.item.is_follow_portfolio">
+              <u-icon name="checkmark" size="24" class="mr-1"></u-icon>
+              <text>已订阅自选</text>
+            </template>
+            <template v-else>
+              <u-icon name="plus" size="24" class="mr-1"></u-icon>
+              <text>订阅自选</text>
+            </template>
+          </view>
+        </u-button>
+      </template>
     </div>
   </view>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { isEmpty } from '@/utils/util'
 
 const props = defineProps({
   mode: {
@@ -88,25 +111,41 @@ const props = defineProps({
 
 const pageList = getCurrentPages()
 const currentPage = pageList[pageList.length - 1]?.route
-const bigVWhiteList = ['pages/bigV/index']
+const bigVWhiteList = [
+  'pages/bigV/index',
+  'pages/functions/pccz',
+  'pages/functions/optional'
+]
 
 const emits = defineEmits(['follow'])
 
 // 常规展示
-const isNormalMode = computed(() => props.mode === 'bigV')
+const isBigVMode = computed(() => props.mode === 'bigV')
+// 是否支持帖子、评论、自选
+const hasPost = computed(() => !isEmpty(props.item.is_follow))
+const hasComment = computed(() => !isEmpty(props.item.is_follow_comment))
+const hasOptional = computed(() => !isEmpty(props.item.is_follow_portfolio))
 
 // type 关注发帖1、关注评论2
 const handleFollow = (type: number) => {
   emits('follow', type, props.item)
 }
 
-// 跳转消息详情
+// 跳转详情
 const toBigVDetail = () => {
-  // 牛人列表可以跳转消息详情
+  // 牛人列表、破产重整、自选股可以跳转
   if (!bigVWhiteList.includes(currentPage)) return
-  uni.navigateTo({
-    url: `/pages/bigV/detail?id=${props.item.bigv_id}`
-  })
+  if (hasOptional.value) {
+    // 跳转自选详情
+    uni.navigateTo({
+      url: `/pages/functions/optionalDetail?id=${props.item.bigv_id}`
+    })
+  } else {
+    // 跳转消息详情
+    uni.navigateTo({
+      url: `/pages/bigV/detail?id=${props.item.bigv_id}`
+    })
+  }
 }
 </script>
 

@@ -46,6 +46,12 @@
       }
     },
     {
+      "path": "pages/functions/optionalDetail",
+      "style": {
+        "navigationBarTitleText": "自选股详情"
+      }
+    },
+    {
       "path": "pages/mine/detail/reminder",
       "style": {
         "navigationBarTitleText": "提醒设置"

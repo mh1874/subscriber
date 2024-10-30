@@ -1,13 +1,15 @@
 import request from '../request'
+import { IPager } from '../types'
 
 export default {
   /**
    * 获取可订阅自选的牛人列表
    * @param size 页码
    */
-  getOptionalBigVList(): Promise<any> {
-    return request('/message/from_bigv/', {
-      method: 'GET'
+  getOptionalBigVList(params: IPager): Promise<any> {
+    return request('/bigv/portfolio/', {
+      method: 'GET',
+      params
     })
   },
   /**

@@ -2,6 +2,22 @@
   <view class="upgrade-page">
     <view class="title">获取更多推送次数 ~</view>
     <view class="content">
+      <view class="item upgrade" @click="toUpgrade" v-if="paySwitch">
+        <text class="sub-title">直接升级</text>
+        <text class="desc"> 直接升级，立享超级会员体验。 </text>
+        <u-button
+          type="success"
+          size="mini"
+          plain
+          shape="circle"
+          @click="toUpgrade"
+        >
+          <view class="flex items-center">
+            <text>去升级</text>
+            <u-icon name="arrow-rightward" class="ml-1" size="24"></u-icon>
+          </view>
+        </u-button>
+      </view>
       <view class="item invite">
         <button class="invite-btn" open-type="share"></button>
         <text class="sub-title">分享到群聊</text>
@@ -33,22 +49,6 @@
         >
           <view class="flex items-center">
             <text>去观看</text>
-            <u-icon name="arrow-rightward" class="ml-1" size="24"></u-icon>
-          </view>
-        </u-button>
-      </view>
-      <view class="item upgrade" @click="toUpgrade" v-if="paySwitch">
-        <text class="sub-title">直接升级</text>
-        <text class="desc"> 直接升级，立享超级会员体验。 </text>
-        <u-button
-          type="success"
-          size="mini"
-          plain
-          shape="circle"
-          @click="toUpgrade"
-        >
-          <view class="flex items-center">
-            <text>去升级</text>
             <u-icon name="arrow-rightward" class="ml-1" size="24"></u-icon>
           </view>
         </u-button>
