@@ -13,6 +13,9 @@
         </view>
       </view>
       <view class="stock-list">
+        <view class="flex justify-end">
+          <text text-black>添加时间</text>
+        </view>
         <view
           v-for="(it, index) in detail.message"
           :key="index"
@@ -108,10 +111,10 @@ onShow(() => {
   }
   .stock-list {
     line-height: 36px;
+    font-size: 16px;
     .stock-item {
       display: flex;
       justify-content: space-between;
-      font-size: 16px;
     }
   }
 }

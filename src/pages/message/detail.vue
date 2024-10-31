@@ -37,6 +37,10 @@
           :content="data.item.retweeted_message"
         />
       </view>
+      <!-- 自选类型消息可跳转自选详情 -->
+      <view v-if="data.item.type === 3" class="mt-3" @click="toOptional">
+        <text class="to-optional">查看最新自选>>></text>
+      </view>
       <template v-if="data.item.pic_list.length">
         <view class="img-container">
           <view
@@ -93,7 +97,7 @@ import {
 const { proxy } = getCurrentInstance()
 
 const messageId = ref<number>(0)
-const data = reactive({ item: { pic_list: [] } })
+const data = reactive<any>({ item: { pic_list: [] } })
 
 // 判断推送次数是否已用完 & 分享增加会员天数
 const [register, { modalOptions, getUserInfo, addMemberDays }] =
@@ -139,6 +143,13 @@ const queryMessageDetail = () => {
     .catch((err) => {
       console.error(err)
     })
+}
+
+// 跳转自选详情
+const toOptional = () => {
+  uni.navigateTo({
+    url: `/pages/functions/optionalDetail?id=${data.item.bigv_id}`
+  })
 }
 
 // 图片预览方法
@@ -244,6 +255,10 @@ onShow(() => {
   .retweeted {
     padding: 15px 10px;
     background-color: #f7f7f7;
+  }
+  .to-optional {
+    color: #22c55e;
+    border-bottom: 1px solid #22c55e;
   }
 }
 
