@@ -110,7 +110,7 @@
         "pagePath": "pages/bigV/index",
         "iconPath": "static/tabbar/search.png",
         "selectedIconPath": "static/tabbar/search-active.png",
-        "text": "牛人"
+        "text": "发现"
       },
       {
         "pagePath": "pages/mine/index",

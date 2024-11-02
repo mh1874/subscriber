@@ -22,7 +22,7 @@
     <view class="content">
       <view class="optional-count">
         <view>
-          <text text-black mr-3>TA的自选</text>
+          <text text-black mr-2>TA的自选</text>
           <text class="count">{{ detail.count }} 个</text>
         </view>
         <view>
@@ -35,9 +35,9 @@
           :key="index"
           class="stock-item"
         >
-          <view>
+          <view class="flex items-center">
             <text class="font-medium mr-2">{{ it.name }}</text>
-            <u-tag :show="it.isNew" text="new" type="error" size="mini" light />
+            <image class="new-icon" v-if="it.isNew" :src="newIcon"></image>
           </view>
           <text>{{ it.created }}</text>
         </view>
@@ -49,6 +49,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, getCurrentInstance } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
+import newIcon from '@/static/common/new.png'
 import { functionsApi } from '@/api'
 
 const { proxy } = getCurrentInstance()
@@ -110,12 +111,11 @@ onShow(() => {
   .header-bg {
     width: 100%;
     height: 120px;
-    background: linear-gradient(180deg, #59bb73 0%, #4ade80 100%);
-    border-radius: 0 0 12px 12px;
+    background: linear-gradient(180deg, #59bb73 0%, rgba(89, 187, 115, 0) 100%);
   }
   .user-info {
     padding: 15px;
-    border-radius: 6px 24px 6px 24px;
+    border-radius: 6px 20px 6px 20px;
     background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
     box-sizing: border-box;
     box-shadow: 0px 8px 16px 0px rgba(53, 103, 238, 0.14);
@@ -144,7 +144,7 @@ onShow(() => {
     }
   }
   .content {
-    margin: 0 15px;
+    margin: 0 20px;
     color: #4a617e;
     .optional-count {
       display: flex;
@@ -160,12 +160,16 @@ onShow(() => {
       }
     }
     .stock-list {
-      line-height: 40px;
+      line-height: 48px;
       font-size: 16px;
       .stock-item {
         display: flex;
         justify-content: space-between;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px solid #f3f4f6;
+        .new-icon {
+          width: 38px;
+          height: 22px;
+        }
       }
     }
   }
