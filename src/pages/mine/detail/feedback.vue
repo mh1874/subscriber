@@ -25,13 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useUserStore } from '@/store'
+import { ref } from 'vue'
 import { mineApi } from '@/api'
+import { useUserStore } from '@/store'
 import UpgradeModal from '@/components/upgradeModal.vue'
 
 const userStore = useUserStore()
-const feedbackVal = ref('')
+const feedbackVal = ref<string>('')
 const feedbackOptions = {
   border: true,
   height: 200,
@@ -46,12 +46,9 @@ const modalOptions = ref({
     '因作者精力有限=_=，暂只接受会员的收录建议，可以通过 分享、观看广告、升级 成为我们的会员！'
 })
 
-// 是否为普通用户
-const isNormalUser = computed(() => userStore.userInfo?.userLevel === 1)
-
 const submitFeedback = (): void => {
   // 暂只接受会员的收录建议
-  if (isNormalUser.value) {
+  if (userStore.isNormalUser) {
     upgradeModalRef.value && upgradeModalRef.value.openModal()
     return
   }

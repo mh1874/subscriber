@@ -15,6 +15,14 @@ const useUserStore = defineStore('user', {
     isFollowGZH: false,
     unFollowText: '关注公众号，才能接收订阅消息~'
   }),
+  getters: {
+    isNormalUser(state): boolean {
+      return state.userInfo.userLevel === 1
+    },
+    isMember(state): boolean {
+      return state.userInfo.userLevel === 3
+    }
+  },
   actions: {
     setUserInfo(userInfo: IUserInfo): void {
       this.userInfo = { ...this.userInfo, ...userInfo }

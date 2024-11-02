@@ -35,10 +35,16 @@
         @click="chooseFee(item)"
       >
         <view class="type">{{ item.type }}</view>
-        <text class="price">
-          <text class="mr-0.5">￥</text>
-          <text class="text-3xl">{{ item.price }}</text>
-        </text>
+        <view class="price">
+          <text class="mr-0.5 text-base">￥</text>
+          <view class="discount" v-if="item.discount">
+            <text class="origin">{{ item.price }}</text>
+            <text class="text-3xl">{{ item.discount }}</text>
+          </view>
+          <text v-else>
+            <text class="text-3xl">{{ item.price }}</text>
+          </text>
+        </view>
       </view>
     </view>
     <!-- 过期时间 -->
@@ -82,13 +88,18 @@
       </view>
     </view>
   </view>
-
   <!-- 支付区域 -->
   <view class="payment">
-    <text class="price">
-      <text class="mr-0.5">￥</text>
-      <text class="text-3xl">{{ selectedMembership.price }}</text>
-    </text>
+    <view class="price">
+      <text class="mr-0.5 text-base">￥</text>
+      <text class="discount" v-if="selectedMembership.discount">
+        <text class="origin">{{ selectedMembership.price }}</text>
+        <text class="text-3xl">{{ selectedMembership.discount }}</text>
+      </text>
+      <text v-else>
+        <text class="text-3xl">{{ selectedMembership.price }}</text>
+      </text>
+    </view>
     <u-button
       class="buy-btn"
       type="success"
@@ -120,7 +131,8 @@ const { userInfo } = storeToRefs(userStore)
 
 interface MembershipFee {
   id: number
-  type: string
+  type?: string
+  discount?: number
   price: number
   days: number
   extraDays?: number
@@ -159,7 +171,14 @@ const premiumMembershipData: MembershipData = {
 const superMembershipData: MembershipData = {
   tips: '尊享不限推送次数、优先推送、秒级响应等多项特权',
   fee: [
-    { id: 4, type: '年费SVIP', price: 499, days: 375, extraDays: 10 },
+    {
+      id: 4,
+      type: '年费SVIP',
+      price: 499,
+      discount: 399,
+      days: 375,
+      extraDays: 10
+    },
     { id: 5, type: '季费SVIP', price: 149, days: 93, extraDays: 3 },
     { id: 6, type: '月费SVIP', price: 59, days: 30 }
   ],
@@ -198,8 +217,8 @@ const selectedTab = ref<'premium' | 'super'>('super')
 // }
 const selectedMembership = ref<MembershipFee>({
   id: 4,
-  type: '',
   price: 499,
+  discount: 399,
   days: 375,
   extraDays: 10
 })
@@ -214,7 +233,6 @@ const selectTab = (tab: 'premium' | 'super'): void => {
   const initVal = getMembershipData.value.fee[0]
   selectedMembership.value = {
     id: tab === 'premium' ? 1 : 4,
-    type: '',
     price: initVal.price,
     days: initVal.days,
     extraDays: initVal.extraDays
@@ -224,7 +242,6 @@ const selectTab = (tab: 'premium' | 'super'): void => {
 const chooseFee = (item: MembershipFee): void => {
   selectedMembership.value = {
     id: item.id,
-    type: selectedTab.value,
     price: item.price,
     days: item.days,
     extraDays: item.extraDays
@@ -377,6 +394,9 @@ page {
     }
     .price {
       color: orange;
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
     }
   }
   .fee-active {
@@ -424,6 +444,16 @@ page {
     }
   }
 }
+.discount {
+  display: flex;
+  flex-direction: column;
+  .origin {
+    color: #9ca3af;
+    font-size: 18px;
+    text-decoration: line-through;
+    margin-right: 5px;
+  }
+}
 
 .payment {
   position: fixed;
@@ -438,6 +468,8 @@ page {
   .price {
     font-weight: bold;
     color: orange;
+    display: flex;
+    align-items: baseline;
   }
   .buy-btn {
     ::v-deep .u-btn {

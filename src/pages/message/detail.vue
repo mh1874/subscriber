@@ -63,14 +63,16 @@
       <text class="text-green-400 font-bold">分享至新用户得会员。</text>
     </view>
     <!-- 广告位 -->
-    <view class="video-ads">
-      <ad
-        unit-id="adunit-a14400ba0fcf7663"
-        ad-type="video"
-        ad-theme="white"
-        object-fit="contain"
-      ></ad>
-    </view>
+    <template v-if="userStore.isNormalUser">
+      <view class="video-ads">
+        <ad
+          unit-id="adunit-a14400ba0fcf7663"
+          ad-type="video"
+          ad-theme="white"
+          object-fit="contain"
+        ></ad>
+      </view>
+    </template>
     <view class="back-container">
       <u-button class="back-btn" type="success" size="default" @click="toHome">
         返回主页
@@ -85,6 +87,7 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref, reactive, getCurrentInstance } from 'vue'
 import { messageApi } from '@/api'
 import { getUserId } from '@/api/token'
+import { useUserStore } from '@/store'
 import { useUpgradeModal } from '@/hooks/useUpgradeModal'
 import { usePoZheng } from '@/hooks/usePoZheng'
 import UpgradeModal from '@/components/upgradeModal.vue'
@@ -95,6 +98,7 @@ import {
 } from '@/utils/util'
 
 const { proxy } = getCurrentInstance()
+const userStore = useUserStore()
 
 const messageId = ref<number>(0)
 const data = reactive<any>({ item: { pic_list: [] } })

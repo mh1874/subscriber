@@ -20,14 +20,16 @@
         </view>
         <view v-for="(item, index) in data.tableData" :key="item.mes_id">
           <message-item :item="item"></message-item>
-          <view class="ads-content" v-if="isAdsHandler(index + 1)">
-            <ad
-              unit-id="adunit-a14400ba0fcf7663"
-              ad-type="video"
-              ad-theme="white"
-              object-fit="contain"
-            ></ad>
-          </view>
+          <template v-if="userStore.isNormalUser">
+            <view class="ads-content" v-if="isAdsHandler(index + 1)">
+              <ad
+                unit-id="adunit-a4c146a2cc0c69a7"
+                ad-type="video"
+                ad-theme="white"
+                object-fit="contain"
+              ></ad>
+            </view>
+          </template>
         </view>
       </view>
     </mescroll-uni>
@@ -49,13 +51,15 @@ import {
 } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { messageApi } from '@/api'
-import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
+import { useUserStore } from '@/store'
 import { setStorage } from '@/utils/storage'
-import AddPrompt from '@/components/addPrompt.vue'
+import { shouldExpandContent, extractImagesFromHTML } from '@/utils/util'
 import { useUpgradeModal } from '@/hooks/useUpgradeModal'
+import AddPrompt from '@/components/addPrompt.vue'
 import UpgradeModal from '@/components/upgradeModal.vue'
 import MessageItem from '@/components/messageItem.vue'
 
+const userStore = useUserStore()
 const { mescrollInit, downCallback, getMescroll } = useMescroll(
   onPageScroll,
   onReachBottom
@@ -154,8 +158,8 @@ const upCallback = async (mescroll: any) => {
     })
 }
 
-// 滚动通知列表
-const noticeList = ['多种方式享无限推送次数 ~ ']
+// 滚动通知列表 '多种方式享无限推送次数 ~ '
+const noticeList = ['双11狂欢，年费会员限时8折，错过再等一年！']
 // 跳转活动页面
 const toActivity = () => {
   uni.navigateTo({ url: '/pages/mine/detail/activity' })

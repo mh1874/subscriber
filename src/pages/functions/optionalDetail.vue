@@ -1,21 +1,35 @@
 <template>
   <view class="detail-page">
+    <view class="header-bg"></view>
     <view class="user-info">
-      <image class="avatar" :src="detail.bigv.avatar" mode="aspectFill"></image>
-      <view class="nick-name">{{ detail.bigv.nick }}</view>
+      <view class="user-name">
+        <image
+          class="avatar"
+          :src="detail.bigv.avatar"
+          mode="aspectFill"
+        ></image>
+        <text class="name">{{ detail.bigv.nick }}</text>
+      </view>
+      <view class="change">
+        <text class="change-label">最新变动：</text>
+        <view v-if="hasLastChange">
+          <view>{{ detail.bigv.lastChange }}</view>
+          <view>{{ detail.bigv.changeTime }}</view>
+        </view>
+        <text v-else>无</text>
+      </view>
     </view>
-    <view class="card">
+    <view class="content">
       <view class="optional-count">
-        <text>TA的自选</text>
-        <view class="flex items-center">
-          <text class="count">{{ detail.count }}</text>
-          <text>个</text>
+        <view>
+          <text text-black mr-3>TA的自选</text>
+          <text class="count">{{ detail.count }} 个</text>
+        </view>
+        <view>
+          <text text-black>添加时间</text>
         </view>
       </view>
       <view class="stock-list">
-        <view class="flex justify-end">
-          <text text-black>添加时间</text>
-        </view>
         <view
           v-for="(it, index) in detail.message"
           :key="index"
@@ -33,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, getCurrentInstance } from 'vue'
+import { ref, reactive, computed, getCurrentInstance } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { functionsApi } from '@/api'
 
@@ -41,11 +55,22 @@ const { proxy } = getCurrentInstance()
 const bigVId = ref<number>(0)
 const detail = reactive<any>({ bigv: {}, message: [], count: 0 })
 
+// 是否有最新变动
+const hasLastChange = computed(
+  () => detail.bigv.lastChange && detail.bigv.changeTime
+)
+
 const getOptionalStocks = async () => {
   try {
     const { status, data } = await functionsApi.getOptionalDetail(bigVId.value)
     if (status !== 1) return
-    detail.bigv = data.bigv
+    detail.bigv = {
+      ...data.bigv,
+      lastChange: data.last_change,
+      changeTime: proxy
+        .$dayjs(data.last_change_time)
+        .format('YYYY-MM-DD HH:mm:ss')
+    }
     const handledMsgStr = data.message.replace(/'/g, '"')
     const parseMsg = JSON.parse(handledMsgStr)
     detail.message = parseMsg.map((it: any) => {
@@ -74,47 +99,74 @@ onShow(() => {
 
 <style lang="scss" scoped>
 .detail-page {
-  padding: 15px;
-  background-color: #f0fdfa;
-  .card {
-    padding: 15px;
-    background-color: #fff;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+  height: 812px;
+  background: linear-gradient(180deg, #f0fdf4 0%, #fff 100%),
+    radial-gradient(
+      118% 54% at 91% 14%,
+      #f0fdf4 0%,
+      rgba(223, 238, 254, 0) 100%
+    ),
+    radial-gradient(137% 63% at 0% 0%, #f0fdf4 0%, #fff 100%), #ffffff;
+  .header-bg {
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(180deg, #59bb73 0%, #4ade80 100%);
+    border-radius: 0 0 12px 12px;
   }
   .user-info {
-    @extend .card;
-    margin-bottom: 20px;
-    .avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
+    padding: 15px;
+    border-radius: 6px 24px 6px 24px;
+    background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+    box-sizing: border-box;
+    box-shadow: 0px 8px 16px 0px rgba(53, 103, 238, 0.14);
+    margin: -90px 15px 30px;
+    .user-name {
+      display: flex;
+      align-items: center;
       margin-bottom: 10px;
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 20px;
+      }
+      .name {
+        font-size: 20px;
+        font-weight: 500;
+      }
     }
-    .nick-name {
-      font-size: 20px;
-      font-weight: 500;
-      margin-bottom: 5px;
+    .change {
+      display: flex;
+      .change-label {
+        font-size: 16px;
+        font-weight: 500;
+      }
     }
   }
-  .optional-count {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 15px;
-    .count {
-      color: #f97316;
-      font-weight: 500;
-      font-size: 16px;
-      margin-right: 3px;
-    }
-  }
-  .stock-list {
-    line-height: 36px;
-    font-size: 16px;
-    .stock-item {
+  .content {
+    margin: 0 15px;
+    color: #4a617e;
+    .optional-count {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      .count {
+        color: #f97316;
+        font-weight: 500;
+        margin-right: 5px;
+      }
+    }
+    .stock-list {
+      line-height: 40px;
+      font-size: 16px;
+      .stock-item {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #f1f5f9;
+      }
     }
   }
 }
