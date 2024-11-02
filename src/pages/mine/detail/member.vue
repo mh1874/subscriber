@@ -155,7 +155,7 @@ const tabs = [
 ]
 
 const premiumMembershipData: MembershipData = {
-  tips: '尊享30条推送次数、优先推送、秒级响应等多项特权',
+  tips: '尊享30条推送次数、优先推送、免广告等多项特权',
   fee: [
     { id: 1, type: '年费VIP', price: 199, days: 375, extraDays: 10 },
     { id: 2, type: '季费VIP', price: 59, days: 93, extraDays: 3 },
@@ -163,13 +163,13 @@ const premiumMembershipData: MembershipData = {
   ],
   benefit: [
     { name: '每天30条推送', icon: 'fifty' },
-    { name: '秒级响应', icon: 'second' },
+    { name: '免广告', icon: 'second' },
     { name: '需求优先处理', icon: 'response' }
   ]
 }
 
 const superMembershipData: MembershipData = {
-  tips: '尊享不限推送次数、优先推送、秒级响应等多项特权',
+  tips: '尊享不限推送次数、优先推送、免广告等多项特权',
   fee: [
     {
       id: 4,
@@ -184,8 +184,8 @@ const superMembershipData: MembershipData = {
   ],
   benefit: [
     { name: '不限条数推送', icon: 'infinity' },
-    { name: '秒级响应', icon: 'second' },
     { name: '优先推送', icon: 'push' },
+    { name: '免广告', icon: 'second' },
     { name: '需求优先处理', icon: 'response' }
   ]
 }
@@ -277,22 +277,21 @@ const buyMembership = (): void => {
       package: data.package,
       signType: data.signType,
       paySign: data.paySign,
-      success(res) {
+      success() {
         uni.showToast({
-          title: '支付成功',
+          title: '升级成功',
           icon: 'none',
           duration: 3000
         })
         uni.switchTab({ url: '/pages/mine/index' })
       },
-      fail(res) {
+      fail() {
         uni.showToast({
-          title: '支付失败',
+          title: '升级失败',
           icon: 'none'
         })
-        console.log('pay fail ==>', res)
       }
-    })
+    } as any)
   })
 }
 </script>
