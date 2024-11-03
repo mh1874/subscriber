@@ -265,6 +265,7 @@ const roundToNearestTen = (value: number) => {
  */
 const followAction = (position: string, type: number, item: any) => {
   const isFollow = type === 1 ? item.is_follow : item.is_follow_comment
+  const hasNoComment = isEmpty(item.is_follow_comment)
   const apiFunc = isFollow ? bigVApi.bigvUnFollow : bigVApi.bigvFollow
   const params = {
     bigv_id: item.bigv_id,
@@ -281,8 +282,13 @@ const followAction = (position: string, type: number, item: any) => {
         const itemIndex = data.tableData.findIndex(
           (it: any) => it.bigv_id === item.bigv_id
         )
-        const offsetVal = roundToNearestTen(itemIndex)
-        upCallback(getMescroll(), offsetVal)
+        // 如果是在我的订阅中取消关注，且当前大V取消关注后就在列表消失时。重置列表，并回到列表顶部
+        if (isMineTab.value && hasNoComment) {
+          changeTab()
+        } else {
+          const offsetVal = roundToNearestTen(itemIndex)
+          upCallback(getMescroll(), offsetVal)
+        }
       } else {
         bigVSearchHandler()
       }

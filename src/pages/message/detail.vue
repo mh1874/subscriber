@@ -267,14 +267,14 @@ onShow(() => {
 }
 
 .copyright-tips {
-  margin-top: 80px;
+  margin: 80px 0 50px;
   text-align: left;
   font-size: 14px;
   color: #333;
 }
 
 .video-ads {
-  margin: 50px 0;
+  margin-bottom: 50px;
 }
 
 .back-container {
