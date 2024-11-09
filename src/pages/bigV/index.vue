@@ -90,7 +90,7 @@ import { onPageScroll, onReachBottom, onLoad, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { bigVApi } from '@/api'
 import { useUserStore } from '@/store'
-import { isEmpty } from '@/utils/util'
+import { isEmpty, roundToNearestTen } from '@/utils/util'
 import { Nullable, TimeoutHandle } from '@/types'
 import BigV from '@/components/bigV.vue'
 import CommonFunctions from './commonFunctions.vue'
@@ -130,7 +130,7 @@ const platformEnum = {
   0: 'xueqiu',
   1: 'weibo',
   2: 'dongcai'
-}
+} as any
 
 // 是否为 “我的订阅” Tab
 const isMineTab = computed(() => currentTab.value === 3)
@@ -252,9 +252,25 @@ const toFollow = () => {
   changeTab()
 }
 
-const roundToNearestTen = (value: number) => {
-  const base = 10
-  return Math.floor(value / base) * base
+/**
+ * 判断“取消订阅”操作后，是否需要初始化列表状态
+ * 在【我的订阅】中如果当前大V取消订阅后就在列表消失，则需要初始化列表状态。
+ * 包含下列两种操作场景
+ * 1.仅支持关注帖子的大V取消订阅时
+ * 2.支持订阅帖子+评论的大V，仅订阅了其中一项，取消订阅时
+ * @param item 当前大V的信息
+ * @param isFollow 当前是否是“订阅”状态
+ * @return 是否需要初始化列表
+ */
+const needToInit = (item: any, isFollow: boolean): boolean => {
+  const { is_follow, is_follow_comment } = item
+  const hasNoComment = isEmpty(is_follow_comment)
+  const oneForTwo =
+    typeof is_follow === 'boolean' &&
+    typeof is_follow_comment === 'boolean' &&
+    is_follow !== is_follow_comment &&
+    isFollow
+  return hasNoComment || oneForTwo
 }
 
 /**
@@ -265,7 +281,6 @@ const roundToNearestTen = (value: number) => {
  */
 const followAction = (position: string, type: number, item: any) => {
   const isFollow = type === 1 ? item.is_follow : item.is_follow_comment
-  const hasNoComment = isEmpty(item.is_follow_comment)
   const apiFunc = isFollow ? bigVApi.bigvUnFollow : bigVApi.bigvFollow
   const params = {
     bigv_id: item.bigv_id,
@@ -283,7 +298,7 @@ const followAction = (position: string, type: number, item: any) => {
           (it: any) => it.bigv_id === item.bigv_id
         )
         // 如果是在我的订阅中取消关注，且当前大V取消关注后就在列表消失时。重置列表，并回到列表顶部
-        if (isMineTab.value && hasNoComment) {
+        if (isMineTab.value && needToInit(item, isFollow)) {
           changeTab()
         } else {
           const offsetVal = roundToNearestTen(itemIndex)

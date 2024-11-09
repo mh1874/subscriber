@@ -42,7 +42,7 @@ import { onPageScroll, onReachBottom, onShow } from '@dcloudio/uni-app'
 import useMescroll from '@/uni_modules/mescroll-uni/hooks/useMescroll.js'
 import { functionsApi, bigVApi } from '@/api'
 import { useUserStore } from '@/store'
-import { isEmpty } from '@/utils/util'
+import { isEmpty, roundToNearestTen } from '@/utils/util'
 import BigV from '@/components/bigV.vue'
 
 const userStore = useUserStore()
@@ -103,11 +103,6 @@ const upCallback = async (mescroll: any, offsetVal: any) => {
     .catch(() => {
       mescroll.endErr() // 请求失败, 结束加载
     })
-}
-
-const roundToNearestTen = (value: number) => {
-  const base = 10
-  return Math.floor(value / base) * base
 }
 
 /**

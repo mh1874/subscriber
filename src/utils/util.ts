@@ -100,3 +100,11 @@ export const appendQueryParams = (url: string, query?: any) => {
     .join('&')
   return url + (url.includes('?') ? '&' : '?') + queryString
 }
+
+/**
+ * 根据当前上拉滚动到多少条，计算当前页码参数
+ */
+export const roundToNearestTen = (value: number) => {
+  const base = 10
+  return Math.floor(value / base) * base
+}
