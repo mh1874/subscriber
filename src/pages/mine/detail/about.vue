@@ -8,7 +8,7 @@
           mode="aspectFill"
         ></image>
         <text>
-          秒速球，聚焦优质财经达人。通过【牛人列表】订阅感兴趣的牛人，获取实时消息
+          秒速球，聚焦优质财经达人。通过【发现】订阅感兴趣的牛人，获取实时消息
         </text>
       </view>
       <view class="content leading-7 mb-3">
@@ -18,16 +18,18 @@
         </view>
         <view class="mb-1">
           <text class="keyword">信息全</text>
-          所有消息（含秒删帖，修改贴，评论），秒速球都可实时捕获并推送到微信，让您运筹帷幄!
+          秒删帖、修改贴、评论、破整网公告、自选股变动等，秒速球都可以实时捕获并推送到微信，让您运筹帷幄!
         </view>
         <view>
           <text class="keyword">成本低</text>
-          普通用户每日可享受
-          <text color-orange>6</text> 次推送次数，
-          <u-button type="warning" size="mini" open-type="share">
-            分享小程序
-          </u-button>
-          邀请新用户限时送会员！<br />
+          普通用户每日可推送
+          <text color-orange>6</text> 条消息，可通过多种方式获得更多推送次数！
+          <view>
+            <u-button type="warning" size="mini" open-type="share">
+              分享小程序
+            </u-button>
+            邀请新用户限时送会员！
+          </view>
           <template v-if="paySwitch">
             也可以直接通过
             <u-button type="warning" size="mini" @click="toDetail('member')">
