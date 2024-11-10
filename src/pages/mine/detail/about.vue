@@ -23,7 +23,7 @@
         <view>
           <text class="keyword">成本低</text>
           普通用户每日可推送
-          <text color-orange>6</text> 条消息，可通过多种方式获得更多推送次数！
+          <text color-orange>6</text> 条消息！
           <view>
             <u-button type="warning" size="mini" open-type="share">
               分享小程序
@@ -33,7 +33,7 @@
           <template v-if="paySwitch">
             也可以直接通过
             <u-button type="warning" size="mini" @click="toDetail('member')">
-              升级会员
+              会员升级
             </u-button>
             ，获取优先推送以及更多推送次数!
           </template>
