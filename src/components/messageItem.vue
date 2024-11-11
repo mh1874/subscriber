@@ -83,9 +83,20 @@ const handledRetweeted = computed(() =>
     : props.item.retweeted_message
 )
 
-// 获取相对时间
+// 格式化时间
 const formatTime = (time: string) => {
-  return proxy.$dayjs(time).fromNow()
+  const now = proxy.$dayjs() // 当前时间
+  const givenTime = proxy.$dayjs(time) // 传入时间
+  if (now.isSame(givenTime, 'day')) {
+    // 如果是同一天
+    return givenTime.fromNow() // 显示相对时间
+  }
+  if (now.subtract(1, 'day').isSame(givenTime, 'day')) {
+    // 如果是昨天
+    return `昨天 ${givenTime.format('HH:mm')}`
+  }
+  // 再往前的时间
+  return givenTime.format('MM-DD HH:mm')
 }
 
 const pageList = getCurrentPages()

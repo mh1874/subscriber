@@ -7,11 +7,8 @@ import isToday from 'dayjs/plugin/isToday'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 import mpShare from '@/mixins/share'
-
 import App from './App.vue'
-
-// unocss
-import 'uno.css'
+import 'uno.css' // unocss
 
 dayjs.extend(isToday)
 dayjs.extend(relativeTime)

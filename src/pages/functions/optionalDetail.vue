@@ -162,6 +162,7 @@ onShow(() => {
     .stock-list {
       line-height: 48px;
       font-size: 16px;
+      padding-bottom: 20px;
       .stock-item {
         display: flex;
         justify-content: space-between;

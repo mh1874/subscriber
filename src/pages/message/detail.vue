@@ -4,9 +4,9 @@
       <image class="avatar" :src="data.item.avatar" mode="aspectFill"></image>
       <view class="flex-1">
         <view class="nick-name">{{ data.item.nick }}</view>
-        <view class="time">{{
-          formatTime(data.item.source_created_time)
-        }}</view>
+        <view class="time">
+          {{ formatTime(data.item.source_created_time) }}
+        </view>
       </view>
       <u-button
         class="font-bold"
@@ -164,9 +164,9 @@ const previewHandler = (url: string) => {
   })
 }
 
-// 获取相对时间
+// 格式化时间
 const formatTime = (time: string) => {
-  return proxy.$dayjs(time).fromNow()
+  return proxy.$dayjs(time).format('YYYY-MM-DD HH:mm')
 }
 
 // 返回主页

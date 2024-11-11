@@ -3,16 +3,16 @@
     <view class="common-functions">
       <u-grid :col="3" :border="false">
         <u-grid-item @click="toPccz">
-          <u-image width="32px" height="32px" :src="pcczIcon"></u-image>
-          <view class="grid-text">破产重整</view>
+          <image class="icon" :src="pcczIcon" mode="aspectFill"></image>
+          <view class="name">破产重整</view>
         </u-grid-item>
         <u-grid-item @click="toOptional">
-          <u-image width="32px" height="32px" :src="optionalIcon"></u-image>
-          <view class="grid-text">自选股</view>
+          <image class="icon" :src="optionalIcon" mode="aspectFill"></image>
+          <view class="name">自选股</view>
         </u-grid-item>
         <u-grid-item @click="toActivity">
-          <u-image width="32px" height="32px" :src="memberIcon"></u-image>
-          <view class="grid-text">会员升级</view>
+          <image class="icon" :src="memberIcon" mode="aspectFill"></image>
+          <view class="name">会员升级</view>
         </u-grid-item>
       </u-grid>
     </view>
@@ -43,7 +43,11 @@ const toActivity = () => {
 <style lang="scss" scoped>
 .common-functions {
   padding: 5px 0;
-  .grid-text {
+  .icon {
+    width: 32px;
+    height: 32px;
+  }
+  .name {
     color: #2d515e;
     margin-top: 6px;
     font-weight: 500;
