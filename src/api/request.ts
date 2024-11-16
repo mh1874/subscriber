@@ -46,7 +46,7 @@ service.interceptors.response.use(
     // 处理 status非200的业务码错误 （鉴权失效的400、401不提示，需静默刷新token）
     if (!isLoginOverdue(error)) {
       uni.showToast({
-        title: error.message,
+        title: '网络繁忙，请稍后再试',
         icon: 'none'
       })
     }

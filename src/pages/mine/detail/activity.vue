@@ -6,7 +6,7 @@
         <text class="sub-title">直接升级</text>
         <text class="desc"> 直接升级，立享超级会员体验。 </text>
         <u-button
-          type="success"
+          type="error"
           size="mini"
           plain
           shape="circle"
@@ -168,6 +168,15 @@ onShow(() => {
         margin-bottom: 20px;
       }
     }
+    .upgrade {
+      background-image: url('~@/static/upgrade.jpg');
+      .sub-title {
+        color: #fff;
+      }
+      .desc {
+        color: #fff;
+      }
+    }
     .invite {
       position: relative;
       background-image: url('~@/static/invite.jpg');
@@ -193,15 +202,6 @@ onShow(() => {
       }
       .desc {
         color: $warning-color;
-      }
-    }
-    .upgrade {
-      background-image: url('~@/static/upgrade.jpg');
-      .sub-title {
-        color: #5e9a5f;
-      }
-      .desc {
-        color: #16a34a;
       }
     }
   }

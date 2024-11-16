@@ -158,8 +158,8 @@ const upCallback = async (mescroll: any) => {
     })
 }
 
-// 滚动通知列表 '多种方式享无限推送次数 ~ '
-const noticeList = ['双11狂欢，年费会员限时8折，错过再等一年！']
+// 滚动通知列表 '双11狂欢，年费会员限时8折，错过再等一年！'
+const noticeList = ['多种方式享无限推送次数 ~ ']
 // 跳转活动页面
 const toActivity = () => {
   uni.navigateTo({ url: '/pages/mine/detail/activity' })

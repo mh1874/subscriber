@@ -175,7 +175,7 @@ const superMembershipData: MembershipData = {
       id: 4,
       type: '年费SVIP',
       price: 499,
-      discount: 399,
+      // discount: 399,
       days: 375,
       extraDays: 10
     },
@@ -218,7 +218,7 @@ const selectedTab = ref<'premium' | 'super'>('super')
 const selectedMembership = ref<MembershipFee>({
   id: 4,
   price: 499,
-  discount: 399,
+  // discount: 399,
   days: 375,
   extraDays: 10
 })
