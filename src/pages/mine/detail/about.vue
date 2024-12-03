@@ -52,7 +52,7 @@
         </view>
         <view class="qrcode">
           <image
-            src="https://www.lovecf.cn/app/qrcode.png"
+            src="https://www.lovecf.cn/app/qrcode-new.png"
             show-menu-by-longpress
             mode="aspectFill"
           ></image>
@@ -138,8 +138,8 @@ onShow(() => {
     display: flex;
     justify-content: center;
     image {
-      width: 150px;
-      height: 150px;
+      width: 180px;
+      height: 180px;
       object-fit: contain;
       border-radius: 6px;
     }
