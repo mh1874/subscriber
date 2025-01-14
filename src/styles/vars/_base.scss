@@ -6,22 +6,19 @@ $danger-color: #fa3534;
 .message-item {
   ._root {
     overflow: hidden;
-    word-break: break-all;
-    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 5;
-    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    line-height: 26px;
+    max-height: 130px;
+    width: 100%;
     ._img {
-      width: 15px !important;
-      height: 15px !important;
-    }
-  }
-}
-.message-detail {
-  ._root {
-    ._img {
-      width: 15px !important;
-      height: 15px !important;
+      object-fit: cover;
+      display: inline-block;
+      vertical-align: middle;
+      max-width: 100%;
     }
   }
 }
@@ -38,7 +35,7 @@ $danger-color: #fa3534;
       // min-width: 90px;
       line-height: 20px;
     }
-  } 
+  }
 }
 
 .u-notice-bar {

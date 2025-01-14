@@ -115,16 +115,12 @@ const queryMessageDetail = () => {
     .getMessageDetail(messageId.value)
     .then((res) => {
       const { message, retweeted_message, pic_list, source_platform } = res.data
-      const { text: handledMessage, picList: messagePicList } =
-        extractImagesFromHTML(message)
-      const { text: handledRetweeted, picList: retweetedPicList } = res.data
-        .retweeted_message
+      const { text: handledMessage } = extractImagesFromHTML(message)
+      const { text: handledRetweeted } = res.data.retweeted_message
         ? extractImagesFromHTML(retweeted_message)
-        : { text: '', picList: [] }
+        : { text: '' }
       const picList = [
-        ...((pic_list && JSON.parse(pic_list.replace(/'/g, '"'))) || []),
-        ...messagePicList,
-        ...retweetedPicList
+        ...((pic_list && JSON.parse(pic_list.replace(/'/g, '"'))) || [])
       ]
       // 判断内容是否来自破整网
       let messageResult = handledMessage

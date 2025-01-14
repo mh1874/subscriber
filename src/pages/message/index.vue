@@ -112,19 +112,15 @@ const upCallback = async (mescroll: any) => {
     .then((res) => {
       if (res.status !== 1) return
       const curPageData =
-        res.data.map((it) => {
-          const { text: messageText, picList: messagePicList } =
-            extractImagesFromHTML(it.message)
-          const { text: retweetedText, picList: retweetedPicList } =
-            it.retweeted_message
-              ? extractImagesFromHTML(it.retweeted_message)
-              : { text: '', picList: [] }
+        res.data.map((it: any) => {
+          const { text: messageText } = extractImagesFromHTML(it.message)
+          const { text: retweetedText } = it.retweeted_message
+            ? extractImagesFromHTML(it.retweeted_message)
+            : { text: '' }
           // 最多显示9张
           const picList = [
             ...((it.pic_list && JSON.parse(it.pic_list.replace(/'/g, '"'))) ||
-              []),
-            ...messagePicList,
-            ...retweetedPicList
+              [])
           ].slice(0, 9)
           return {
             ...it,
